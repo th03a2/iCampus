@@ -2,41 +2,46 @@ const mongoose = require("mongoose");
 
 const modelSchema = new mongoose.Schema(
   {
-    companyId: { type: mongoose.Schema.Types.ObjectId, ref: "Companies" },
-    companyName: { type: String },
-    code: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
-    name: { type: String },
+    ceo: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     acronym: { type: String },
-    stage: {
-      jhs: { type: Array },
-      shs: { type: Array },
+    subName: {
+      type: String,
+      trim: true,
     },
-    address: {
-      region: { type: String },
-      province: { type: String },
-      city: { type: String },
-      barangay: { type: String },
-      street: { type: String },
+    category: {
+      type: String,
+      enum: {
+        values: [
+          "supplier",
+          "laboratory",
+          "outsource",
+          "insource",
+          "support",
+          "clinic",
+          "infirmary",
+        ],
+        message: "{VALUE} is not supported, please select appropriate options",
+      },
     },
-    division: {
+    tagline: {
+      type: String,
+      trim: true,
+    },
+    deletedAt: {
       type: String,
     },
-    account: { type: Array, ref: "Users" },
-    banner: { type: Array, ref: "Branches" },
-    deletedAt: { type: String },
   },
   {
     timestamps: true,
   }
 );
 
-modelSchema.query.byCompanyId = function (companyId) {
-  return this.where({ companyId });
-};
-modelSchema.query.byCompanies = function (companies) {
-  return this.where({ companyId: { $in: companies } });
-};
-
-const Entity = mongoose.model("companies", modelSchema);
+const Entity = mongoose.model("Companies", modelSchema);
 
 module.exports = Entity;

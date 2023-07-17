@@ -7,6 +7,14 @@ const Companies = require("../../models/Assets/Companies"),
   Procurements = require("../../models/Assets/Procurements"),
   procurements = require("./file201/procurements"),
   Sources = require("../../models/Assets/Sources"),
+  Levels = require("../../models/Assets/Level"),
+  levels = require("./levels"),
+  Specializations = require("../../models/Assets/Specializations"),
+  specializations = require("./specialization"),
+  Strands = require("../../models/Assets/Strands"),
+  strands = require("./strand"),
+  Sections = require("../../models/Assets/Sections"),
+  sections = require("./sections"),
   sources = require("./sources"),
   persons = require("./persons");
 
@@ -36,6 +44,26 @@ const assets = [
     entity: Procurements,
     collections: procurements,
     name: "procurements",
+  },
+  {
+    entity: Levels,
+    collections: levels,
+    name: "levels",
+  },
+  {
+    entity: Sections,
+    collections: sections,
+    name: "sections",
+  },
+  {
+    entity: Specializations,
+    collections: specializations,
+    name: "specializations",
+  },
+  {
+    entity: Strands,
+    collections: strands,
+    name: "strands",
   },
 ];
 module.exports = assets;

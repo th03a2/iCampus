@@ -118,8 +118,8 @@ export default function ApplicationModal({
                   Select a branch
                 </option>
                 {company.branches?.map(branch => {
-                  const disabler = catalogs.find(
-                    catalog => catalog.branch._id === branch._id
+                  const disabler = catalogs?.find(
+                    catalog => catalog?.branch?._id === branch?._id
                   );
                   return (
                     <option

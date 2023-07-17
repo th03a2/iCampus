@@ -2,9 +2,11 @@ const branches = [
   {
     _id: "637097f0535529a3a57e933e",
     name: "General Tinio National High School",
-    companyId: "636ab9ca4b154f3c30400830",
     acronym: "GTNHS",
+    companyId: "636ab9ca4b154f3c30400830",
+    companyName: "DepEd",
     ao: "636d37e0187c30ab0f611ce2",
+    category: "jhs",
     address: {
       region: "REGION III (CENTRAL LUZON)",
       province: "NUEVA ECIJA",
@@ -15,14 +17,8 @@ const branches = [
     isMain: true,
     contacts: {
       mobile: "9321852464",
-      email: "smartcare@gmail.com",
+      email: "gtnhs@gmail.com",
     },
-    // Physician
-    affiliated: [
-      "638dbb343d534df590afca54",
-      "638dbb343d534df590afca55",
-      "638dbb343d534df590afcc53",
-    ],
     hos: 8,
     schedule: {
       time: "8am-5pm",
@@ -43,9 +39,11 @@ const branches = [
   },
   {
     _id: "637097f0535529a3a57e934e",
-    name: "Penaranda Branch",
+    name: "Camp Tinio National High School",
+    acronym: "CTNHS",
+    category: "shs",
     companyId: "636ab9ca4b154f3c30400830",
-    companyName: "Smart Care",
+    companyName: "DepEd",
     address: {
       region: "REGION III (CENTRAL LUZON)",
       province: "NUEVA ECIJA",
@@ -55,10 +53,8 @@ const branches = [
     },
     contacts: {
       mobile: "9321852464",
-      email: "smartcare@gmail.com",
+      email: "ctnhs@gmail.com",
     },
-    // Madalas ma update, need i separate ng table
-    affiliated: ["638dbb343d534df590afca54"],
     hos: 8,
     schedule: {
       time: "8am-5pm",
@@ -70,9 +66,11 @@ const branches = [
   },
   {
     _id: "637097f0535529a3a57e935e",
-    name: "San Leonardo Branch",
+    name: "Nueva Ecija National High School",
+    acronym: "NENHS",
+    category: "integrated",
     companyId: "636ab9ca4b154f3c30400830",
-    companyName: "Smart Care",
+    companyName: "DepEd",
     ao: "636d37e0187c30ab0f611ce2",
     address: {
       region: "REGION III (CENTRAL LUZON)",
@@ -83,11 +81,9 @@ const branches = [
     },
     contacts: {
       mobile: "9321852464",
-      email: "smartcare@gmail.com",
+      email: "nenhs@gmail.com",
     },
     credentials: { laboratory: "primary" },
-    // Physician
-    affiliated: ["638dbb343d534df590afca54", "638dbb343d534df590afca55"],
     schedule: {
       time: "8am-5pm",
       day: "mon-sat",
@@ -95,9 +91,11 @@ const branches = [
   },
   {
     _id: "637097f0535529a3a57e936e",
-    name: "Carranglan Branch",
+    name: "Cabanatuan East Central School",
+    acronym: "CECS",
+    category: "elem",
     companyId: "636ab9ca4b154f3c30400830",
-    companyName: "Smart Care",
+    companyName: "DepEd",
     address: {
       region: "REGION III (CENTRAL LUZON)",
       province: "NUEVA ECIJA",
@@ -107,409 +105,12 @@ const branches = [
     },
     contacts: {
       mobile: "9321852464",
-      email: "smartcare.carranglan@gmail.com",
-    },
-    // Madalas ma update, need i separate ng table
-    affiliated: [
-      "638dbb343d534df590afca54",
-      "638dbb343d534df590afca55",
-      "638dbb343d534df590afca56",
-    ],
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e936f",
-    name: "San Jose Branch",
-    companyId: "636ab9ca4b154f3c30400830",
-    companyName: "Smart Care",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "smartcare.sanjose@gmail.com",
-    },
-    // Madalas ma update, need i separate ng table
-    affiliated: [
-      "638dbb343d534df590afca54",
-      "638dbb343d534df590afca55",
-      "638dbb343d534df590afca56",
-    ],
-    settings: {
-      hasMenu: true,
-      hasReference: true,
-      hasEmployee: true,
-      hasVendor: true,
-      hasPhysician: true,
-      hasSectionHead: true,
-      isProperlySetup: false,
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e937e",
-    name: "Mayapyap Branch",
-    companyId: "636ab9ca4b154f3c30400831",
-    companyName: "Saint Vincent",
-    isMain: true,
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "saintvincent@gmail.com",
-    },
-    // Madalas ma update, need i separate ng table
-    affiliated: [
-      "638dbb343d534df590afca54",
-      "638dbb343d534df590afca55",
-      "638dbb343d534df590afca56",
-    ],
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-    settings: {
-      hasMenu: true,
-      hasReference: true,
-      hasEmployee: true,
-      hasVendor: true,
-      hasPhysician: true,
-      hasSectionHead: true,
-      isProperlySetup: false,
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e938e",
-    name: "Cabanatuan Branch",
-    companyId: "636ab9ca4b154f3c30400832",
-    companyName: "St. Albert",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "saintalbert@gmail.com",
-    },
-    // Madalas ma update, need i separate ng table
-    affiliated: [
-      "638dbb343d534df590afca54",
-      "638dbb343d534df590afca55",
-      "638dbb343d534df590afca56",
-    ],
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e940e",
-    name: "General Tinio Branch",
-    companyId: "636ab9ca4b154f3c30400833",
-    companyName: "Citi Life",
-    isMain: true,
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "citilife@gmail.com",
+      email: "cecs@gmail.com",
     },
     schedule: {
       time: "8am-5pm",
       day: "mon-sat",
     },
-  },
-  {
-    _id: "637097f0535529a3a57e941e",
-    name: "Penaranda Branch",
-    companyId: "636ab9ca4b154f3c30400833",
-    companyName: "Citi Life",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "citilife@gmail.com",
-    },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e942e",
-    name: "Gapan Branch",
-    companyId: "636ab9ca4b154f3c30400833",
-    companyName: "Citi Life",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "citilife@gmail.com",
-    },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e943e",
-    name: "Bongabon Branch",
-    companyId: "636ab9ca4b154f3c30400833",
-    companyName: "Citi Life",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "citilife@gmail.com",
-    },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e944e",
-    name: "San Antonio Branch",
-    companyId: "636ab9ca4b154f3c30400833",
-    companyName: "Citi Life",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "citilife@gmail.com",
-    },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e945e",
-    name: "Santo Domingo Branch",
-    companyId: "636ab9ca4b154f3c30400833",
-    companyName: "Citi Life",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "citilife@gmail.com",
-    },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e946e",
-    name: "Carranglan Branch",
-    companyId: "636ab9ca4b154f3c30400834",
-    companyName: "Medicare Community Hospital",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "mch.carranglan@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
-  },
-  {
-    _id: "637097f0535529a3a57e947e",
-    name: "Penaranda Branch",
-    companyId: "636ab9ca4b154f3c30400835",
-    companyName: "Solar Philippines",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "sp.penaranda@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
-  },
-  {
-    _id: "637097f0535529a3a57e948e",
-    name: "Rio Chico Branch",
-    companyId: "636ab9ca4b154f3c30400836",
-    companyName: "JB Clinic",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "jb.riochico@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
-  },
-  {
-    _id: "637097f0535529a3a57e949e",
-    name: "General Tinio Branch",
-    companyId: "636ab9ca4b154f3c30400836",
-    companyName: "JJ Clinic",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "jJ.riochico@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
-  },
-  {
-    _id: "637097f0535529a3a57e950e",
-    name: "General Tinio Branch",
-    companyId: "636ab9ca4b154f3c30400838",
-    companyName: "EASTWEST HEALTHCARE",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "eastwest.healthcare@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
-  },
-  {
-    _id: "637097f0535529a3a57e951e",
-    name: "General Tinio Branch",
-    companyId: "636ab9ca4b154f3c30400839",
-    companyName: "InLife INSULAR HEALTH CARE",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "InLife@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
-  },
-  {
-    _id: "637097f0535529a3a57e952e",
-    name: "General Tinio Branch",
-    companyId: "636ab9ca4b154f3c30400840",
-    companyName: "PIONEER YOUR INSURANCE",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "PIONEER@gmail.com",
-    },
-    hos: 24,
-    schedule: {
-      time: "24hrs",
-      day: "mon-sut",
-    },
-    onDemo: true,
-    trial: 30,
   },
 ];
 

@@ -19,7 +19,7 @@ import policy from "../../../../../fakeDb/json/policy.json";
 export default function CompanyTables({ history, page }) {
   const { theme, maxPage } = useSelector(({ auth }) => auth);
 
-  const handleDesignation = (designation) => {};
+  const handleDesignation = designation => {};
   return (
     <>
       <MDBTable align="middle" hover responsive color={theme.color}>
@@ -44,8 +44,8 @@ export default function CompanyTables({ history, page }) {
           {history?.map((data, index) => (
             <tr key={`history-${index}`}>
               <td>{index + 1}</td>
-              <td>{data.branch.companyName}</td>
-              <td>{data.branch.name}</td>
+              <td>{data.branch?.companyName}</td>
+              <td>{data.branch?.name}</td>
               <td>{data.designation}</td>
               <td>{new Date(data.createdAt).toLocaleDateString()}</td>
               <td>Pds,resume</td>
