@@ -43,6 +43,6 @@ const modelSchema = new mongoose.Schema(
   }
 );
 
-const Entity = mongoose.model("classrooms", modelSchema);
+const Entity = mongoose.model("branches", modelSchema);
 
 module.exports = Entity;
