@@ -48,6 +48,6 @@ modelSchema.query.byBranchId = function (branchId) {
 modelSchema.query.byUser = function (user) {
   return this.where({ user });
 };
-const Entity = mongoose.model("sections", modelSchema);
+const Entity = mongoose.model("procurements", modelSchema);
 
 module.exports = Entity;

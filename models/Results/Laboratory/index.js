@@ -1,0 +1,12 @@
+export { Bacteriology } from "./Bacteriology";
+export { Chemistry } from "./Chemistry";
+export { Coagulation } from "./Coagulation";
+export { Compatibility } from "./Compatibility";
+export { Drugtest } from "./Drugtest";
+export { Hematology } from "./Hematology";
+export { Miscellaneous } from "./Miscellaneous";
+export { Paps } from "./Paps";
+export { Parasitology } from "./Parasitology";
+export { Pbs } from "./Pbs";
+export { Serology } from "./Serology";
+export { Urinalysis } from "./Urinalysis";

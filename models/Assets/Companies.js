@@ -37,6 +37,6 @@ modelSchema.query.byCompanies = function (companies) {
   return this.where({ companyId: { $in: companies } });
 };
 
-const Entity = mongoose.model("schools", modelSchema);
+const Entity = mongoose.model("companies", modelSchema);
 
 module.exports = Entity;
