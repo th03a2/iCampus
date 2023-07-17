@@ -1,0 +1,96 @@
+const gentinio = [
+  {
+    _id: "636d37e0187c30ab0f611cf1",
+    fullName: {
+      fname: "Jennelyn",
+      lname: "Bote",
+    },
+    address: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "Gen. Tinio",
+      barangay: "San Pedro",
+      street: "#25",
+    },
+    dob: "2000-09-08",
+    mobile: "9510706842",
+    email: "jennelyn@gmail.com",
+    hea: "College",
+    alias: "Jenni",
+    password: "password",
+    isMale: false,
+  },
+  {
+    _id: "636d37e0187c30ab0f611cf2",
+    fullName: {
+      fname: "DEBRALENE",
+      mname: "ROMERO",
+      lname: "PAJARILLAGA",
+      postnominal: "RMT",
+    },
+    prc: {
+      id: "0044459",
+      from: null,
+      to: "2025-12-03",
+    },
+    address: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: "Mabini Extension",
+      street: "#25",
+    },
+    dob: "2000-09-08",
+    mobile: "9510706842",
+    alias: "debz",
+    email: "debz@gmail.com",
+    hea: "College",
+    password: "password",
+  },
+  {
+    _id: "636d37e0187c30ab0f611cf3",
+    fullName: {
+      fname: "KIMBERLY",
+      lname: "SARMENTO",
+    },
+    address: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: "Mabini Extension",
+      street: "#25",
+    },
+    dob: "2000-09-08",
+    mobile: "9510706842",
+    email: "kim@gmail.com",
+    hea: "College",
+    alias: "kim",
+    password: "password",
+  },
+
+  // Affiliated Physicians
+  {
+    _id: "638dbb343d534df590afcc53",
+    fullName: {
+      fname: "JOMAR",
+      lname: "JAVIER",
+      title: "Dr.",
+      postnominal: "Phd",
+    },
+    address: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: "Mabini Extension",
+      street: "#25",
+    },
+    dob: "2000-09-08",
+    mobile: "9510706844",
+    email: "javier@gmail.com",
+    hea: "College",
+    alias: "jomar",
+    password: "password",
+    isMale: true,
+  },
+];
+module.exports = gentinio;

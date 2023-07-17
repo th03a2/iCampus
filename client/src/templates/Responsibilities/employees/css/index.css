@@ -1,0 +1,12 @@
+.rotate-270 {
+  transform: rotate(300deg);
+  transform-origin: center center;
+  transform-box: fill-box;
+}
+
+.vertical-center {
+  vertical-align: middle;
+}
+.no-text-center {
+  text-align: left;
+}

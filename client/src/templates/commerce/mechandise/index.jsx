@@ -1,0 +1,1 @@
+export { TBLproducts } from "./products";

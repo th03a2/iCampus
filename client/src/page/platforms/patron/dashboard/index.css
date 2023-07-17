@@ -1,0 +1,20 @@
+@font-face {
+  font-family: Small Corps;
+  src: url(../../../../assets//fonts//smallcorps.ttf);
+}
+
+@font-face {
+  font-family: Big Corps;
+  src: url(../../../../assets/fonts/bigcorps.ttf);
+}
+
+.small-corps {
+  /* font-size: x-large; */
+  font-family: Small Corps;
+}
+
+.large-corps {
+  font-family: Big Corps;
+  /* font-size: 40px;
+  line-height: 35px; */
+}

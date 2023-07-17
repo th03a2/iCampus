@@ -1,0 +1,128 @@
+[
+  {
+    "code": "accreditations",
+    "title": "Accreditations Portal",
+    "description": "DOH Accreditations Portals",
+    "icon": "cogs"
+  },
+  {
+    "code": "headquarter",
+    "title": "Headquarter Portal",
+    "description": "denotes the location where most, if not all, of the important functions of an organization are coordinated",
+    "icon": "landmark"
+  },
+  {
+    "code": "manager",
+    "title": "Manager Portal",
+    "description": "Manager",
+    "icon": "cogs"
+  },
+  {
+    "code": "admin",
+    "title": "Admin Portal",
+    "description": "Administrator",
+    "icon": "cogs"
+  },
+  {
+    "code": "auditor",
+    "title": "Auditor Portal",
+    "description": "Status of Activities and Evens",
+    "icon": "money-bill"
+  },
+  {
+    "code": "author",
+    "title": "Author  Portal",
+    "description": "A person who administers and grades examinations to test people's knowledge or proficiency",
+    "icon": "pen-fancy"
+  },
+  {
+    "code": "laboratory",
+    "title": "Laboratory  Portal",
+    "description": "Laboratory Scientist Portal",
+    "icon": "pen-fancy"
+  },
+  {
+    "code": "radiology",
+    "title": "Radiology  Portal",
+    "description": "Radiology Portals",
+    "icon": "pen-fancy"
+  },
+  {
+    "code": "pharmacy",
+    "title": "Pharmacist  Portal",
+    "description": "Pharmacy Portal",
+    "icon": "pen-fancy"
+  },
+  {
+    "code": "clinical",
+    "title": "clinical Portal",
+    "description": "Ward Portals",
+    "icon": "pen-fancy"
+  },
+  {
+    "code": "therapist",
+    "title": "Therapist  Portal",
+    "description": "Physical Therapist Portal",
+    "icon": "pen-fancy"
+  },
+  {
+    "code": "dietician",
+    "title": "Dietician Portal",
+    "description": "educate patients on proper diet and help them manage conditions, such as obesity and diabetes.",
+    "icon": "cash-register"
+  },
+  {
+    "code": "utility",
+    "title": "Utilities Portal",
+    "description": "Responsible for cleanlinest of the company",
+    "icon": "cash-register"
+  },
+  {
+    "code": "carpenter",
+    "title": "Carpentry Portal",
+    "description": "will build, install, and repair forms, structures, and other fixtures made from wood and other materials as needed to assist with various types of construction projects",
+    "icon": "cash-register"
+  },
+  {
+    "code": "procurement",
+    "title": "Procurement Portal",
+    "description": "Purchasing Department",
+    "icon": "cash-register"
+  },
+  {
+    "code": "social",
+    "title": "Medical social worker Portal",
+    "description": "Social workers help patients and their families deal with the physical, emotional and financial stress of hospitalization. They meet with and talk to patients about what to expect from their condition and the recovery process. They also provide support for patients and families going through difficult situations, such as being diagnosed with a life-threatening condition. Social workers also teach nurses and doctors how to handle patients with issues like depression or anxiety.",
+    "icon": "cash-register"
+  },
+  {
+    "code": "hr",
+    "title": "Human resources manager Portal",
+    "description": " They recruit, hire and train new employees and communicate with existing staff to resolve conflicts and enforce workplace policies. HR managers also handle the hospital’s salary budget, benefits programs and professional development opportunities. They ensure the hospital follows state and federal regulations and provides a safe workplace for employees.",
+    "icon": "cash-register"
+  },
+  {
+    "code": "billing ",
+    "title": "Coding Specialist Portal",
+    "description": "classify and code health claims so the hospital can receive payment from insurance companies and health care programs.",
+    "icon": "cash-register"
+  },
+  {
+    "code": "cashier",
+    "title": "Cashier Portal",
+    "description": "Status of Activities and Evens",
+    "icon": "cash-register"
+  },
+  {
+    "code": "frontdesk",
+    "title": "Frontdesk Portal",
+    "description": "Status of Activities and Evens",
+    "icon": "cash-register"
+  },
+  {
+    "code": "patron",
+    "title": "Patron Portal",
+    "description": "a customer, especially a regular one.",
+    "icon": "user-injured"
+  }
+]
