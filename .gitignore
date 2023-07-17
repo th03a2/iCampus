@@ -5,9 +5,9 @@
 /.pnp
 .pnp.js
 /assets
-# pushing to update
-app.js
-.env
+# # pushing to update
+# app.js
+# .env
 /client/src/components/utilities.js
 # testing
 /coverage

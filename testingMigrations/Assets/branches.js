@@ -1,9 +1,9 @@
 const branches = [
   {
     _id: "637097f0535529a3a57e933e",
-    name: "General Tinio Branch",
+    name: "General Tinio National High School",
     companyId: "636ab9ca4b154f3c30400830",
-    companyName: "Smart Care",
+    acronym: "GTNHS",
     ao: "636d37e0187c30ab0f611ce2",
     address: {
       region: "REGION III (CENTRAL LUZON)",
