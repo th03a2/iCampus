@@ -2,10 +2,8 @@ const companies = [
   {
     _id: "636ab9ca4b154f3c30400830",
     ceo: "636d37e0187c30ab0f611ce4", // Tomas Pajarillaga
-    name: "Smart Care",
-    subName: "Polyclinic and Diagnostic Center",
-    category: "clinic",
-    tagline: "Quality Healthcare Service at Very Afforble Price",
+    name: "Department of Education",
+    acronym: "DepEd",
   },
   {
     _id: "636ab9ca4b154f3c30400831",
