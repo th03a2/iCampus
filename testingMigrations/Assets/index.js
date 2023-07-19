@@ -15,6 +15,10 @@ const Companies = require("../../models/Assets/Companies"),
   strands = require("./strand"),
   Sections = require("../../models/Assets/Sections"),
   sections = require("./sections"),
+  Articles = require("../../models/Assets/Articles"),
+  articles = require("./articles"),
+  Banks = require("../../models/Assets/Banks"),
+  banks = require("./banks"),
   sources = require("./sources"),
   persons = require("./persons");
 
@@ -64,6 +68,16 @@ const assets = [
     entity: Strands,
     collections: strands,
     name: "strands",
+  },
+  {
+    entity: Banks,
+    collections: banks,
+    name: "banks",
+  },
+  {
+    entity: Articles,
+    collections: articles,
+    name: "articles",
   },
 ];
 module.exports = assets;
