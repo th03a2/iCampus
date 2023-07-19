@@ -2,7 +2,7 @@ const banks = [
   {
     // _id: 1,
     user: "60265ff45737000029000978",
-    subjectId: 1,
+    // subjectId: 1,
     type: "multiple choice",
     branchId: "60264978b22e00009a006436",
     cluster: "addition",
@@ -18,7 +18,7 @@ const banks = [
   {
     // _id: 2,
     user: "60265ff45737000029000978",
-    subjectId: 1,
+    // subjectId: 1,
     type: "essay",
     branchId: "60264978b22e00009a006436",
     cluster: "enumeration",
@@ -29,7 +29,7 @@ const banks = [
   {
     // _id: 3,
     user: "60265ff45737000029000978",
-    subjectId: 1,
+    // subjectId: 1,
     type: "boolean",
     branchId: "60264978b22e00009a006436",
     cluster: "enumeration",
@@ -43,7 +43,7 @@ const banks = [
   {
     // _id: 4,
     user: "60265ff45737000029000978",
-    subjectId: 1,
+    // subjectId: 1,
     type: "multiple choice",
     branchId: "60264978b22e00009a006436",
     cluster: "enumeration",

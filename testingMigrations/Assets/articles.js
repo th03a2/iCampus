@@ -4,7 +4,7 @@ const articles = [
     //   $oid: "6072de49635f000007001475",
     // },
     branchId: "6025e56ff06c0000d300304d",
-    user: 2,
+    user: "636d37e0187c30ab0f611ce2",
     avatar: "Do and Dont/hand-sanitizer.jpg",
     title: "hand-sanitizer",
     message:
@@ -17,7 +17,7 @@ const articles = [
     //   $oid: "6072de49635f000007001476",
     // },
     branchId: "6025e56ff06c0000d300304d",
-    user: 2,
+    user: "636d37e0187c30ab0f611ce2",
     avatar: "Do and Dont/social distancing.jpg",
     title: "social distancing",
     message:
@@ -30,7 +30,7 @@ const articles = [
     //   $oid: "6072de49635f000007001477",
     // },
     branchId: "6025e56ff06c0000d300304d",
-    user: 2,
+    user: "636d37e0187c30ab0f611ce2",
     avatar: "Do and Dont/stay-home-stay-safe.jpg",
     title: "stay-home-stay-safe",
     message:
@@ -43,7 +43,7 @@ const articles = [
     //   $oid: "6072de49635f000007001478",
     // },
     branchId: "6025e56ff06c0000d300304d",
-    user: 2,
+    user: "636d37e0187c30ab0f611ce2",
     avatar: "Do and Dont/wash hands.jpg",
     title: "wash hands",
     message:
