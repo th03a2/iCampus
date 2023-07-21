@@ -3,6 +3,14 @@ const Branches = require("./Branches");
 const Sources = require("./Sources");
 const Persons = require("./Persons");
 const File201 = require("./file201");
+const Levels = require("./Levels");
+const Sections = require("./Sections");
+const Strands = require("./Strands");
+const Specializations = require("./Specializations");
+const Books = require("./Books");
+const Subjects = require("./Subjects");
+const Banks = require("./Banks");
+const Articles = require("./Articles");
 
 const assets = {
   root: "assets",
@@ -26,6 +34,38 @@ const assets = {
     {
       root: "file201",
       children: File201,
+    },
+    {
+      root: "levels",
+      routes: Levels,
+    },
+    {
+      root: "Sections",
+      routes: Sections,
+    },
+    {
+      root: "Strands",
+      routes: Strands,
+    },
+    {
+      root: "specializations",
+      routes: Specializations,
+    },
+    {
+      root: "books",
+      routes: Books,
+    },
+    {
+      root: "subjects",
+      routes: Subjects,
+    },
+    {
+      root: "banks",
+      routes: Banks,
+    },
+    {
+      root: "articles",
+      routes: Articles,
     },
   ],
 };

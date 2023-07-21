@@ -6,6 +6,16 @@ import Laboratory from "./echart/Laboratory";
 import Radiology from "./echart/Radiology";
 import Admission from "./echart/Admission";
 import Blank from "./blank";
+import Levels from "./mapping/levels";
+import Sections from "./mapping/sections";
+import Books from "./mapping/books";
+import Strands from "./mapping/strands";
+import Companies from "./mapping/companies";
+import Specializations from "./mapping/specialization";
+import Schools from "./mapping/schools";
+import Subjects from "./mapping/subjects";
+import Banks from "./mapping/banks";
+import Articles from "./mapping/articles";
 
 const routes = {
   name: "patron",
@@ -46,6 +56,51 @@ const routes = {
     {
       path: "blank",
       element: <Blank />,
+    },
+    {
+      path: "mapping",
+      grandsons: [
+        {
+          path: "level",
+          element: <Levels />,
+        },
+        {
+          path: "schools",
+          element: <Schools />,
+        },
+        {
+          path: "sections",
+          element: <Sections />,
+        },
+        {
+          path: "books",
+          element: <Books />,
+        },
+        {
+          path: "strands",
+          element: <Strands />,
+        },
+        {
+          path: "companies",
+          element: <Companies />,
+        },
+        {
+          path: "specializations",
+          element: <Specializations />,
+        },
+        {
+          path: "subjects",
+          element: <Subjects />,
+        },
+        {
+          path: "banks",
+          element: <Banks />,
+        },
+        {
+          path: "articles",
+          element: <Articles />,
+        },
+      ],
     },
   ],
 };
