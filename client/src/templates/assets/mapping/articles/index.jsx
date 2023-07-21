@@ -1,6 +1,8 @@
 import React from "react";
 import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
+import defaultImage from "../../../../assets/images/default.jpg";
+import { ENDPOINT } from "../../../../components/utilities";
 import Swal from "sweetalert2";
 import {
   paginationHandler,
@@ -14,7 +16,7 @@ export function TBLarticles({ articles, page }) {
     const { title, message } = data;
     Swal.fire({
       html: `
-        <div>
+        <div >
           <h3>${title}</h3>
         </div>
         <h5>Message</h5>
@@ -26,7 +28,7 @@ export function TBLarticles({ articles, page }) {
         content: "swal-content",
         confirmButton: "swal-confirm-button",
       },
-      iconHtml: `<h6>sample image</h6>`,
+      iconHtml: `<image  src='${defaultImage}' style="width: 300px; height: 168px" />`,
       level: "hi",
       inputValue: message,
       input: "textarea",
