@@ -18,7 +18,6 @@ export function TBLsections({ sections, page }) {
           <th>#</th>
           <th scope="col">Name</th>
           <th scope="col">Accumulate </th>
-          <th scope="col">School Name </th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
@@ -28,7 +27,6 @@ export function TBLsections({ sections, page }) {
               <td>{1 + index}</td>
               <td>{section.name}</td>
               <td>{section.accumulate}</td>
-              <td>{section.branchId?.name}</td>
             </tr>
           ))
         ) : (

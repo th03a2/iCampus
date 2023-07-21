@@ -2,7 +2,6 @@ import React from "react";
 import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import defaultImage from "../../../../assets/images/default.jpg";
-import { ENDPOINT } from "../../../../components/utilities";
 import Swal from "sweetalert2";
 import {
   paginationHandler,

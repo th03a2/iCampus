@@ -30,7 +30,7 @@ export function TBLschools({ schools, page }) {
 
   const addressFormatter = (address) => {
     if (typeof address === "object") {
-      const { region, province, city, barangay, street } = address;
+      const { province, city, barangay, street } = address;
 
       return `${barangay},${street},${city},${province}`;
     }
