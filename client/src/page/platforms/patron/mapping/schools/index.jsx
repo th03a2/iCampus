@@ -5,7 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLschools } from "../../../../../templates";
-
+import Modal from "./modal";
 const path = [
   {
     path: "Schools",
@@ -17,6 +17,8 @@ export default function Sections() {
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
     [schools, setSchools] = useState([]),
+    [update, setUpdate] = useState({}),
+    [isUpdate, setIsUpdate] = useState(false),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
@@ -66,7 +68,22 @@ export default function Sections() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLschools schools={schools} page={page} />
+        <TBLschools
+          schools={schools}
+          page={page}
+          setUpdate={setUpdate}
+          setVisibility={setVisibility}
+          setIsUpdate={setIsUpdate}
+        />
+        {visibility && (
+          <Modal
+            setVisibility={setVisibility}
+            visibility={visibility}
+            update={update}
+            isUpdate={isUpdate}
+            setIsUpdate={setIsUpdate}
+          />
+        )}
       </MDBContainer>
     </>
   );

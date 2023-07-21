@@ -34,3 +34,11 @@ exports.update = (req, res) =>
   })
     .then((item) => res.json(item))
     .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.destroy = (req, res) => {
+  Entity.findByIdAndUpdate(req.query.id, {
+    deletedAt: new Date().toLocaleString(),
+  })
+    .then(() => res.json(req.params.id))
+    .catch((error) => res.status(400).json({ error: error.message }));
+};

@@ -5,7 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLstrands } from "../../../../../templates";
-
+import Modal from "./modal";
 const path = [
   {
     path: "Strands",
@@ -16,6 +16,8 @@ export default function Sections() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
+    [update, setUpdate] = useState({}),
+    [isUpdate, setIsUpdate] = useState(false),
     [strands, setStrands] = useState([]),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
@@ -66,7 +68,22 @@ export default function Sections() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLstrands strands={strands} page={page} />
+        <TBLstrands
+          strands={strands}
+          page={page}
+          setUpdate={setUpdate}
+          setVisibility={setVisibility}
+          setIsUpdate={setIsUpdate}
+        />
+        {visibility && (
+          <Modal
+            visibility={visibility}
+            setVisibility={setVisibility}
+            update={update}
+            isUpdate={isUpdate}
+            setIsUpdate={setIsUpdate}
+          />
+        )}
       </MDBContainer>
     </>
   );

@@ -4,14 +4,51 @@ import {
   MDBTableHead,
   MDBTableBody,
   MDBBadge,
+  MDBBtn,
+  MDBIcon,
+  MDBBtnGroup,
 } from "mdb-react-ui-kit";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-
+import { DESTROY } from "../../../../redux/slices/query";
 import { paginationHandler } from "../../../../components/utilities";
 
-export function TBLschools({ schools, page }) {
-  const { theme, maxPage } = useSelector(({ auth }) => auth);
+export function TBLschools({
+  schools,
+  page,
+  setVisibility,
+  setUpdate,
+  setIsUpdate,
+}) {
+  const { theme, maxPage, token } = useSelector(({ auth }) => auth);
+  const dispatch = useDispatch();
+  const handleUpdate = (school) => {
+    setVisibility(true);
+    setUpdate(school);
+    setIsUpdate(true);
+  };
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(
+          DESTROY({
+            entity: "assets/branches",
+            id,
+            token,
+          })
+        );
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
+  };
 
   const handleContacts = (contacts) => {
     Swal.fire({
@@ -47,6 +84,7 @@ export function TBLschools({ schools, page }) {
           <th scope="col">Name </th>
           <th scope="col">Contacts </th>
           <th>Address</th>
+          <th>Action</th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
@@ -63,6 +101,19 @@ export function TBLschools({ schools, page }) {
                 </MDBBadge>
               </td>
               <td>{addressFormatter(school.address)}</td>
+              <td>
+                <MDBBtnGroup>
+                  <MDBBtn
+                    color="danger"
+                    onClick={() => handleDelete(school._id)}
+                  >
+                    <MDBIcon fas icon="trash" />
+                  </MDBBtn>
+                  <MDBBtn onClick={() => handleUpdate(school)}>
+                    <MDBIcon fas icon="pencil-alt" />
+                  </MDBBtn>
+                </MDBBtnGroup>
+              </td>
             </tr>
           ))
         ) : (

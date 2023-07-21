@@ -5,6 +5,7 @@ const modelSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    deletedAt: { type: String },
   },
   {
     timestamps: true,

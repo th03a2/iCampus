@@ -19,7 +19,7 @@ const modelSchema = new mongoose.Schema(
     type: {
       type: String,
       enum: {
-        values: ["mc", "essay", "enum", "boolean"], // Multiple choice, essay, Enumeration, true/false, false
+        values: ["mc", "essay", "boolean"], // Multiple choice, essay, true/false
         message: "{VALUE} is not supported",
       },
       default: "mc",
@@ -29,7 +29,7 @@ const modelSchema = new mongoose.Schema(
     message: {
       type: String,
       enum: {
-        values: ["easy", "moderate", "hard"], // Multiple choice, essay, Enumeration, true/false, false
+        values: ["easy", "moderate", "hard"],
         message: "{VALUE} is not supported",
       },
       default: "easy",

@@ -1,7 +1,16 @@
 const router = require("express").Router(),
-  { browse } = require("../../controllers/Assets/Sections"),
+  {
+    browse,
+    save,
+    update,
+    destroy,
+  } = require("../../controllers/Assets/Sections"),
   { protect } = require("../../middleware");
 
-router.get("/browse", protect, browse);
+router
+  .get("/browse", protect, browse)
+  .put("/update", protect, update)
+  .delete("/destroy", protect, destroy)
+  .post("/save", protect, save);
 
 module.exports = router;

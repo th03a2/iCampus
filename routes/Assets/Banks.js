@@ -1,7 +1,7 @@
 const router = require("express").Router(),
-  { browse } = require("../../controllers/Assets/Banks"),
+  { browse, destroy } = require("../../controllers/Assets/Banks"),
   { protect } = require("../../middleware");
 
-router.get("/browse", protect, browse);
+router.get("/browse", protect, browse).delete("/destroy", destroy);
 
 module.exports = router;

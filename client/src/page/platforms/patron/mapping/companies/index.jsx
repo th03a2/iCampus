@@ -5,7 +5,6 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLcompanies } from "../../../../../templates";
-
 const path = [
   {
     path: "Companies",

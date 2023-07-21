@@ -5,7 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLbooks } from "../../../../../templates";
-
+import Modal from "./modal";
 const path = [
   {
     path: "Books",
@@ -17,6 +17,8 @@ export default function Books() {
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
     [books, setBooks] = useState([]),
+    [update, setUpdate] = useState({}),
+    [isUpdate, setIsUpdate] = useState(false),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
@@ -66,7 +68,22 @@ export default function Books() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLbooks books={books} page={page} />
+        <TBLbooks
+          books={books}
+          page={page}
+          setIsUpdate={setIsUpdate}
+          setUpdate={setUpdate}
+          setVisibility={setVisibility}
+        />
+        {visibility && (
+          <Modal
+            setVisibility={setVisibility}
+            visibility={visibility}
+            update={update}
+            isUpdate={isUpdate}
+            setIsUpdate={setIsUpdate}
+          />
+        )}
       </MDBContainer>
     </>
   );

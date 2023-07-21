@@ -5,15 +5,17 @@ const router = require("express").Router(),
     destroy,
     archive,
     cluster,
+    update,
   } = require("../../controllers/Assets/Branches"),
   { protect } = require("../../middleware");
 
 router
-  .get("/browse", browse)
-  .get("/list", browse)
-  .get("/cluster", cluster)
+  .get("/browse", protect, browse)
+  .get("/list", protect, browse)
+  .get("/cluster", protect, cluster)
   .get("/archive", protect, archive)
-  .post("/save", save)
+  .post("/save", protect, save)
+  .put("/update", protect, update)
   .delete("/destroy", protect, destroy);
 
 module.exports = router;

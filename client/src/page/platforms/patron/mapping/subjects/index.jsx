@@ -5,6 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLsubjects } from "../../../../../templates";
+import Modal from "./modal";
 
 const path = [
   {
@@ -17,6 +18,8 @@ export default function Subjects() {
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
     [subjects, setSubjects] = useState([]),
+    [update, setUpdate] = useState({}),
+    [isUpdate, setIsUpdate] = useState(false),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
@@ -66,7 +69,22 @@ export default function Subjects() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLsubjects subjects={subjects} page={page} />
+        <TBLsubjects
+          subjects={subjects}
+          page={page}
+          setVisibility={setVisibility}
+          setUpdate={setUpdate}
+          setIsUpdate={setIsUpdate}
+        />
+        {visibility && (
+          <Modal
+            setVisibility={setVisibility}
+            visibility={visibility}
+            update={update}
+            setIsUpdate={setIsUpdate}
+            isUpdate={isUpdate}
+          />
+        )}
       </MDBContainer>
     </>
   );
