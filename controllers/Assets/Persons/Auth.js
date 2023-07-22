@@ -2,7 +2,7 @@ const User = require("../../../models/Assets/Persons/Users"),
   Attendances = require("../../../models/Responsibilities/Attendances"),
   Personnels = require("../../../models/Assets/Persons/Personnels"),
   Branch = require("../../../models/Assets/Branches"),
-  Acccess = require("../../../models/Responsibilities/Access");
+  Access = require("../../../models/Responsibilities/Access");
 (generateToken = require("../../../config/generateToken")),
   (bcrypt = require("bcryptjs")),
   (jwt = require("jsonwebtoken")),
@@ -39,7 +39,8 @@ const timein = (id) =>
 
 const getAccess = (access) => {
   // si darrel ang nag add
-  return Acccess.find({ status: true })
+  Access.find()
+    .byUserId(access)
     .byUserId(access)
     .then((datas) => {
       return datas.map((data) => data.flatform);
@@ -71,19 +72,61 @@ const getAffiliated = async (fk) =>
   Personnels.find()
     .byUser(fk)
     .select("-user")
-    .populate("branch", "name companyId companyName isMain")
-    .then((affiliats) => {
-      return affiliats.map((a) => ({
-        _id: a.branch._id,
-        companyId: a.branch.companyId,
-        isMain: a.branch.isMain,
-        lastVisit: a.lastVisit,
-        designation: a.designation,
-        name: a.branch.name,
-        platform: a.platform,
-        company: a.branch.companyName,
-        status: a.status,
-      }));
+    .populate({
+      path: "branch",
+      select: "name companyId companyName isMain",
+    })
+    .then(async (affiliates) => {
+      var container = [];
+
+      for (var index in affiliates) {
+        var affiliate = affiliates[index];
+        var access = await Access.find()
+          .byUserId(fk)
+          .byBranchId(affiliate.branch?._id);
+        if (access.length > 0) {
+          for (var aIndex in access) {
+            container.push({
+              _id: affiliate.branch?._id,
+              companyId: affiliate.branch?.companyId,
+              isMain: affiliate.branch?.isMain,
+              lastVisit: affiliate.lastVisit,
+              designation: affiliate.designation,
+              name: affiliate.branch?.name,
+              platform: affiliate.platform,
+              company: affiliate.branch?.companyName,
+              status: affiliate.status,
+              access: access[aIndex].platform,
+            });
+          }
+        }
+      }
+
+      return container;
+
+      // return affiliats.map((a) => {
+      //   Acccess.find()
+      //     .byUserId(fk)
+      //     .byBranchId(a.branch?._id)
+      //     .then((datas) => {
+      //       return datas.map((data) => ({
+      //         _id: a.branch?._id,
+      //         companyId: a.branch?.companyId,
+      //         isMain: a.branch?.isMain,
+      //         lastVisit: a.lastVisit,
+      //         designation: a.designation,
+      //         name: a.branch?.name,
+      //         platform: a.platform,
+      //         company: a.branch?.companyName,
+      //         status: a.status,
+      //         access: data.platform,
+      //       }));
+      //     })
+      //     .catch((error) => {
+      //       console.error(error);
+      //       throw error;
+      //     });
+      // });
     })
     .catch((error) => {
       console.error("Error occurred:", error);
@@ -102,25 +145,25 @@ exports.login = (req, res) => {
           if (!user.deletedAt) {
             let branches = [];
             let isCeo = false;
-            const access = await getAccess(user._id); // si darrel ang nag add para makuha kung ano ang mga access ng user
+            // const access = {}; // si darrel ang nag add para makuha kung ano ang mga access ng user
             if (!!user.ownership.length) {
               branches = await getBranches(user.ownership);
-              console.log("sample");
+              // access = await getAccess(user._id);
               isCeo = true;
             } else {
               branches = await getAffiliated(user._id);
-              console.log("here");
+              // access = await getAccess(user._id);
               // only if user don't have timein
               // await timein(user._id);
             }
 
-            const _user = { ...user._doc };
+            var _user = { ...user._doc };
             delete _user.password;
             console.log("branches", branches);
             res.json({
               auth: _user,
               branches,
-              access, //si darrel ang nag add
+              // access, //si darrel ang nag add
               isCeo,
               token: generateToken(user._id),
             });
@@ -188,7 +231,7 @@ exports.validateRefresh = (req, res) => {
               .populate("fullName.mname fullName.lname");
 
             if (user) {
-              const access = await getAccess(user.id); // si darrel ang nag add para makuha ang mga access ng user
+              // const access = await getAccess(user.id); // si darrel ang nag add para makuha ang mga access ng user
               let branches = [];
               let isCeo = false;
               if (!!user.ownership.length) {
@@ -203,7 +246,7 @@ exports.validateRefresh = (req, res) => {
               res.json({
                 auth: { ...user._doc },
                 branches,
-                access,
+                // access,
                 isCeo,
                 token: generateToken(user._id),
               });

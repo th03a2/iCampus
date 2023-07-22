@@ -14,7 +14,10 @@ const modelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
-    flatform: {
+    platform: {
+      type: String,
+    },
+    comment: {
       type: String,
     },
     status: {

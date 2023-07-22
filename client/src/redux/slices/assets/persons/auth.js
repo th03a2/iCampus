@@ -284,16 +284,16 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(LOGIN.fulfilled, (state, action) => {
-        const { auth, token, branches, isCeo, access } = action.payload;
+        const { auth, token, branches, isCeo } = action.payload;
         state.auth = auth;
-        const filter = access.filter(
-          (data) => data === "manager" || data === "medtech" || data === "owner"
-        );
+        // const filter = access.filter(
+        //   (data) => data === "manager" || data === "medtech" || data === "owner"
+        // );
 
-        const cart = JSON.parse(localStorage.getItem(`${state.auth._id}`));
-        socket.emit("recived_cart", filter.length ? filter[0] : cart);
+        // const cart = JSON.parse(localStorage.getItem(`${state.auth._id}`));
+        // socket.emit("recived_cart", filter.length ? filter[0] : cart);
         //para malaman kung pwede ba siyang mag approve sa mga request
-        state.access = filter[0] ? filter[0] : "";
+        // state.access = filter[0] ? filter[0] : "";
         let _branches = [...branches];
 
         if (isCeo) {
@@ -332,14 +332,14 @@ export const authSlice = createSlice({
         }
 
         state.branches = [..._branches];
-        const onDuty = _branches.find(({ lastVisit }) => lastVisit);
-        console.log("_branches", _branches);
-        console.log("onDuty", onDuty);
-        if (onDuty) {
-          state.onDuty = onDuty;
-        } else {
-          state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
-        }
+        // const onDuty = _branches.find(({ lastVisit }) => lastVisit);
+        // console.log("_branches", _branches);
+        // console.log("onDuty", onDuty);
+        // if (onDuty) {
+        //   state.onDuty = onDuty;
+        // } else {
+        //   state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
+        // }
         state.isCeo = isCeo;
         state.token = token;
         state.isLoading = false;
@@ -354,15 +354,15 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(REFRESH.fulfilled, (state, { payload }) => {
-        const { auth, token, branches, isCeo, access } = payload;
+        const { auth, token, branches, isCeo } = payload;
 
         state.auth = auth;
-        const filter = access.filter(
-          (data) => data === "manager" || data === "medtech" || data === "owner"
-        );
-        const cart = JSON.parse(localStorage.getItem(`${state.auth._id}`));
-        socket.emit("recived_cart", filter.length ? filter[0] : cart);
-        state.access = filter[0] ? filter[0] : "";
+        // const filter = access.filter(
+        //   (data) => data === "manager" || data === "medtech" || data === "owner"
+        // );
+        // const cart = JSON.parse(localStorage.getItem(`${state.auth._id}`));
+        // socket.emit("recived_cart", filter.length ? filter[0] : cart);
+        // state.access = filter[0] ? filter[0] : "";
         let _branches = [];
         let _lastVisited = JSON.parse(localStorage.getItem("lastVisited"));
 
@@ -405,12 +405,12 @@ export const authSlice = createSlice({
         );
 
         state.branches = [..._branches];
-        const onDuty = _branches.find(({ lastVisit }) => lastVisit);
-        if (onDuty) {
-          state.onDuty = onDuty;
-        } else {
-          state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
-        }
+        // const onDuty = _branches.find(({ lastVisit }) => lastVisit);
+        // if (onDuty) {
+        //   state.onDuty = onDuty;
+        // } else {
+        //   state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
+        // }
         state.isCeo = isCeo;
         state.token = token;
         state.isLoading = false;

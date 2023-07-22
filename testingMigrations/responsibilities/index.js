@@ -39,10 +39,10 @@ const liabilities = [
   //   collections: qc,
   //   name: "qcs",
   // },
-  // {
-  //   entity: Access,
-  //   collections: access,
-  //   name: "accesses",
-  // },
+  {
+    entity: Access,
+    collections: access,
+    name: "accesses",
+  },
 ];
 module.exports = liabilities;

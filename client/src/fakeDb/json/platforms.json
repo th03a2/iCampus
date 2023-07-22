@@ -12,9 +12,9 @@
     "icon": "landmark"
   },
   {
-    "code": "manager",
-    "title": "Manager Portal",
-    "description": "Manager",
+    "code": "principal",
+    "title": "Principal Portal",
+    "description": "Principal",
     "icon": "cogs"
   },
   {
