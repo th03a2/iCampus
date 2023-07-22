@@ -73,8 +73,7 @@ const getAffiliated = async (fk) =>
     .select("-user")
     .populate("branch", "name companyId companyName isMain")
     .then((affiliats) => {
-      console.log("affiliats", affiliats);
-      affiliats.map((a) => ({
+      return affiliats.map((a) => ({
         _id: a.branch._id,
         companyId: a.branch.companyId,
         isMain: a.branch.isMain,
@@ -86,7 +85,10 @@ const getAffiliated = async (fk) =>
         status: a.status,
       }));
     })
-    .catch(() => [defaultBranch]);
+    .catch((error) => {
+      console.error("Error occurred:", error);
+      return [defaultBranch];
+    });
 
 // entity/login
 exports.login = (req, res) => {
@@ -115,13 +117,13 @@ exports.login = (req, res) => {
             const _user = { ...user._doc };
             delete _user.password;
             console.log("branches", branches);
-            // res.json({
-            //   auth: _user,
-            //   branches,
-            //   access, //si darrel ang nag add
-            //   isCeo,
-            //   token: generateToken(user._id),
-            // });
+            res.json({
+              auth: _user,
+              branches,
+              access, //si darrel ang nag add
+              isCeo,
+              token: generateToken(user._id),
+            });
           } else res.json({ error: "Your account has been banned!" });
         } else res.json({ error: "Password is incorrect!" });
       } else res.json({ error: "Account is not in our database!" });
