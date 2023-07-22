@@ -110,6 +110,40 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
         <MDBRow className="my-3">
           <MDBCol md={6}>
             <MDBInput
+              type="text"
+              label="Mothers Maiden Name"
+              value={form?.mmn}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  mmn: e.target.value,
+                });
+              }}
+            />
+          </MDBCol>
+          <MDBCol md={6}>
+            <select
+              class="form-select"
+              value={form?.isMale}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  isMale: e.target.value,
+                });
+              }}
+            >
+              <option selected value="">
+                Gender
+              </option>
+              <option value={true}>Male</option>
+              <option value={false}>Female</option>
+            </select>
+          </MDBCol>
+        </MDBRow>
+
+        <MDBRow className="my-3">
+          <MDBCol md={6}>
+            <MDBInput
               type="date"
               label="Date of Birth"
               value={form.dob}

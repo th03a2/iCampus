@@ -14,6 +14,8 @@ import Credentials from "./components/credentials";
 import Address from "./components/address";
 import Agreement from "./components/agreement";
 import { toast } from "react-toastify";
+import { register, validateContactNumber } from "../../../components/utilities";
+import { useNavigate } from "react-router-dom";
 
 const tabs = [
   {
@@ -62,15 +64,29 @@ export default function Registration() {
         credentials: false,
         agreement: false,
       },
-    });
+    }),
+    navigate = useNavigate();
 
   useEffect(() => {
     if (form.agreed) {
+      console.log(form);
+      if (form.password === form.confirmPassword) {
+        register(form)
+          .then((res) => {
+            if (res) {
+              navigate("/login");
+              toast.success(`Welcome aboard ${form.fullName.fname}!`);
+            }
+          })
+          .catch((err) => toast.error(err.message));
+      } else {
+        toast.warn("Passwords does not match!");
+      }
       toast.success("save mona thom");
     }
   }, [form]);
 
-  const handleActiveContent = activeItem => {
+  const handleActiveContent = (activeItem) => {
     switch (activeItem) {
       case "address":
         return (

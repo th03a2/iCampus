@@ -72,7 +72,7 @@ module.exports = [
   },
   {
     id: "SC-GT-05",
-    branch: "637097f0535529a3a57e946e", // Medicare Community Hospital | Carranglan Branch
+    branch: "637097f0535529a3a57e936e", // Medicare Community Hospital | Carranglan Branch
     user: "636d37e0187c30ab0f611ce0", //BENEDICT EARLE GABRIEL
     designation: 15, // medical laboratory scientist
     hos: 8, // 7-3, 3-11, 11-7

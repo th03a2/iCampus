@@ -8,7 +8,7 @@ const User = require("../../../models/Assets/Persons/Users"),
   (jwt = require("jsonwebtoken")),
   (fs = require("fs"));
 
-const encrypt = async password => {
+const encrypt = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
@@ -18,10 +18,10 @@ const defaultBranch = {
   company: null,
   platform: "patron",
 };
-const timein = id =>
+const timein = (id) =>
   Attendances.findOne({ user: id })
     .sort({ createdAt: -1 })
-    .then(attendance => {
+    .then((attendance) => {
       if (!attendance) {
         Attendances.create({
           user: id,
@@ -37,24 +37,24 @@ const timein = id =>
       }
     });
 
-const getAccess = access => {
+const getAccess = (access) => {
   // si darrel ang nag add
   return Acccess.find({ status: true })
     .byUserId(access)
-    .then(datas => {
-      return datas.map(data => data.flatform);
+    .then((datas) => {
+      return datas.map((data) => data.flatform);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       throw error;
     });
 };
 
-const getBranches = async ownership =>
+const getBranches = async (ownership) =>
   await Branch.find({
     companyId: { $in: ownership },
-  }).then(branches =>
-    branches.map(branch => ({
+  }).then((branches) =>
+    branches.map((branch) => ({
       _id: branch._id,
       companyId: branch.companyId,
       isMain: branch.isMain,
@@ -67,13 +67,13 @@ const getBranches = async ownership =>
     }))
   );
 
-const getAffiliated = async fk =>
+const getAffiliated = async (fk) =>
   Personnels.find()
     .byUser(fk)
     .select("-user")
     .populate("branch", "name companyId companyName isMain")
-    .then(affiliats =>
-      affiliats.map(a => ({
+    .then((affiliats) => {
+      return affiliats.map((a) => ({
         _id: a.branch._id,
         companyId: a.branch.companyId,
         isMain: a.branch.isMain,
@@ -83,9 +83,12 @@ const getAffiliated = async fk =>
         platform: a.platform,
         company: a.branch.companyName,
         status: a.status,
-      }))
-    )
-    .catch(() => [defaultBranch]);
+      }));
+    })
+    .catch((error) => {
+      console.error("Error occurred:", error);
+      return [defaultBranch];
+    });
 
 // entity/login
 exports.login = (req, res) => {
@@ -93,7 +96,7 @@ exports.login = (req, res) => {
 
   User.findOne({ $or: [{ email }, { mobile: email }] })
     // .populate("fullName.mname", "name")
-    .then(async user => {
+    .then(async (user) => {
       if (user) {
         if (await user.matchPassword(password)) {
           if (!user.deletedAt) {
@@ -102,17 +105,18 @@ exports.login = (req, res) => {
             const access = await getAccess(user._id); // si darrel ang nag add para makuha kung ano ang mga access ng user
             if (!!user.ownership.length) {
               branches = await getBranches(user.ownership);
-
+              console.log("sample");
               isCeo = true;
             } else {
               branches = await getAffiliated(user._id);
+              console.log("here");
               // only if user don't have timein
               // await timein(user._id);
             }
 
             const _user = { ...user._doc };
             delete _user.password;
-
+            console.log("branches", branches);
             res.json({
               auth: _user,
               branches,
@@ -124,14 +128,14 @@ exports.login = (req, res) => {
         } else res.json({ error: "Password is incorrect!" });
       } else res.json({ error: "Account is not in our database!" });
     })
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 exports.logout = (req, res) => {
   const { key } = req.query;
   Attendances.findOne({ user: key })
     .sort({ createdAt: -1 })
-    .then(attendance => {
+    .then((attendance) => {
       if (attendance?.out) {
         Attendances.findByIdAndUpdate(attendance._id, {
           out: new Date().toLocaleTimeString(),
@@ -146,7 +150,7 @@ exports.timeout = (req, res) => {
   const { key } = req.query;
   Attendances.findOne({ user: key })
     .sort({ createdAt: -1 })
-    .then(attendance => {
+    .then((attendance) => {
       if (!attendance.out) {
         Attendances.findByIdAndUpdate(attendance._id, {
           out: new Date().toLocaleTimeString(),
@@ -159,7 +163,7 @@ exports.timeout = (req, res) => {
 
 exports.attendance = (req, res) => {
   const { key } = req.query;
-  Attendances.find({ user: key }).then(async attendances => {
+  Attendances.find({ user: key }).then(async (attendances) => {
     const personnel = await Personnels.findOne({ user: key });
 
     res.json({ attendances, rate: personnel.rate });
@@ -229,7 +233,7 @@ exports.branchSwitcher = async (req, res) => {
 // entity/save
 exports.save = (req, res) =>
   User.create(req.body)
-    .then(user => {
+    .then((user) => {
       const _body = req.body;
       const _user = { ...user._doc };
 
@@ -246,28 +250,28 @@ exports.save = (req, res) =>
         res.json(_user);
       }
     })
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 
 // entity/changepassword
 exports.changePassword = (req, res) => {
   const { email, password, old } = req.body;
 
   User.findOne({ email })
-    .then(async user => {
+    .then(async (user) => {
       if (user.deletedAt) {
         res.status(400).json({ expired: "Your account has been banned" });
       } else {
         if (user && (await user.matchPassword(old))) {
           let newPassword = await encrypt(password);
           User.findByIdAndUpdate(user._id, { password: newPassword }).then(
-            user => res.json(user)
+            (user) => res.json(user)
           );
         } else {
           res.json({ error: "Old Password is incorrect." });
         }
       }
     })
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 exports.file = (req, res) => {

@@ -8,7 +8,7 @@
 # # pushing to update
 # app.js
 # .env
-/client/src/components/utilities.js
+# /client/src/components/utilities.js
 # testing
 /coverage
 

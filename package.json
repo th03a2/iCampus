@@ -27,6 +27,7 @@
     "nodemailer": "^6.7.7",
     "nodemon": "^2.0.22",
     "react-easy-crop": "^4.7.4",
+    "react-script": "^2.0.5",
     "react-scripts": "^5.0.1",
     "react-step-wizard": "^5.3.11",
     "socket.io": "^4.5.1"
