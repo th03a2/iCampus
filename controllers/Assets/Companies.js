@@ -75,3 +75,13 @@ exports.find = (req, res) =>
       )
     )
     .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.update = (req, res) => {
+  console.log(req.query.id);
+
+  Entity.findByIdAndUpdate(req.query.id, req.body, {
+    new: true,
+  })
+    .then((item) => res.json(item))
+    .catch((error) => res.status(400).json({ error: error.message }));
+};

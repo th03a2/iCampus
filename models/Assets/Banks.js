@@ -48,9 +48,6 @@ const modelSchema = new mongoose.Schema(
       d: {
         type: String,
       },
-      ans: {
-        type: String,
-      },
     },
     boolAnswer: {
       true: {

@@ -32,7 +32,7 @@ export default function Modal({
   const [form, setForm] = useState({
     name: "",
     acronym: "",
-    major: [],
+    activity: [],
   });
   const [name, setName] = useState(""),
     [index, setIndex] = useState(-1),
@@ -57,7 +57,7 @@ export default function Modal({
     if (isUpdate) {
       dispatch(
         UPDATE({
-          entity: "assets/Strands",
+          entity: "assets/specializations",
           data: form,
           id: form._id,
           token,
@@ -66,7 +66,7 @@ export default function Modal({
     } else {
       dispatch(
         SAVE({
-          entity: "assets/Strands",
+          entity: "assets/specializations",
           data: form,
           token,
         })
@@ -81,14 +81,14 @@ export default function Modal({
     setForm({
       name: "",
       acronym: "",
-      major: [],
+      activity: [],
     });
   };
 
   const handleMajor = () => {
     if (name) {
       setForm((prevForm) => {
-        const newArray = [...prevForm.major];
+        const newArray = [...prevForm.activity];
 
         if (index > -1) {
           newArray[index] = name;
@@ -98,7 +98,7 @@ export default function Modal({
 
         return {
           ...prevForm,
-          major: newArray,
+          activity: newArray,
         };
       });
       setName("");
@@ -110,12 +110,12 @@ export default function Modal({
 
   const handleDelete = (index) => {
     setForm((prevForm) => {
-      const newArray = [...prevForm.major];
+      const newArray = [...prevForm.activity];
       newArray.splice(index, 1);
 
       return {
         ...prevForm,
-        major: newArray,
+        activity: newArray,
       };
     });
   };
@@ -133,11 +133,11 @@ export default function Modal({
             <MDBModalTitle>
               <MDBIcon
                 fas
-                icon="archway"
+                icon="quidditch"
                 style={{ width: "25px" }}
                 color="warning"
               />{" "}
-              Strands
+              Specializations
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
@@ -170,20 +170,20 @@ export default function Modal({
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <MDBInput
                       type="text"
-                      label="Major"
+                      label="Activity"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       style={{ marginRight: "10px" }}
                     />
 
                     <MDBBtn type="button" onClick={handleMajor}>
-                      {index > -1 ? "Update " : "Add Major"}
+                      {index > -1 ? "Update " : "Add Activity"}
                     </MDBBtn>
                   </div>
                 </MDBCol>
               </MDBRow>
               <MDBRow className="mt-4">
-                <h6 className="text-center">Major</h6>
+                <h6 className="text-center">Activity</h6>
                 <MDBCol md={12}>
                   <MDBTable
                     align="middle"
@@ -201,8 +201,8 @@ export default function Modal({
                       </tr>
                     </MDBTableHead>
                     <MDBTableBody>
-                      {form.major?.length > 0 ? (
-                        form.major.map((data, index) => (
+                      {form.activity?.length > 0 ? (
+                        form.activity.map((data, index) => (
                           <tr key={`temperature-${index}`}>
                             <td>{1 + index}</td>
                             <td>{data}</td>
@@ -228,7 +228,7 @@ export default function Modal({
                         ))
                       ) : (
                         <tr className="text-center">
-                          <td colSpan={3}>No Major.</td>
+                          <td colSpan={3}>No Activity.</td>
                         </tr>
                       )}
                     </MDBTableBody>

@@ -1,5 +1,12 @@
 import React from "react";
-import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from "mdb-react-ui-kit";
+import {
+  MDBTable,
+  MDBTableHead,
+  MDBTableBody,
+  MDBBtn,
+  MDBIcon,
+  MDBBtnGroup,
+} from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
@@ -10,13 +17,14 @@ import {
 
 export function TBLbanks({ banks, page }) {
   const { theme, maxPage } = useSelector(({ auth }) => auth);
+  const handleUpdate = () => {};
+  const handleDelete = () => {};
+  const handleView = (data) => {
+    const { mcAnswers, question, correctAnser } = data;
+    const answerText = data && correctAnser ? correctAnser : "no-answer";
 
-  const handleView = (data, question) => {
-    const answerText = data && data.ans ? data[data.ans] : "no-answer";
-    const choices = Object.entries(data)
-      .filter(([key]) => key !== "ans")
-      .map(([key, value]) => value);
-
+    const choices = Object.entries(mcAnswers).map(([key, value]) => value);
+    console.log(choices);
     Swal.fire({
       title: "Question",
       html: `
@@ -59,7 +67,9 @@ export function TBLbanks({ banks, page }) {
           <th scope="col">Type </th>
           <th>Cluster</th>
           <th>category</th>
-          <th scope="col">Action </th>
+          <th scope="col" className="text-center">
+            Action{" "}
+          </th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
@@ -73,10 +83,17 @@ export function TBLbanks({ banks, page }) {
               <td>{bank.cluster}</td>
               <td>{bank.category}</td>
               <td>
-                <MDBBtn
-                  onClick={() => handleView(bank.mcAnswers, bank.question)}
-                >
-                  View
+                <MDBBtnGroup>
+                  <MDBBtn color="danger" onClick={() => handleDelete(bank._id)}>
+                    <MDBIcon fas icon="trash" />
+                  </MDBBtn>
+                  <MDBBtn onClick={() => handleUpdate(bank)}>
+                    <MDBIcon fas icon="pencil-alt" />
+                  </MDBBtn>
+                </MDBBtnGroup>
+                <MDBBtn onClick={() => handleView(bank)} color="warning">
+                  {" "}
+                  <MDBIcon fas icon="eye" />
                 </MDBBtn>
               </td>
             </tr>

@@ -6,7 +6,6 @@ const banks = [
     type: "mc",
     user: "60265ff45737000029000978",
     // subjectId: 1,
-    type: "multiple choice",
     branchId: "60264978b22e00009a006436",
     cluster: "addition",
     category: "easy",
@@ -17,8 +16,8 @@ const banks = [
       b: "Flash flood",
       c: "Rapid On-set Flood",
       d: "Slow On-set Flood",
-      ans: "b",
     },
+    correctAnswer: "b",
   },
   {
     // _id: 2,
@@ -65,8 +64,8 @@ const banks = [
       b: "Tsunami",
       c: "Thunder Strike",
       d: "Sink Hole",
-      ans: "a",
     },
+    correctAnswer: "a",
   },
   {
     // _id: {
@@ -81,8 +80,8 @@ const banks = [
       b: "La Nina",
       c: "Cyclone",
       d: "Drought",
-      ans: "d",
     },
+    correctAnswer: "d",
   },
   {
     // _id: {
@@ -96,8 +95,8 @@ const banks = [
       b: "Storm Surge",
       c: "Thunder Storm",
       d: "Cyclone",
-      ans: "d",
     },
+    correctAnswer: "d",
   },
   {
     // _id: {
@@ -112,8 +111,8 @@ const banks = [
       b: "Hazzard",
       c: "Disaster",
       d: "Phenomenon",
-      ans: "c",
     },
+    correctAnswer: "c",
   },
 ];
 module.exports = banks;

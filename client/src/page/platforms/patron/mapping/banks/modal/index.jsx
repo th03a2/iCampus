@@ -26,8 +26,13 @@ export default function Modal({
 }) {
   const { theme, token } = useSelector(({ auth }) => auth);
   const [form, setForm] = useState({
-    name: "",
-    acronym: "",
+    type: "",
+    cluster: "",
+    category: "",
+    message: "",
+    question: "",
+    subjectId: "",
+    mcAnswers: {},
   });
   const dispatch = useDispatch();
 
@@ -49,7 +54,7 @@ export default function Modal({
     if (isUpdate) {
       dispatch(
         UPDATE({
-          entity: "assets/companies",
+          entity: "assets/levels",
           data: form,
           id: form._id,
           token,
@@ -58,7 +63,7 @@ export default function Modal({
     } else {
       dispatch(
         SAVE({
-          entity: "assets/companies",
+          entity: "assets/levels",
           data: form,
           token,
         })
@@ -71,36 +76,63 @@ export default function Modal({
     setVisibility(false);
     setIsUpdate(false);
     setForm({
-      name: "",
-      acronym: "",
+      type: "",
+      cluster: "",
+      category: "",
+      message: "",
+      question: "",
+      subjectId: "",
+      mcAnswers: {},
     });
   };
 
   return (
     <MDBModal show={visibility} setShow={setVisibility} staticBackdrop>
-      <MDBModalDialog size="lg">
+      <MDBModalDialog size="xl">
         <MDBModalContent className={`${theme.bg} ${theme.text}`}>
           <MDBModalHeader>
             <MDBModalTitle>
               <MDBIcon
                 fas
-                icon="building"
+                icon="user-graduate"
                 style={{ width: "20px" }}
                 color="warning"
               />{" "}
-              Companies
+              Grade Level
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
           <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer`}>
             <form onSubmit={handleSubmit}>
               <MDBRow>
+                <MDBCol md={4}>
+                  <MDBInput
+                    type="text"
+                    label="Cluster"
+                    name="name"
+                    value={form.cluster}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBCol>
+                <MDBCol md={4}>
+                  <MDBInput
+                    type="text"
+                    label="Level"
+                    name="lvl"
+                    value={form.lvl}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBCol>
+              </MDBRow>
+              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="text"
-                    label="Name"
-                    name="name"
-                    value={form.name}
+                    label="Stage"
+                    name="stage"
+                    value={form.stage}
                     onChange={handleChange}
                     required
                   />
@@ -108,9 +140,9 @@ export default function Modal({
                 <MDBCol md={6}>
                   <MDBInput
                     type="text"
-                    label="Acronym"
-                    name="acronym"
-                    value={form.acronym}
+                    label="Description"
+                    name="description"
+                    value={form.description}
                     onChange={handleChange}
                     required
                   />

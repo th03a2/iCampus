@@ -5,7 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLspecializations } from "../../../../../templates";
-
+import Modal from "./modal";
 const path = [
   {
     path: "Specializations",
@@ -15,6 +15,8 @@ const path = [
 export default function Specializations() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
+    [update, setUpdate] = useState({}),
+    [isUpdate, setIsUpdate] = useState(false),
     [visibility, setVisibility] = useState(false),
     [specializations, setSpecializations] = useState([]),
     [page, setPage] = useState(1),
@@ -66,7 +68,22 @@ export default function Specializations() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLspecializations specializations={specializations} page={page} />
+        <TBLspecializations
+          specializations={specializations}
+          page={page}
+          setVisibility={setVisibility}
+          setIsUpdate={setIsUpdate}
+          setUpdate={setUpdate}
+        />
+        {visibility && (
+          <Modal
+            setVisibility={setVisibility}
+            visibility={visibility}
+            update={update}
+            isUpdate={isUpdate}
+            setIsUpdate={setIsUpdate}
+          />
+        )}
       </MDBContainer>
     </>
   );

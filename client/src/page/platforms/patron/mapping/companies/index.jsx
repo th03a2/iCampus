@@ -5,6 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLcompanies } from "../../../../../templates";
+import Modal from "./modal";
 const path = [
   {
     path: "Companies",
@@ -15,6 +16,8 @@ export default function Companies() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
+    [update, setUpdate] = useState({}),
+    [isUpdate, setIsUpdate] = useState(false),
     [companies, setCompanies] = useState([]),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
@@ -65,7 +68,22 @@ export default function Companies() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLcompanies companies={companies} page={page} />
+        <TBLcompanies
+          companies={companies}
+          page={page}
+          setVisibility={setVisibility}
+          setUpdate={setUpdate}
+          setIsUpdate={setIsUpdate}
+        />
+        {visibility && (
+          <Modal
+            visibility={visibility}
+            setVisibility={setVisibility}
+            update={update}
+            setIsUpdate={setIsUpdate}
+            isUpdate={isUpdate}
+          />
+        )}
       </MDBContainer>
     </>
   );

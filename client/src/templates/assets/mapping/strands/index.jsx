@@ -62,16 +62,18 @@ export function TBLstrands({
         <MDBCard>
           <MDBCardBody>
             <div className="row bg-light text-dark font-weight-bold mb-3">
-              <div className="col-2">#</div>
-              <div className="col-4">Name </div>
-              <div className="col-3">Major</div>
+              <div className="col-1">#</div>
+              <div className="col-3">Name </div>
+              <div className="col-2">Acronym </div>
+              <div className="col-2">Major</div>
               <div className="col-2">Action</div>
             </div>
             {strands?.length > 0 ? (
               paginationHandler(strands, page, maxPage).map((strand, index) => (
                 <div className="row mb-3" key={index}>
-                  <div className="col-2">{1 + index}</div>
-                  <div className="col">{strand.name}</div>
+                  <div className="col-1">{1 + index}</div>
+                  <div className="col-3">{strand.name}</div>
+                  <div className="col-2">{strand.acronym}</div>
                   <div className="col-2">
                     <MDBBtn
                       onClick={() => toggleShow(index)}
@@ -86,7 +88,7 @@ export function TBLstrands({
                       />
                     </MDBBtn>
                   </div>
-                  <div className="col">
+                  <div className="col-3">
                     <MDBBtnGroup>
                       <MDBBtn
                         color="danger"
