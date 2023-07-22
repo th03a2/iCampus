@@ -20,7 +20,11 @@ const Companies = require("../../models/Assets/Companies"),
   Banks = require("../../models/Assets/Banks"),
   banks = require("./banks"),
   sources = require("./sources"),
-  persons = require("./persons");
+  persons = require("./persons"),
+  books = require("./books"),
+  Books = require("../../models/Assets/Books"),
+  subjects = require("./subjects"),
+  Subjects = require("../../models/Assets/Subjects");
 
 const assets = [
   ...persons,
@@ -70,10 +74,16 @@ const assets = [
     name: "strands",
   },
   {
-    entity: Banks,
-    collections: banks,
-    name: "banks",
+    entity: Books,
+    collections: books,
+    name: "books",
   },
+  {
+    entity: Subjects,
+    collections: subjects,
+    name: "subjects",
+  },
+  { entity: Banks, collections: banks, name: "banks" },
   {
     entity: Articles,
     collections: articles,

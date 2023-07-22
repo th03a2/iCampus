@@ -48,3 +48,10 @@ exports.destroy = (req, res) =>
   })
     .then(() => res.json(req.query.id))
     .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.update = (req, res) =>
+  Entity.findByIdAndUpdate(req.query.id, req.body, {
+    new: true,
+  })
+    .then((item) => res.json(item))
+    .catch((error) => res.status(400).json({ error: error.message }));

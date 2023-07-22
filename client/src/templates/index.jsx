@@ -6,6 +6,16 @@ export {
   TBLheads,
   TBLpetitioners,
   TBLequipments,
+  TBLlevels,
+  TBLsections,
+  TBLstrands,
+  TBLcompanies,
+  TBLspecializations,
+  TBLschools,
+  TBLbooks,
+  TBLsubjects,
+  TBLbanks,
+  TBLarticles,
 } from "./assets";
 
 export { TBLmenu } from "./assets/menus";

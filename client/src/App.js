@@ -8,7 +8,7 @@ import { BROWSE } from "./redux/slices/assets/persons/surnames";
 // import DevTools from "devtools-detect";
 
 const App = () => {
-  const { theme, token, auth, onDuty } = useSelector((state) => state.auth),
+  const { theme, token, onDuty } = useSelector((state) => state.auth),
     dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(ACTIVEDUTY(onDuty));
-  }, [onDuty]);
+  }, [onDuty, dispatch]);
 
   // useEffect(() => {
   // if (localStorage.getItem("rush_reload") === "true") {

@@ -1,0 +1,10 @@
+export { TBLlevels } from "./levels";
+export { TBLsections } from "./sections";
+export { TBLstrands } from "./strands";
+export { TBLcompanies } from "./companies";
+export { TBLspecializations } from "./specializations";
+export { TBLschools } from "./schools";
+export { TBLbooks } from "./books";
+export { TBLsubjects } from "./subjects";
+export { TBLbanks } from "./banks";
+export { TBLarticles } from "./articles";
