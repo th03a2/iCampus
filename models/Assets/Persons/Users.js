@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema(
     },
     mobile: {
       type: String,
-      unique: true,
+      // unique: true,
     },
     prc: {
       id: { type: String },
@@ -112,10 +112,6 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
       default: "",
-    },
-    mmn: {
-      type: String,
-      // required: true,
     },
     deletedAt: {
       type: String,

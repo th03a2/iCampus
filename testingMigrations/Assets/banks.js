@@ -6,7 +6,7 @@ const banks = [
     type: "mc",
     user: "60265ff45737000029000978",
     // subjectId: 1,
-    type: "multiple choice",
+    type: "mc",
     branchId: "60264978b22e00009a006436",
     cluster: "addition",
     category: "easy",

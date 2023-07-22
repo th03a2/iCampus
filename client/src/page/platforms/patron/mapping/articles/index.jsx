@@ -13,14 +13,14 @@ const path = [
 ];
 
 export default function Articles() {
-  const { token, maxPage, theme } = useSelector(({ auth }) => auth),
+  const { token, maxPage, theme, onDuty } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
     [articles, setArticles] = useState([]),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
-
+  console.log(onDuty);
   useEffect(() => {
     dispatch(
       BROWSE({

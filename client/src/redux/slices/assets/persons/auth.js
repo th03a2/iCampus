@@ -333,6 +333,8 @@ export const authSlice = createSlice({
 
         state.branches = [..._branches];
         const onDuty = _branches.find(({ lastVisit }) => lastVisit);
+        console.log("_branches", _branches);
+        console.log("onDuty", onDuty);
         if (onDuty) {
           state.onDuty = onDuty;
         } else {

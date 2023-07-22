@@ -90,12 +90,13 @@ const Login = () => {
         xl={4}
         className="offset-1 offset-sm-1 offset-md-2 offset-lg-3 offset-xl-4 text-center"
       >
-        <img
-          src={Company.logo}
+        {/* <img
+          // src={Company.logo}
           style={{ maxWidth: 200 }}
           className="mb-2 mt-3 w-100"
           alt="Company logo"
-        />
+        /> */}
+        <label> Smart Campus</label>
         <MDBCard>
           <MDBCardBody>
             <form onSubmit={handleSubmit}>
@@ -139,7 +140,7 @@ const Login = () => {
         <MDBCard className="mt-2">
           <MDBCardBody>
             <MDBTypography className="mb-0">
-              New to {Company.name}?&nbsp;
+              New to Smart Campus?&nbsp;
               <span
                 onClick={() => navigate("/register")}
                 className="cursor-pointer text-primary hover-line"
