@@ -25,6 +25,7 @@ const Companies = require("../../models/Assets/Companies"),
   Books = require("../../models/Assets/Books"),
   subjects = require("./subjects"),
   Subjects = require("../../models/Assets/Subjects");
+(batch = require("./Batch")), (Batch = require("../../models/Assets/Batch"));
 
 const assets = [
   ...persons,
@@ -88,6 +89,11 @@ const assets = [
     entity: Articles,
     collections: articles,
     name: "articles",
+  },
+  {
+    entity: Batch,
+    collections: batch,
+    name: "batchs",
   },
 ];
 module.exports = assets;

@@ -5,24 +5,25 @@ const checkPortal = (access) =>
 
 export const GrantedPortal = {
   find: (designation) => {
+    // ceo
     switch (designation) {
       case "dev":
       case 6:
-      case 15: // CEO
+      case 15: // CEOsige
         return checkPortal([
           "headquarter",
           "manager",
-          // "admin",
-          // "auditor",
-          // "author",
-          // "procurement",
-          // "laboratory",
-          // "radiology",
-          // "pharmacy",
-          // "clinical",
-          // "utility",
-          // "nutritionist",
-          // "carpentry",
+          "admin",
+          "auditor",
+          "author",
+          "procurement",
+          "laboratory",
+          "radiology",
+          "pharmcacy",
+          "clinial",
+          "utility",
+          "nutritionist",
+          "carpentry",
           "accreditations",
           "cashier",
           "frontdesk",

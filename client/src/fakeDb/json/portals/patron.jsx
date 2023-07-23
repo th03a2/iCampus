@@ -93,4 +93,9 @@ export default [
       },
     ],
   },
+  {
+    name: "Batch",
+    icon: "restroom",
+    path: "batch",
+  },
 ];
