@@ -56,7 +56,7 @@ const NavbarSettings = () => {
     if (onDuty?.access) {
       // _idUser & BranchId
       // const _portals = GrantedPortal.find(onDuty?.designation);
-      setPortals(onDuty.access);
+      setPortals(onDuty?.access);
       // _portals.length === 1 && setBasicActive("tab2");
     }
   }, [onDuty]);

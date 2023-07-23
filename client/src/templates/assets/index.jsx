@@ -16,3 +16,4 @@ export { TBLbooks } from "./mapping";
 export { TBLsubjects } from "./mapping";
 export { TBLbanks } from "./mapping";
 export { TBLarticles } from "./mapping";
+export { TBLbatch } from "./batch";

@@ -103,30 +103,6 @@ const getAffiliated = async (fk) =>
       }
 
       return container;
-
-      // return affiliats.map((a) => {
-      //   Acccess.find()
-      //     .byUserId(fk)
-      //     .byBranchId(a.branch?._id)
-      //     .then((datas) => {
-      //       return datas.map((data) => ({
-      //         _id: a.branch?._id,
-      //         companyId: a.branch?.companyId,
-      //         isMain: a.branch?.isMain,
-      //         lastVisit: a.lastVisit,
-      //         designation: a.designation,
-      //         name: a.branch?.name,
-      //         platform: a.platform,
-      //         company: a.branch?.companyName,
-      //         status: a.status,
-      //         access: data.platform,
-      //       }));
-      //     })
-      //     .catch((error) => {
-      //       console.error(error);
-      //       throw error;
-      //     });
-      // });
     })
     .catch((error) => {
       console.error("Error occurred:", error);
