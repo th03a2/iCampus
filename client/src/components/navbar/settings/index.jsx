@@ -20,7 +20,7 @@ import PlatformCard from "./card";
 import { GrantedPortal } from "../../../fakeDb";
 
 const NavbarSettings = () => {
-  const handleBasicClick = (value) => {
+  const handleBasicClick = value => {
     if (value === basicActive) {
       return;
     }
@@ -37,9 +37,9 @@ const NavbarSettings = () => {
   useEffect(() => {
     function debounce(fn, ms) {
       let timer;
-      return (_) => {
+      return _ => {
         clearTimeout(timer);
-        timer = setTimeout((_) => {
+        timer = setTimeout(_ => {
           timer = null;
           fn.apply(this, arguments);
         }, ms);
@@ -53,11 +53,13 @@ const NavbarSettings = () => {
     return () => window.removeEventListener("resize", debounceResize);
   }, []);
   useEffect(() => {
+    console.log("onDuty", onDuty);
+
     if (onDuty?.access) {
       // _idUser & BranchId
-      // const _portals = GrantedPortal.find(onDuty?.designation);
+      const _portals = GrantedPortal.find(onDuty?.designation);
       setPortals(onDuty.access);
-      // _portals.length === 1 && setBasicActive("tab2");
+      _portals.length === 1 && setBasicActive("tab2");
     }
   }, [onDuty]);
   const handleWidth = () => {
@@ -139,7 +141,8 @@ const NavbarSettings = () => {
         <MDBTabsContent>
           <MDBTabsPane show={basicActive === "tab1"}>
             {portals?.map((portal, i) => (
-              <PlatformCard
+              <Platfo
+                rmCard
                 i={`${portal.designation}-${i}`}
                 portal={portal}
                 setVisibility={setVisibility}
