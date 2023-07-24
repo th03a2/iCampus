@@ -190,6 +190,7 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
       key: "credentials",
     },
   ];
+  console.log(siblingsData);
   useEffect(() => {
     if (link.success) {
       const credentials = {
@@ -217,13 +218,12 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
         sf10: sf10Image ? "sf10" : "",
         goodmoral: goodmoralImage ? "goodmoral" : "",
       };
-      const objectLength = Object.keys(siblingsData).length;
-      if (objectLength > 0) {
+
+      if (siblingsData.length > 0) {
         const guardians = [
           { ...guardian, studentId: auth._id },
           { ...parents.father, studentId: auth._id },
           { ...parents.mother, studentId: auth._id },
-          { ...siblingsData, studentId: auth._id },
         ];
 
         for (const index in siblingsData) {
@@ -272,7 +272,6 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
       }
     }
   }, [link]);
-  console.log(form);
   const handleActiveContent = (activeItem) => {
     switch (activeItem) {
       case "guardian":
