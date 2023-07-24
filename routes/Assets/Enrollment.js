@@ -4,15 +4,13 @@ const router = require("express").Router(),
     destroy,
     update,
     save,
-    enrollment,
-  } = require("../../controllers/Assets/Batch"),
+  } = require("../../controllers/Assets/Enrollment"),
   { protect } = require("../../middleware");
 
 router
   .get("/browse", protect, browse)
-  .get("/enrollment", enrollment)
   .delete("/destroy", protect, destroy)
   .put("/update", protect, update)
-  .post("/save", protect, save);
+  .post("/save", save);
 
 module.exports = router;

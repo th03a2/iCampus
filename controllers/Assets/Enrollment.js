@@ -1,15 +1,22 @@
 // entity/save
-const Entity = require("../../models/Assets/Batch");
+const Entity = require("../../models/Assets/Enrollments"),
+  Guardians = require("../../models/Assets/Guardians");
 
-exports.browse = (req, res) => {
-  Entity.find()
-    .then((items) => res.json(items.filter((item) => !item.deletedAt)))
+exports.save = (req, res) => {
+  const { enrollee, guardians } = req.body;
+
+  Entity.create(enrollee)
+    .then((item) => {
+      Guardians.create(guardians);
+      res.json("Successfull Enroll");
+    })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
+exports.browse = (req, res) => {
+  Entity.find()
+    .populate("batch")
 
-exports.enrollment = (req, res) => {
-  Entity.find({ status: "start" })
-    .populate("school_id")
+    .populate("user")
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 };
@@ -26,10 +33,7 @@ exports.find = (req, res) =>
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 
-exports.save = (req, res) =>
-  Entity.create(req.body)
-    .then((item) => res.json(item))
-    .catch((error) => res.status(400).json({ error: error.message }));
+//
 
 // entity/update?id
 exports.update = (req, res) =>

@@ -25,7 +25,7 @@ import qc from "./slices/responsibilities/qc";
 import access from "./slices/responsibilities/access";
 import maintenance from "./slices/responsibilities/maintenance";
 import purchase from "./slices/procurments/purchase";
-
+import enrollment from "./slices/assets/enrollment";
 export const store = configureStore({
   reducer: {
     areas,
@@ -54,5 +54,6 @@ export const store = configureStore({
     access,
     maintenance,
     purchase,
+    enrollment,
   },
 });

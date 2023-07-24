@@ -142,6 +142,7 @@ export default function Registration() {
                   <MDBTabsLink
                     onClick={() => {
                       if (form.tabs[tab.key]) {
+                        console.log(form.tabs);
                         setActiveItem(tab.key);
                       } else {
                         toast.warn("Complete the previous tab first.");
