@@ -56,7 +56,7 @@ export default function Levels() {
       page > totalPages && setPage(totalPages);
     }
   }, [levels, page, maxPage]);
-  const toggleShow = (index) => {
+  const toggleShow = index => {
     setActiveIndex(activeIndex === index ? -1 : index);
   };
 
@@ -64,17 +64,9 @@ export default function Levels() {
     <>
       <BreadCrumb title="Levels" paths={path} />
       <MDBContainer className="py-5 mt-5 bg-white">
-        {/* <MDBCard className="mt-4"> */}
         <Pager setPage={setPage} total={totalPages} page={page} />
-        {/* <MDBCardBody> */}
-        <div className="row  text-dark font-weight-bold mb-3">
-          <div className="col-1">#</div>
-          <div className="col-2">Name</div>
-          <div className="col-2">Abbreviation</div>
-          <div className="col-2">stage</div>
-          <div className="col-2">Sections</div>
-        </div>
-        {levels?.length > 0 ? (
+
+        {/* {levels?.length > 0 ? (
           paginationHandler(levels, page, maxPage).map((level, index) => (
             <div className="row mb-3" key={index}>
               <div className="col-1">{1 + index}</div>
@@ -114,9 +106,19 @@ export default function Levels() {
           ))
         ) : (
           <MDBTypography>No levels</MDBTypography>
-        )}
-        {/* </MDBCardBody> */}
-        {/* </MDBCard> */}
+        )} */}
+        {levels.length &&
+          paginationHandler(levels, page, maxPage).map(
+            (level, index) => "sample"
+            // <Cluster
+            //   key={`collapse-${level.id}`}
+            //   level={level}
+            //   page={page}
+            //   index={index + 1}
+            //   activeIndex={activeIndex}
+            //   setActiveIndex={setActiveIndex}
+            // />
+          )}
         {visibility && (
           <Modal
             visibility={visibility}

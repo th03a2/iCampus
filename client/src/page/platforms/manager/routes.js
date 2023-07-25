@@ -17,7 +17,7 @@ import Sourcing from "./settings/sourcing";
 import DTR from "./dtr";
 
 const routes = {
-  name: "manager", // Administrator Officer
+  name: "principal", // Administrator Officer
   children: [
     {
       path: "dashboard",

@@ -1,6 +1,6 @@
 import headquarter from "../json/portals/headquarter";
 import administrator from "../json/portals/admin";
-import manager from "../json/portals/manager";
+import principal from "../json/portals/principal";
 import auditor from "../json/portals/auditor";
 import author from "../json/portals/author";
 import cashier from "../json/portals/cashier";
@@ -21,7 +21,7 @@ export {
   accreditation,
   headquarter,
   administrator,
-  manager,
+  principal,
   hr,
   auditor,
   author,

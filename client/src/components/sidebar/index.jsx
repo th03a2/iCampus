@@ -16,7 +16,7 @@ import {
   accreditation,
   headquarter,
   administrator,
-  manager,
+  principal,
   hr,
   auditor,
   author,
@@ -55,8 +55,8 @@ const Sidebar = ({ show, toggle, dimensions }) => {
         case "administrator":
           setSidebar(administrator);
           break;
-        case "manager":
-          setSidebar(manager);
+        case "principal":
+          setSidebar(principal);
           break;
         case "hr":
           setSidebar(hr);

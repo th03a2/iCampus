@@ -286,19 +286,28 @@ export const authSlice = createSlice({
       .addCase(LOGIN.fulfilled, (state, action) => {
         const { auth, token, branches, isCeo, access } = action.payload;
         state.auth = auth;
-
+        console.log("branches", branches);
         let _branches = branches.map(
-          ({ _id, companyId, designation, name, company, status }) => {
+          ({
+            _id,
+            companyId,
+            designation,
+            name,
+            company,
+            status,
+            category,
+          }) => {
             let _access = [];
             _access = access
               .filter(data => _id === data.branchId)
               .map(({ platform }) => platform.toLowerCase());
             return {
               _id,
+              name,
               companyId,
               access: _access,
               designation,
-              name,
+              category,
               company,
               status,
             };
@@ -376,7 +385,15 @@ export const authSlice = createSlice({
         // state.access = filter[0] ? filter[0] : "";
 
         let _branches = branches.map(
-          ({ _id, companyId, designation, name, company, status }) => {
+          ({
+            _id,
+            companyId,
+            designation,
+            name,
+            company,
+            status,
+            category,
+          }) => {
             let _access = access
               .filter(data => _id === data.branchId)
               .map(({ platform }) => platform.toLowerCase());
@@ -385,6 +402,7 @@ export const authSlice = createSlice({
               companyId,
               access: _access,
               designation,
+              category,
               name,
               company,
               status,
