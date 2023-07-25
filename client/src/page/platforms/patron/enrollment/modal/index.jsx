@@ -190,7 +190,7 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
       key: "credentials",
     },
   ];
-  console.log(siblingsData);
+
   useEffect(() => {
     if (link.success) {
       const credentials = {
@@ -219,59 +219,55 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
         goodmoral: goodmoralImage ? "goodmoral" : "",
       };
 
-      if (siblingsData.length > 0) {
-        const guardians = [
-          { ...guardian, studentId: auth._id },
-          { ...parents.father, studentId: auth._id },
-          { ...parents.mother, studentId: auth._id },
-        ];
-
-        for (const index in siblingsData) {
-          const siblings = { ...siblingsData[index], studentId: auth._id };
-
-          guardians.push(siblings);
-        }
-
-        dispatch(
-          SAVE({
-            entity: "assets/enrollment",
-            data: {
-              enrollee: {
-                ...form,
-                batch: schoolId,
-                student: auth._id,
-                attachments,
-                status: "pending",
-              },
-              guardians,
+      dispatch(
+        SAVE({
+          entity: "assets/enrollment",
+          data: {
+            enrollee: {
+              ...form,
+              batch: schoolId,
+              student: auth._id,
+              attachments,
+              status: "pending",
             },
-            token,
-          })
-        );
-      } else {
-        dispatch(
-          SAVE({
-            entity: "assets/enrollment",
-            data: {
-              enrollee: {
-                ...form,
-                batch: schoolId,
-                student: auth._id,
-                attachments,
-                status: "pending",
-              },
-              guardians: [
-                { ...guardian, studentId: auth._id },
-                { ...parents.father, studentId: auth._id },
-                { ...parents.mother, studentId: auth._id },
-              ],
-            },
-            token,
-          })
-        );
-      }
+            guardians:
+              siblingsData.length > 0
+                ? [
+                    { ...guardian, studentId: auth._id },
+                    { ...parents.father, studentId: auth._id },
+                    { ...parents.mother, studentId: auth._id },
+                    ...siblingsData.map((sibling) => ({
+                      ...sibling,
+                      studentId: auth._id,
+                    })),
+                  ]
+                : [
+                    { ...guardian, studentId: auth._id },
+                    { ...parents.father, studentId: auth._id },
+                    { ...parents.mother, studentId: auth._id },
+                  ],
+          },
+          token,
+        })
+      );
     }
-  }, [link]);
+  }, [
+    link,
+    parents.mother,
+    parents.father,
+    guardian,
+    dispatch,
+    auth._id,
+    auth.fullName,
+    form,
+    goodmoralImage,
+    nsoImage,
+    schoolId,
+    sf10Image,
+    siblingsData,
+    token,
+  ]);
+
   const handleActiveContent = (activeItem) => {
     switch (activeItem) {
       case "guardian":
