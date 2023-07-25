@@ -43,7 +43,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
             selectedId: selectedBranch._id, // in comming branch
           },
           token
-        ).catch((err) => console.log(err));
+        ).catch(err => console.log(err));
       }
       dispatch(
         ACTIVEDUTY({

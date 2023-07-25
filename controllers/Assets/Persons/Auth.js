@@ -77,56 +77,56 @@ const getAffiliated = async fk =>
       select: "name companyId companyName isMain",
     })
     .then(async affiliates => {
-      var container = [];
-
-      for (var index in affiliates) {
-        var affiliate = affiliates[index];
-        var access = await Access.find()
+      return affiliates.map(a => {
+        Access.find()
           .byUserId(fk)
-          .byBranchId(affiliate.branch?._id);
-        if (access.length > 0) {
-          for (var aIndex in access) {
-            container.push({
-              _id: affiliate.branch?._id,
-              companyId: affiliate.branch?.companyId,
-              isMain: affiliate.branch?.isMain,
-              lastVisit: affiliate.lastVisit,
-              designation: affiliate.designation,
-              name: affiliate.branch?.name,
-              platform: affiliate.platform,
-              company: affiliate.branch?.companyName,
-              status: affiliate.status,
-              access: access[aIndex].platform,
-            });
-          }
-        }
-      }
+          .byBranchId(a.branch?._id)
+          .then(datas => {
+            console.log("datas");
+            return datas.map(data => ({
+              _id: a.branch?._id,
+              companyId: a.branch?.companyId,
+              isMain: a.branch?.isMain,
+              lastVisit: a.lastVisit,
+              designation: a.designation,
+              name: a.branch?.name,
+              platform: a.platform,
+              company: a.branch?.companyName,
+              status: a.status,
+              access: data.platform,
+            }));
+          })
+          .catch(error => {
+            console.error("Error occurred:", error);
+            throw error;
+          });
+      });
+      // var container = [];
 
-      return container;
+      // for (var index in affiliates) {
+      //   var affiliate = affiliates[index];
+      //   var access = await Access.find()
+      //     .byUserId(fk)
+      //     .byBranchId(affiliate.branch?._id);
+      //   if (access.length > 0) {
+      //     for (var aIndex in access) {
+      //       container.push({
+      //         _id: affiliate.branch?._id,
+      //         companyId: affiliate.branch?.companyId,
+      //         isMain: affiliate.branch?.isMain,
+      //         lastVisit: affiliate.lastVisit,
+      //         designation: affiliate.designation,
+      //         name: affiliate.branch?.name,
+      //         platform: affiliate.platform,
+      //         company: affiliate.branch?.companyName,
+      //         status: affiliate.status,
+      //         access: access[aIndex].platform,
+      //       });
+      //     }
+      //   }
+      // }
     })
-    // return affiliats.map((a) => {
-    //   Acccess.find()
-    //     .byUserId(fk)
-    //     .byBranchId(a.branch?._id)
-    //     .then((datas) => {
-    //       return datas.map((data) => ({
-    //         _id: a.branch?._id,
-    //         companyId: a.branch?.companyId,
-    //         isMain: a.branch?.isMain,
-    //         lastVisit: a.lastVisit,
-    //         designation: a.designation,
-    //         name: a.branch?.name,
-    //         platform: a.platform,
-    //         company: a.branch?.companyName,
-    //         status: a.status,
-    //         access: data.platform,
-    //       }));
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //       throw error;
-    //     });
-    // });
+    //
     .catch(error => {
       console.error("Error occurred:", error);
       return [defaultBranch];
