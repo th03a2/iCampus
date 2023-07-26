@@ -22,7 +22,7 @@ export default function TableCard({ branch }) {
   return (
     <tr>
       <td>
-        <p className="text-capitalize fw-normal mb-1">{branch.name}</p>
+        <p className="text-capitalize fw-normal mb-1">{branch?.name}</p>
       </td>
       <td>
         <p className="text-center fw-normal mb-1">
@@ -70,7 +70,7 @@ export default function TableCard({ branch }) {
       </td>
       <td className="text-center">
         <MDBBtnGroup className="shadow-0">
-          {/* <CreateMenu id={branch?._id} name={branch.name} /> */}
+          {/* <CreateMenu id={branch?._id} name={branch?.name} /> */}
           <MDBBtn
             onClick={handleToggle}
             color="info"

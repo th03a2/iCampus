@@ -60,7 +60,7 @@ const getBranches = async ownership =>
       isMain: branch.isMain,
       lastVisit: branch.isMain, // by default
       designation: 6,
-      name: branch.name,
+      name: branch?.name,
       platform: "headquarter",
       company: branch.companyName,
       status: branch.status,
@@ -79,7 +79,7 @@ const getAffiliated = async fk =>
         isMain: a.branch.isMain,
         lastVisit: a.lastVisit,
         designation: a.designation,
-        name: a.branch.name,
+        name: a.branch?.name,
         platform: a.platform,
         company: a.branch.companyName,
         status: a.status,

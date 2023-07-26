@@ -80,7 +80,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
                     className="d-flex justify-content-between align-items-start cursor-pointer"
                   >
                     <div className="me-auto">
-                      <div className="fw-bold">{branch.name}</div>
+                      <div className="fw-bold">{branch?.name}</div>
                       {branch.company}
                     </div>
                     <MDBBadge

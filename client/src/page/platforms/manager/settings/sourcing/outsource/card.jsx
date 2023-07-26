@@ -39,7 +39,7 @@ export default function TableCard({ vendor, index, handleVisibility }) {
       </td>
       <td className="text-center">
         <MDBBtnGroup className="shadow-0">
-          {/* <CreateMenu id={branch?._id} name={branch.name} /> */}
+          {/* <CreateMenu id={branch?._id} name={branch?.name} /> */}
           <MDBBtn
             onClick={handleVisibility}
             color="info"
