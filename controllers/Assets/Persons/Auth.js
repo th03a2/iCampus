@@ -61,7 +61,7 @@ const getBranches = async ownership =>
       isMain: branch.isMain,
       lastVisit: branch.isMain, // by default
       designation: 6,
-      name: branch.name,
+      name: branch?.name,
       platform: "headquarter",
       company: branch.companyName,
       status: branch.status,
