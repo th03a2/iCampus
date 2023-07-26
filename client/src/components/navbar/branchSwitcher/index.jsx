@@ -21,7 +21,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
   const { theme, auth, onDuty, branches, token, isCeo } = useSelector(
       ({ auth }) => auth
     ),
-    [selectedBranch, setSelectedBranch] = useState({}),
+    [selectedBranch, setselectedBranch] = useState({}),
     dispatch = useDispatch();
   const handleConfirm = () => {
     if (selectedBranch._id !== onDuty?._id) {
@@ -37,17 +37,17 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
         browse(
           "assets/persons/auth/branchSwitcher",
           {
-            designation: selectedBranch.designation, // role
+            designation: selectedBranch?.designation, // role
             userId: auth._id, // user
             activeId: onDuty._id, // out going branch
             selectedId: selectedBranch._id, // in comming branch
           },
           token
-        ).catch(err => console.log(err));
+        ).catch((err) => console.log(err));
       }
       dispatch(
         ACTIVEDUTY({
-          designation: selectedBranch.designation,
+          designation: selectedBranch?.designation,
           platform: selectedBranch.platform,
           name: selectedBranch.name,
           company: selectedBranch.company,
@@ -74,7 +74,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
               {!!branches.length &&
                 branches?.map((branch, index) => (
                   <MDBListGroupItem
-                    onClick={() => setSelectedBranch(branch)}
+                    onClick={() => setselectedBranch(branch)}
                     key={`branch-switcher-${index}`}
                     active={selectedBranch._id === branch?._id}
                     className="d-flex justify-content-between align-items-start cursor-pointer"
@@ -85,7 +85,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
                     </div>
                     <MDBBadge
                       pill
-                      title={Role.find(branch.designation)?.display_name}
+                      title={Role.find(branch?.designation)?.display_name}
                       color={
                         selectedBranch?.designation === branch?.designation
                           ? "info"
@@ -94,7 +94,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
                           : "primary"
                       }
                     >
-                      {Role.find(branch.designation)?.name}
+                      {Role.find(branch?.designation)?.name}
                     </MDBBadge>
                   </MDBListGroupItem>
                 ))}
@@ -105,7 +105,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
               <MDBBtn
                 onClick={() => {
                   setVisibility(false);
-                  setSelectedBranch({});
+                  setselectedBranch({});
                 }}
                 color={theme.color}
               >

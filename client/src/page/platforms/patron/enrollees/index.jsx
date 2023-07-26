@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
 import Pager from "../../../../components/pager";
 import BreadCrumb from "../../../../components/breadcrumb";
-import { BROWSE } from "../../../../redux/slices/assets/enrollment";
-import { TBLenrollment } from "../../../../templates";
+import { BROWSE } from "../../../../redux/slices/query";
+import { TBLenrollees } from "../../../../templates";
 import Modal from "./modal";
 
 const path = [
@@ -15,10 +15,10 @@ const path = [
 
 export default function Enrollees() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ enrollment }) => enrollment),
+    { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
-    [schools, setSchools] = useState([]),
-    [schoolId, setSchoolId] = useState({}),
+    [enrollees, setEnrollees] = useState([]),
+    [information, setInformation] = useState({}),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
@@ -26,24 +26,26 @@ export default function Enrollees() {
   useEffect(() => {
     dispatch(
       BROWSE({
+        entity: "assets/enrollment",
+        data: "",
         token,
       })
     );
   }, [dispatch, token]);
 
   useEffect(() => {
-    setSchools(catalogs);
+    setEnrollees(catalogs);
   }, [catalogs]);
 
   useEffect(() => {
-    if (schools.length > 0) {
-      let totalPages = Math.floor(schools.length / maxPage);
-      if (schools.length % maxPage > 0) totalPages += 1;
+    if (enrollees.length > 0) {
+      let totalPages = Math.floor(enrollees.length / maxPage);
+      if (enrollees.length % maxPage > 0) totalPages += 1;
       setTotalPages(totalPages);
 
       page > totalPages && setPage(totalPages);
     }
-  }, [schools, page, maxPage]);
+  }, [enrollees, page, maxPage]);
 
   return (
     <>
@@ -66,17 +68,17 @@ export default function Enrollees() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLenrollment
-          schools={schools}
+        <TBLenrollees
+          enrollees={enrollees}
           page={page}
-          setSchoolId={setSchoolId}
+          setInformation={setInformation}
           setVisibility={setVisibility}
         />
         {visibility && (
           <Modal
             visibility={visibility}
             setVisibility={setVisibility}
-            schoolId={schoolId}
+            information={information}
           />
         )}
       </MDBContainer>

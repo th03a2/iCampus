@@ -14,17 +14,14 @@ import {
   MDBCol,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
+import { nameFormatter } from "../../../../../components/utilities";
 // import { Statement } from "../../../../../../fakeDb";
 import { SAVE, UPDATE } from "../../../../../redux/slices/query";
 
-export default function Modal({
-  visibility,
-  setVisibility,
-  update,
-  setIsUpdate,
-  isUpdate,
-}) {
+export default function Modal({ visibility, setVisibility, information }) {
   const { theme, token } = useSelector(({ auth }) => auth);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -33,119 +30,101 @@ export default function Modal({
   });
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isUpdate) {
-      setForm(update);
-    }
-  }, [isUpdate]);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isUpdate) {
-      dispatch(
-        UPDATE({
-          entity: "assets/levels",
-          data: form,
-          id: form._id,
-          token,
-        })
-      );
-    } else {
-      dispatch(
-        SAVE({
-          entity: "assets/levels",
-          data: form,
-          token,
-        })
-      );
-    }
-    setVisibility(false);
-  };
-
   const handleClose = () => {
     setVisibility(false);
-    setIsUpdate(false);
-    setForm({
-      name: "",
-      description: "",
-      lvl: "",
-      stage: "",
-    });
   };
-
   return (
     <MDBModal show={visibility} setShow={setVisibility} staticBackdrop>
-      <MDBModalDialog size="lg">
+      <MDBModalDialog size="fullscreen">
         <MDBModalContent className={`${theme.bg} ${theme.text}`}>
           <MDBModalHeader>
             <MDBModalTitle>
               <MDBIcon
                 fas
                 icon="user-graduate"
-                style={{ width: "20px" }}
+                style={{ width: "30px" }}
                 color="warning"
-              />{" "}
-              Grade Level
+              />
+              {nameFormatter(information.student?.fullName)}
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
           <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer`}>
-            <form onSubmit={handleSubmit}>
-              <MDBRow>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Level"
-                    name="lvl"
-                    value={form.lvl}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-              </MDBRow>
-              <MDBRow className="mt-4">
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Stage"
-                    name="stage"
-                    value={form.stage}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Description"
-                    name="description"
-                    value={form.description}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-              </MDBRow>
-              <MDBContainer className="d-flex justify-content-end mt-4">
-                <MDBBtn type="submit">{isUpdate ? "Update" : "Submit"}</MDBBtn>
-              </MDBContainer>
-            </form>
+            <MDBRow>
+              <MDBCol md={3}>
+                <MDBInput
+                  type="text"
+                  value={`Grade-${information.level?.lvl}`}
+                  label="Level"
+                  readOnly
+                />
+              </MDBCol>
+              <MDBCol md={3}>
+                <MDBInput
+                  type="text"
+                  value={information.units}
+                  label="Units"
+                  readOnly
+                />
+              </MDBCol>
+              <MDBCol md={3}>
+                <MDBInput
+                  type="text"
+                  value={information.phone}
+                  label="Phone Number"
+                  readOnly
+                />
+              </MDBCol>
+              <MDBCol md={3}>
+                <MDBInput
+                  type="text"
+                  value={information.student?.isMale ? "Male" : "Female"}
+                  label="Gender"
+                  readOnly
+                />
+              </MDBCol>
+            </MDBRow>
+            <h6 className="mt-4">Guardians</h6>
+            {information.guardians &&
+              information.guardians.map((guardian) => (
+                <MDBRow className="mt-3">
+                  <MDBCol md={3}>
+                    <MDBInput
+                      type="text"
+                      label="Full Name"
+                      value={`${guardian.lname} ${guardian.mname} ${guardian.fname}`}
+                      readOnly
+                    />
+                  </MDBCol>
+                  <MDBCol md={3}>
+                    <MDBInput
+                      type="text"
+                      label="Gender"
+                      readOnly
+                      value={guardian.isMale ? "Male" : "Female"}
+                    />
+                  </MDBCol>
+                  <MDBCol md={3}>
+                    <MDBInput
+                      type="text"
+                      label="Phone Number"
+                      readOnly
+                      value={guardian.phone}
+                    />
+                  </MDBCol>
+                  <MDBCol md={3}>
+                    <MDBInput
+                      type="text"
+                      label="Date of Birth"
+                      readOnly
+                      value={new Date(guardian.dob).toLocaleDateString(
+                        undefined,
+                        options
+                      )}
+                    />
+                  </MDBCol>
+                </MDBRow>
+              ))}
           </MDBModalBody>
         </MDBModalContent>
       </MDBModalDialog>

@@ -14,13 +14,13 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
 
     const tabs = { ...form.tabs };
 
-    tabs.address = true;
+    tabs.parents = true;
 
     setForm({
       ...form,
       tabs,
     });
-    setActiveItem("address");
+    setActiveItem("parents");
   };
 
   return (

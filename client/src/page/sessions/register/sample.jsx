@@ -12,6 +12,7 @@ import {
 import Basic from "./components/basic";
 import Credentials from "./components/credentials";
 import Address from "./components/address";
+import Parents from "./components/parents";
 import Agreement from "./components/agreement";
 import { toast } from "react-toastify";
 import { register, validateContactNumber } from "../../../components/utilities";
@@ -24,7 +25,7 @@ const tabs = [
   },
   {
     title: "Parents",
-    key: "basic",
+    key: "parents",
   },
   {
     title: "Address",
@@ -67,6 +68,7 @@ export default function Registration() {
         address: false,
         credentials: false,
         agreement: false,
+        parents: false,
       },
     }),
     navigate = useNavigate();
@@ -113,6 +115,14 @@ export default function Registration() {
       case "agreement":
         return (
           <Agreement
+            setForm={setForm}
+            form={form}
+            setActiveItem={setActiveItem}
+          />
+        );
+      case "parents":
+        return (
+          <Parents
             setForm={setForm}
             form={form}
             setActiveItem={setActiveItem}
