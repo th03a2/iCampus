@@ -76,7 +76,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
                   <MDBListGroupItem
                     onClick={() => setSelectedBranch(branch)}
                     key={`branch-switcher-${index}`}
-                    active={selectedBranch._id === branch._id}
+                    active={selectedBranch._id === branch?._id}
                     className="d-flex justify-content-between align-items-start cursor-pointer"
                   >
                     <div className="me-auto">

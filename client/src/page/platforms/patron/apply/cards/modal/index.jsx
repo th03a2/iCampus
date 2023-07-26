@@ -165,8 +165,8 @@ export default function ApplicationModal({
                       );
                       return (
                         <option
-                          value={branch._id}
-                          key={branch._id}
+                          value={branch?._id}
+                          key={branch?._id}
                           disabled={disabler}
                           style={{
                             backgroundColor: disabler ? "yellow" : "white",
