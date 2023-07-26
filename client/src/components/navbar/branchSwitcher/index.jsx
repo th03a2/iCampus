@@ -81,7 +81,7 @@ export default function BranchSwitcher({ visibility, setVisibility }) {
                   >
                     <div className="me-auto">
                       <div className="fw-bold">{branch?.name}</div>
-                      {branch.company}
+                      {branch?.company}
                     </div>
                     <MDBBadge
                       pill
