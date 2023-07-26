@@ -23,6 +23,10 @@ const tabs = [
     key: "basic",
   },
   {
+    title: "Parents",
+    key: "basic",
+  },
+  {
     title: "Address",
     key: "address",
   },

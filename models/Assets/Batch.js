@@ -13,7 +13,13 @@ const modelSchema = new mongoose.Schema(
     e_end: { type: String }, //enrollment end
     c_start: { type: String }, //class start
     c_end: { type: String }, //class end
-    status: { type: String },
+    status: {
+      type: String,
+      enum: {
+        values: ["pending", "open", "closed"], //pending:future,open:started,closed:ended
+        message: "{VALUE} is not supported, please select appropriate options",
+      },
+    },
     deletedAt: { type: String },
   },
   {

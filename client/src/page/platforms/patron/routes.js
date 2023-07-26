@@ -18,6 +18,7 @@ import Banks from "./mapping/banks";
 import Articles from "./mapping/articles";
 import Batch from "./batch";
 import Enrollment from "./enrollment";
+import Enrollees from "./enrollees";
 
 const routes = {
   name: "patron",
@@ -62,6 +63,10 @@ const routes = {
     {
       path: "batch",
       element: <Batch />,
+    },
+    {
+      path: "enrollees",
+      element: <Enrollees />,
     },
     {
       path: "enrollment",

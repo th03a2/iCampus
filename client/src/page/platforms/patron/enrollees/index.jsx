@@ -9,11 +9,11 @@ import Modal from "./modal";
 
 const path = [
   {
-    path: "Enrollment",
+    path: "Enrollees",
   },
 ];
 
-export default function Enrollment() {
+export default function Enrollees() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ enrollment }) => enrollment),
     [visibility, setVisibility] = useState(false),
@@ -48,7 +48,7 @@ export default function Enrollment() {
   return (
     <>
       <BreadCrumb
-        title="Enrollment"
+        title="Enrollees"
         button={false}
         handler={setVisibility}
         visibility={visibility}

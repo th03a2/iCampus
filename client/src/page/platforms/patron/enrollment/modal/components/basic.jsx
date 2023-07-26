@@ -115,7 +115,7 @@ export default function BasicInformation({
           <MDBCol md={6}>
             <MDBInput
               type="text"
-              label="Mobile (+63) (Optional)"
+              label="Mobile (+63) "
               value={form.phone}
               required
               onChange={(e) =>

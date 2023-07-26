@@ -104,7 +104,7 @@ export default function Guardian({
           <MDBCol md={4}>
             <MDBInput
               type="text"
-              label="Mobile (+63) (Optional)"
+              label="Mobile (+63) "
               required
               value={guardian.phone}
               onChange={(e) =>

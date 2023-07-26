@@ -8,7 +8,7 @@ const router = require("express").Router(),
   { protect } = require("../../middleware");
 
 router
-  .get("/browse", protect, browse)
+  .get("/browse", browse)
   .delete("/destroy", protect, destroy)
   .put("/update", protect, update)
   .post("/save", save);

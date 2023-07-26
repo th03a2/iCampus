@@ -4,7 +4,7 @@ const modelSchema = new mongoose.Schema(
   {
     batch: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Batches",
+      ref: "batchs",
       // required: true,
     },
     student: {
@@ -13,13 +13,19 @@ const modelSchema = new mongoose.Schema(
     },
     level: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Levels",
+      ref: "levels",
     },
     assessedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
-    units: { type: String },
+    units: {
+      type: String,
+      enum: {
+        values: ["old", "transferee", "returnee"], //old student , transferre,returnee
+        message: "{VALUE} is not supported, please select appropriate options",
+      },
+    },
     attachments: {
       nso: {
         type: String,
@@ -33,12 +39,12 @@ const modelSchema = new mongoose.Schema(
     },
     subjects: { type: Array },
     phone: { type: String }, //
-    issues: { type: Array }, //
+    issues: { type: Array }, // title: String , date :kelan inissue,issued By:Sino nag issue,
     miscellaneous: { type: Object }, //
     status: {
       type: String,
       enum: {
-        values: ["pending", "active", "denied", "onprogress"],
+        values: ["pending", "active", "denied", "onprogress"], //pending, approved,denied,missing documents
         message: "{VALUE} is not supported, please select appropriate options",
       },
     }, //

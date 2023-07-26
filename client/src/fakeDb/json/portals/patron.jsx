@@ -103,4 +103,9 @@ export default [
     icon: "restroom",
     path: "enrollment",
   },
+  {
+    name: "Enrollees",
+    icon: "restroom",
+    path: "enrollees",
+  },
 ];

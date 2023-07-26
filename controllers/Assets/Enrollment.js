@@ -15,9 +15,29 @@ exports.save = (req, res) => {
 exports.browse = (req, res) => {
   Entity.find()
     .populate("batch")
+    .populate("student")
+    .populate("level")
+    .then((batchs) => {
+      const batchFilter = batchs.filter((item) => !item.deletedAt);
 
-    .populate("user")
-    .then((items) => res.json(items.filter((item) => !item.deletedAt)))
+      const promises = batchFilter.map((batch) => {
+        return Guardians.find({ studentId: batch.student }).then(
+          (guardians) => {
+            return {
+              ...batch.toObject(),
+              guardians,
+            };
+          }
+        );
+      });
+      Promise.all(promises)
+        .then((batchsWithGuardians) => {
+          res.json(batchsWithGuardians);
+        })
+        .catch((error) => res.status(400).json({ error: error.message }));
+
+      // res.json(items.filter((item) => !item.deletedAt));
+    })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 

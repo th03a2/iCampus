@@ -118,7 +118,6 @@ export default function Parents({
                   },
                 });
               }}
-              required
               onKeyDown={validateContactNumber}
               maxLength={10}
             />
@@ -338,7 +337,6 @@ export default function Parents({
               }}
               onKeyDown={validateContactNumber}
               maxLength={10}
-              required
             />
           </MDBCol>
           <MDBCol md={4}>

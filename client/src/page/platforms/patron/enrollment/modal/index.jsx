@@ -14,8 +14,6 @@ import {
   MDBCard,
   MDBIcon,
   MDBCardBody,
-  MDBRow,
-  MDBCol,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import Basic from "./components/basic";
@@ -24,7 +22,7 @@ import Guardian from "./components/guardian";
 import Siblings from "./components/siblings";
 import Credentials from "./components/credentials";
 import { toast } from "react-toastify";
-import { SAVE, UPDATE } from "../../../../../redux/slices/query";
+import { SAVE } from "../../../../../redux/slices/query";
 import { UPLOAD } from "../../../../../redux/slices/assets/persons/auth";
 import { nameFormatter } from "../../../../../components/utilities";
 export default function Modal({ visibility, setVisibility, schoolId }) {
