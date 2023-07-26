@@ -39,7 +39,7 @@ export default function BranchTable({ branches, page }) {
       <MDBTableBody>
         {!!branches?.length &&
           paginationHandler(branches, page, maxPage).map(branch => (
-            <TableCard key={branch._id} branch={branch} />
+            <TableCard key={branch?._id} branch={branch} />
           ))}
       </MDBTableBody>
     </MDBTable>
