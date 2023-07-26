@@ -5,7 +5,7 @@ const modelSchema = new mongoose.Schema(
     batch: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Batches",
-      required: true,
+      // required: true,
     },
     student: {
       type: mongoose.Schema.Types.ObjectId,
@@ -20,7 +20,17 @@ const modelSchema = new mongoose.Schema(
       ref: "Users",
     },
     units: { type: String },
-    attachments: { type: Array },
+    attachments: {
+      nso: {
+        type: String,
+      },
+      sf10: {
+        type: String,
+      },
+      goodmoral: {
+        type: String,
+      },
+    },
     subjects: { type: Array },
     phone: { type: String }, //
     issues: { type: Array }, //

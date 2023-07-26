@@ -142,7 +142,6 @@ const NavbarSettings = () => {
           <MDBTabsPane show={basicActive === "tab1"}>
             {portals?.map((portal, i) => (
               <PlatformCard
-                rmCard
                 i={`${portal.designation}-${i}`}
                 portal={portal}
                 setVisibility={setVisibility}

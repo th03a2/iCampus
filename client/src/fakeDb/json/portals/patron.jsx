@@ -98,4 +98,9 @@ export default [
     icon: "restroom",
     path: "batch",
   },
+  {
+    name: "Enrollment",
+    icon: "restroom",
+    path: "enrollment",
+  },
 ];
