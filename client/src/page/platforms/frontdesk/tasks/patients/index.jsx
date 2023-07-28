@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import Pager from "../../../../../components/pager";
 import PatientTable from "./table";
-import { PATIENTS } from "../../../../../redux/slices/assets/persons/users";
+import { PARENTS } from "../../../../../redux/slices/assets/persons/users";
 import { nameFormatter } from "../../../../../components/utilities";
 import PatientModal from "./modal";
 import Pos from "./pos";
@@ -30,7 +30,7 @@ export const Patients = () => {
     dispatch = useDispatch();
   useEffect(() => {
     if (onDuty._id) {
-      dispatch(PATIENTS(token));
+      dispatch(PARENTS(token));
     }
   }, [onDuty]);
 

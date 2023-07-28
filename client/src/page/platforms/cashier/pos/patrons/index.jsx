@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import Pager from "../../../../../components/pager";
 import PatientTable from "./table";
-import { PATIENTS } from "../../../../../redux/slices/assets/persons/users";
+import { PARENTS } from "../../../../../redux/slices/assets/persons/users";
 import { PATRON } from "../../../../../redux/slices/commerce/pos";
 import RegistrationModal from "./modal";
 import Contract from "../contracts";
@@ -32,7 +32,7 @@ const PatientList = () => {
 
   useEffect(() => {
     if (onDuty._id) {
-      dispatch(PATIENTS({ query: { lname: "A", fname: "A" }, token }));
+      dispatch(PARENTS({ query: { lname: "A", fname: "A" }, token }));
     }
   }, [onDuty]);
 
@@ -59,7 +59,7 @@ const PatientList = () => {
         lname: que[0].toUpperCase(),
         fname: que[1]?.trim()?.toUpperCase(),
       };
-      dispatch(PATIENTS({ query, token }));
+      dispatch(PARENTS({ query, token }));
     }
   };
 

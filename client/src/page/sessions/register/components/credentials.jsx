@@ -13,7 +13,7 @@ export default function Credentials({ form, setForm, setActiveItem }) {
   const [password, setPassword] = useState(true),
     [confirmPassword, setConfirmPassword] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     if (form.password === form.confirmPassword) {
@@ -37,10 +37,95 @@ export default function Credentials({ form, setForm, setActiveItem }) {
         <MDBRow>
           <MDBCol>
             <MDBInput
+              type="text"
+              label="Email"
+              value={form.bop.region}
+              onChange={e =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+              required
+              autoFocus
+            />
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <MDBInput
+              type="email"
+              label="Email"
+              value={form.bop.province}
+              onChange={e =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+              required
+              autoFocus
+            />
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <MDBInput
+              type="email"
+              label="Email"
+              value={form.bop.municipality}
+              onChange={e =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+              required
+              autoFocus
+            />
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <MDBInput
+              type="email"
+              label="Email"
+              value={form.bop.brangay}
+              onChange={e =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+              required
+              autoFocus
+            />
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <MDBInput
+              type="email"
+              label="Email"
+              value={form.bop.street}
+              onChange={e =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+              required
+              autoFocus
+            />
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <MDBInput
               type="email"
               label="Email"
               value={form.email}
-              onChange={(e) =>
+              onChange={e =>
                 setForm({
                   ...form,
                   email: e.target.value,
@@ -59,7 +144,7 @@ export default function Credentials({ form, setForm, setActiveItem }) {
                 type={password ? "password" : "text"}
                 label="Password"
                 value={form.password}
-                onChange={(e) =>
+                onChange={e =>
                   setForm({
                     ...form,
                     password: e.target.value,
@@ -84,7 +169,7 @@ export default function Credentials({ form, setForm, setActiveItem }) {
                 type={confirmPassword ? "password" : "text"}
                 label="Confirm Password"
                 value={form.confirmPassword}
-                onChange={(e) =>
+                onChange={e =>
                   setForm({
                     ...form,
                     confirmPassword: e.target.value,

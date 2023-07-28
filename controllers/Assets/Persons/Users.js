@@ -43,13 +43,18 @@ exports.browse = (req, res) =>
     )
     .catch(error => res.status(400).json({ error: error.message }));
 // patients
-exports.patients = (req, res) =>
+exports.parents = (req, res) =>
   User.find({
+    ismale: req.query.gender,
+    // dob: req.query.dob,
     // Remarks: its a case sensitive
-    "fullName.fname": { $regex: req.query.fname },
+    "fullName.fname": { $regex: req.query.name },
+    "fullName.mname": { $regex: req.query.mname },
     "fullName.lname": { $regex: req.query.lname },
+    // "fullName.suffix": req.query.suffix,
   })
-    .select("-password")
+    // not included in the query string
+    .select("-password -createdAt -updatedAt -__v -address")
     .then(datas =>
       res.json(
         datas

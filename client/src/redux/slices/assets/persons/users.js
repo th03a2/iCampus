@@ -29,11 +29,12 @@ export const BROWSE = createAsyncThunk(
     }
   }
 );
-export const PATIENTS = createAsyncThunk(
-  `${entity}/patients`,
+export const PARENTS = createAsyncThunk(
+  `${entity}/parents`,
+
   async (item, thunkAPI) => {
     try {
-      return await browse(`${entity}/patients`, item.query, item.token);
+      return await browse(`${entity}/parents`, item.query, item.token);
     } catch (error) {
       const message =
         (error.response &&
@@ -213,14 +214,14 @@ export const usersSlice = createSlice({
         state.message = action.payload;
       })
       // Patients
-      .addCase(PATIENTS.pending, state => {
+      .addCase(PARENTS.pending, state => {
         state.isLoading = true;
       })
-      .addCase(PATIENTS.fulfilled, (state, action) => {
+      .addCase(PARENTS.fulfilled, (state, action) => {
         state.isLoading = false;
         state.catalogs = action.payload;
       })
-      .addCase(PATIENTS.rejected, (state, action) => {
+      .addCase(PARENTS.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -273,18 +273,18 @@ export const authSlice = createSlice({
     PROGRESS: (state, { payload }) => {
       state.progress = payload;
     },
-    RESET: (state) => {
+    RESET: state => {
       state.isSuccess = false;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // LOGIN
-      .addCase(LOGIN.pending, (state) => {
+      .addCase(LOGIN.pending, state => {
         state.isLoading = true;
       })
       .addCase(LOGIN.fulfilled, (state, action) => {
-        const { auth, token, branches, isCeo } = action.payload;
+        const { auth, token, branches, isCeo, access } = action.payload;
         state.auth = auth;
         // const filter = access.filter(
         //   (data) => data === "manager" || data === "medtech" || data === "owner"
@@ -294,7 +294,23 @@ export const authSlice = createSlice({
         // socket.emit("recived_cart", filter.length ? filter[0] : cart);
         //para malaman kung pwede ba siyang mag approve sa mga request
         // state.access = filter[0] ? filter[0] : "";
-        let _branches = [...branches];
+        let _branches = branches.map(
+          ({ _id, companyId, designation, name, company, status }) => {
+            let _access = [];
+            _access = access
+              .filter(data => _id === data.branchId)
+              .map(({ platform }) => platform.toLowerCase());
+            return {
+              _id,
+              companyId,
+              access: _access,
+              designation,
+              name,
+              company,
+              status,
+            };
+          }
+        );
 
         if (isCeo) {
           let _lastVisited = JSON.parse(localStorage.getItem("lastVisited"));
@@ -316,30 +332,32 @@ export const authSlice = createSlice({
               platform,
               company,
               status,
-            }) => ({
-              _id,
-              companyId,
-              isMain,
-              lastVisit: _lastVisited.id === _id,
-              designation,
-              name,
-              platform:
-                _lastVisited.id === _id ? _lastVisited.platform : platform,
-              company,
-              status,
-            })
+            }) => {
+              return {
+                _id,
+                companyId,
+                isMain,
+                lastVisit: _lastVisited.id === _id,
+                designation,
+                name,
+                platform:
+                  _lastVisited.id === _id ? _lastVisited.platform : platform,
+                company,
+                status,
+              };
+            }
           );
         }
 
         state.branches = [..._branches];
-        // const onDuty = _branches.find(({ lastVisit }) => lastVisit);
-        // console.log("_branches", _branches);
-        // console.log("onDuty", onDuty);
-        // if (onDuty) {
-        //   state.onDuty = onDuty;
-        // } else {
-        //   state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
-        // }
+
+        const onDuty = _branches.find(({ lastVisit }) => lastVisit);
+
+        if (onDuty) {
+          state.onDuty = onDuty;
+        } else {
+          state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
+        }
         state.isCeo = isCeo;
         state.token = token;
         state.isLoading = false;
@@ -350,11 +368,11 @@ export const authSlice = createSlice({
       })
 
       // VALIDATE USER ON REFRESH
-      .addCase(REFRESH.pending, (state) => {
+      .addCase(REFRESH.pending, state => {
         state.isLoading = true;
       })
       .addCase(REFRESH.fulfilled, (state, { payload }) => {
-        const { auth, token, branches, isCeo } = payload;
+        const { auth, token, branches, isCeo, access } = payload;
 
         state.auth = auth;
         // const filter = access.filter(
@@ -363,7 +381,23 @@ export const authSlice = createSlice({
         // const cart = JSON.parse(localStorage.getItem(`${state.auth._id}`));
         // socket.emit("recived_cart", filter.length ? filter[0] : cart);
         // state.access = filter[0] ? filter[0] : "";
-        let _branches = [];
+        let _branches = branches.map(
+          ({ _id, companyId, designation, name, company, status }) => {
+            let _access = [];
+            _access = access
+              .filter(data => _id === data.branchId)
+              .map(({ platform }) => platform.toLowerCase());
+            return {
+              _id,
+              companyId,
+              access: _access,
+              designation,
+              name,
+              company,
+              status,
+            };
+          }
+        );
         let _lastVisited = JSON.parse(localStorage.getItem("lastVisited"));
 
         if (!_lastVisited) {
@@ -405,12 +439,12 @@ export const authSlice = createSlice({
         );
 
         state.branches = [..._branches];
-        // const onDuty = _branches.find(({ lastVisit }) => lastVisit);
-        // if (onDuty) {
-        //   state.onDuty = onDuty;
-        // } else {
-        //   state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
-        // }
+        const onDuty = _branches.find(({ lastVisit }) => lastVisit);
+        if (onDuty) {
+          state.onDuty = onDuty;
+        } else {
+          state.onDuty = !!_branches?.length ? _branches[0] : defaultDuty;
+        }
         state.isCeo = isCeo;
         state.token = token;
         state.isLoading = false;
@@ -420,7 +454,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(LOGOUT.pending, (state) => {
+      .addCase(LOGOUT.pending, state => {
         state.isLoading = true;
       })
       .addCase(LOGOUT.fulfilled, (state, action) => {
@@ -435,7 +469,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(ATTENDANCE.pending, (state) => {
+      .addCase(ATTENDANCE.pending, state => {
         state.isLoading = true;
       })
       .addCase(ATTENDANCE.fulfilled, (state, action) => {
@@ -447,7 +481,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(UPDATE.pending, (state) => {
+      .addCase(UPDATE.pending, state => {
         state.isLoading = true;
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
@@ -458,7 +492,7 @@ export const authSlice = createSlice({
       .addCase(UPDATE.rejected, (state, action) => {
         state.isLoading = false;
       })
-      .addCase(ACTIVEPLATFORM.pending, (state) => {
+      .addCase(ACTIVEPLATFORM.pending, state => {
         state.isLoading = true;
       })
       .addCase(ACTIVEPLATFORM.fulfilled, (state, action) => {
@@ -470,7 +504,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(CHANGEPASSWORD.pending, (state) => {
+      .addCase(CHANGEPASSWORD.pending, state => {
         state.isLoading = true;
       })
       .addCase(CHANGEPASSWORD.fulfilled, (state, action) => {
@@ -481,7 +515,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(UPLOAD.pending, (state) => {
+      .addCase(UPLOAD.pending, state => {
         state.isLoading = true;
       })
       .addCase(UPLOAD.fulfilled, (state, action) => {

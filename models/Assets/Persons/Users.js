@@ -22,14 +22,36 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
-      title: {
-        type: String,
-      },
-      postnominal: {
-        type: String,
-      },
     },
     address: {
+      street: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      barangay: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      city: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      province: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      region: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+    },
+    bop: {
+      // birth place
       street: {
         type: String,
         trim: true,
@@ -64,11 +86,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       // unique: true,
     },
-    prc: {
-      id: { type: String },
-      from: { type: String },
-      to: { type: String },
-    },
     email: {
       type: String,
       unique: true,
@@ -76,13 +93,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     alias: { type: String },
-    ownership: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        require: true,
-        ref: "Companies",
-      },
-    ],
     password: {
       type: String,
       required: true,
@@ -103,11 +113,6 @@ const userSchema = new mongoose.Schema(
     isMale: {
       type: Boolean,
       default: false,
-    },
-    hea: {
-      //highest educational attainment
-      type: String,
-      default: 0,
     },
     bio: {
       type: String,

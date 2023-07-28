@@ -22,7 +22,7 @@ export default function PlatformCard({ portal, setVisibility, i }) {
     }
   }, [portal, onDuty]);
 
-  const portalHandler = (platform) => {
+  const portalHandler = platform => {
     if (isCeo) {
       let _lastVisited = JSON.parse(localStorage.getItem("lastVisited"));
       _lastVisited.platform = platform;
@@ -33,7 +33,7 @@ export default function PlatformCard({ portal, setVisibility, i }) {
     navigate(`/${BASE}/${platform}/dashboard`);
     setVisibility(false);
   };
-
+  console.log(portal);
   return (
     <MDBCol
       className="custom-notification-container position-relative pb-4 mx-5"
@@ -47,7 +47,7 @@ export default function PlatformCard({ portal, setVisibility, i }) {
           style={{
             backgroundColor: isSame ? "#54B4D3" : "#504d4d",
           }}
-          icon={portal.icon}
+          icon={portal}
           size="lg"
           className="custom-notification-icon"
         />
@@ -55,10 +55,10 @@ export default function PlatformCard({ portal, setVisibility, i }) {
           <h6
             className={`h6 h6-responsive custom-notification-title fw-bold p-0 w-0 ${theme.text}`}
           >
-            {portal.title}
+            {portal}
           </h6>
           <p className={`custom-notification-label p-0 w-0 ${theme.text}`}>
-            {portal.description}
+            {portal}
           </p>
         </MDBContainer>
       </div>

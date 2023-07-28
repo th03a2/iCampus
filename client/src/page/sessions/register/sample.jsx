@@ -78,13 +78,13 @@ export default function Registration() {
       console.log(form);
       if (form.password === form.confirmPassword) {
         register(form)
-          .then((res) => {
+          .then(res => {
             if (res) {
               navigate("/login");
               toast.success(`Welcome aboard ${form.fullName.fname}!`);
             }
           })
-          .catch((err) => toast.error(err.message));
+          .catch(err => toast.error(err.message));
       } else {
         toast.warn("Passwords does not match!");
       }
@@ -92,7 +92,7 @@ export default function Registration() {
     }
   }, [form]);
 
-  const handleActiveContent = (activeItem) => {
+  const handleActiveContent = activeItem => {
     switch (activeItem) {
       case "address":
         return (
