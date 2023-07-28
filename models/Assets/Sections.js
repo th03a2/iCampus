@@ -2,16 +2,26 @@ const mongoose = require("mongoose");
 
 const modelSchema = new mongoose.Schema(
   {
-    branchId: {
+    batchId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Branches",
+      ref: "batchs",
       // required: true,
     },
-    user: {
+
+    adviser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
     name: { type: String },
+    specification: { type: String },
+    levelId: { type: Number },
+    accumulate: { type: String }, //
+    studenArr: { type: Array }, //
+    deletedAt: { type: String },
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Users",
+    // },
     // category: {
     //   type: String,
     //   enum: {
@@ -20,10 +30,6 @@ const modelSchema = new mongoose.Schema(
     //   },
     //   default: "refurbish",
     // },
-    levelId: { type: Number },
-    accumulate: { type: String }, //
-    studenArr: { type: Array }, //
-    deletedAt: { type: String },
   },
   {
     timestamps: true,

@@ -3,7 +3,7 @@ const Entity = require("../../models/Assets/Sections");
 
 exports.browse = (req, res) => {
   Entity.find()
-    .populate("branchId")
+    .populate("adviser")
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 };

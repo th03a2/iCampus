@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: "SC-GT-010",
-    branch: "637097f0535529a3a57e933e", // Smart Care| General Tinio Branch
+    branch: "637097f0535529a3a57e933e", // General Tinio National High School | Junior
     user: "636d37e0187c30ab0f611ce0", // BENEDICT EARLE GABRIEL
     designation: 14, //admin
     hos: 8, // Hours of Service
@@ -15,7 +15,7 @@ module.exports = [
   },
   {
     id: "SC-GT-01",
-    branch: "637097f0535529a3a57e933e", // Smart Care| General Tinio Branch
+    branch: "637097f0535529a3a57e933e", // General Tinio National High School | Junior
     user: "636d37e0187c30ab0f611cf2", // Debralene Gay
     designation: 22, //admin
     hos: 8, // Hours of Service
@@ -30,7 +30,7 @@ module.exports = [
 
   {
     id: "SC-GT-02",
-    branch: "637097f0535529a3a57e933e", // Smart Care| General Tinio Branch
+    branch: "637097f0535529a3a57e933e", // General Tinio National High School | Junior
     user: "636d37e0187c30ab0f611cf3", // KIM
     designation: 20, //admin
     hos: 8, // Hours of Service
@@ -44,7 +44,7 @@ module.exports = [
   },
   {
     id: "SC-GT-03",
-    branch: "637097f0535529a3a57e933e", // Smart Care| General Tinio Branch
+    branch: "637097f0535529a3a57e933e", // General Tinio National High School | Junior
     user: "638dbb343d534df590afca52", // REYES
     designation: 25, //pathologist
     hos: 8, // Hours of Service

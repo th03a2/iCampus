@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
 import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
-import { BROWSE } from "../../../../../redux/slices/query";
+// import { BROWSE } from "../../../../../redux/slices/query";
+import { GETBATCH, BROWSE } from "../../../../../redux/slices/assets/sections";
 import { TBLsections } from "../../../../../templates";
 import Modal from "./modal";
 const path = [
@@ -14,9 +15,11 @@ const path = [
 
 export default function Sections() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ query }) => query),
+    { catalogs, handleSections } = useSelector(({ sections }) => sections),
     [visibility, setVisibility] = useState(false),
     [sections, setSections] = useState([]),
+    [batchs, setBatchs] = useState([]),
+    [batchId, setBatchId] = useState(""),
     [update, setUpdate] = useState({}),
     [isUpdate, setIsUpdate] = useState(false),
     [page, setPage] = useState(1),
@@ -25,17 +28,32 @@ export default function Sections() {
 
   useEffect(() => {
     dispatch(
-      BROWSE({
-        entity: "assets/Sections",
-        data: "",
+      GETBATCH({
         token,
       })
     );
   }, [dispatch, token]);
 
   useEffect(() => {
-    setSections(catalogs);
+    dispatch(
+      BROWSE({
+        token,
+      })
+    );
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    setBatchs(catalogs);
   }, [catalogs]);
+
+  useEffect(() => {
+    if (batchId) {
+      const filterSections = handleSections.filter(
+        (data) => data.batchId === batchId
+      );
+      setSections(filterSections);
+    }
+  }, [handleSections, batchId]);
 
   useEffect(() => {
     if (sections.length > 0) {
@@ -59,12 +77,35 @@ export default function Sections() {
       <MDBContainer className="py-5 mt-5">
         <MDBRow className="mb-3">
           <MDBCol md={6}>
-            <MDBInput
-              // onChange={e => handleSearch(e.target.value)}
-              type="search"
-              label="Search by Sections"
-              contrast={theme.dark}
-            />
+            <select
+              className="form-control "
+              onChange={(e) => setBatchId(e.target.value)}
+            >
+              <option>Select Batch</option>
+              {batchs.map((batch, index) => {
+                var color;
+                switch (batch.status) {
+                  case "done":
+                    color = "red";
+                    break;
+                  case "pending":
+                    color = "orange";
+                    break;
+                  default:
+                    color = "green";
+                    break;
+                }
+                return (
+                  <option
+                    value={batch._id}
+                    key={index}
+                    style={{ backgroundColor: color }}
+                  >
+                    {`SY- ${batch.SY}`}
+                  </option>
+                );
+              })}
+            </select>
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>

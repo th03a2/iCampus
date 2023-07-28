@@ -1,6 +1,30 @@
 // entity/save
 const Entity = require("../../models/Assets/Batch");
 
+const getRooms = async (pk) =>
+  await Merchandise.find({
+    purchase: pk,
+  }).populate("product");
+
+exports.request = (req, res) => {
+  Entity.find({ status: req.query.status })
+    .byBranchId(req.query.branch)
+    .populate("userId")
+    .then(async (items) => {
+      let purchases = items.filter((item) => !item.deletedAt);
+      for (let index = 0; index < purchases.length; index++) {
+        let purchase = purchases[index];
+        const merchandises = await getMerchandise(purchase._id);
+        purchases[index] = {
+          ...purchase._doc,
+          merchandises: [...merchandises],
+        };
+      }
+      res.json(purchases);
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+
 exports.browse = (req, res) => {
   Entity.find()
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))

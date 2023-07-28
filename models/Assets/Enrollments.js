@@ -22,7 +22,7 @@ const modelSchema = new mongoose.Schema(
     units: {
       type: String,
       enum: {
-        values: ["old", "transferee", "returnee"], //old student , transferre,returnee
+        values: ["old", "new", "transferee", "returnee"], //old student, new student, transferre, returnee
         message: "{VALUE} is not supported, please select appropriate options",
       },
     },

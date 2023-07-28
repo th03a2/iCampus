@@ -24,7 +24,6 @@ import Credentials from "./components/credentials";
 import { toast } from "react-toastify";
 import { SAVE } from "../../../../../redux/slices/query";
 import { UPLOAD } from "../../../../../redux/slices/assets/persons/auth";
-import { nameFormatter } from "../../../../../components/utilities";
 export default function Modal({ visibility, setVisibility, schoolId }) {
   const { theme, token, auth } = useSelector(({ auth }) => auth);
 
@@ -196,15 +195,14 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
         goodmoral: goodmoralImage,
         sf10: sf10Image,
       };
-
       Object.entries(credentials).map(([key, value]) => {
         if (value) {
           dispatch(
             UPLOAD({
               data: {
-                path: `enrollement/credentials/${nameFormatter(auth.fullName)}`,
+                path: `enrollment/credentials/${auth.email}`,
                 base64: value,
-                name: `${key} .png`,
+                name: `${key}.png`,
               },
             })
           );

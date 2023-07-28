@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const modelSchema = new mongoose.Schema(
   {
-    school_id: {
+    schoolId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branches",
     },
@@ -16,7 +16,7 @@ const modelSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["pending", "open", "closed"], //pending:future,open:started,closed:ended
+        values: ["pending", "active", "done"], //pending:future,open:started,closed:ended
         message: "{VALUE} is not supported, please select appropriate options",
       },
     },

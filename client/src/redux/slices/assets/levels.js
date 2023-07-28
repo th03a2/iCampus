@@ -3,23 +3,37 @@ import { browse, find, save, destroy, update } from "../../sqlbuilder";
 
 const initialState = {
     catalogs: [],
-    handleSubjects: [],
-    handleSections: [],
     record: {},
+    didSubmit: false,
     isLoading: false,
-    didSave: false,
-    didUpdate: false,
-    didTweak: false,
     isError: false,
     message: "",
   },
-  entity = "assets/batch";
+  entity = "procurements";
 
 export const BROWSE = createAsyncThunk(
-  `${entity}/enrollment`,
+  `${entity}/browse`,
+  async ({ token }, thunkAPI) => {
+    try {
+      return await browse("assets/Sections/browse", "", token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const MACHINES = createAsyncThunk(
+  `${entity}/machines`,
   async (token, thunkAPI) => {
     try {
-      return await browse(`${entity}/enrollment`, "", token);
+      return await browse(`${entity}/machines`, "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -33,63 +47,6 @@ export const BROWSE = createAsyncThunk(
   }
 );
 
-export const GETSUBJECTS = createAsyncThunk(
-  `${entity}/getsubjects`,
-  async ({ token }, thunkAPI) => {
-    try {
-      return await browse(`assets/subjects/browse`, "", token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const GETSECTIONS = createAsyncThunk(
-  `${entity}/getsections`,
-  async ({ token }, thunkAPI) => {
-    try {
-      return await browse(`assets/Sections/browse`, "", token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const LIST = createAsyncThunk(
-  `${entity}/list`,
-  async (item, thunkAPI) => {
-    try {
-      return await browse(
-        `${entity}/browse`,
-        { key: "", branch: item.branch },
-        item.token
-      );
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
 export const FIND = createAsyncThunk(
   `${entity}/find`,
   async (item, thunkAPI) => {
@@ -130,7 +87,7 @@ export const UPDATE = createAsyncThunk(
   `${entity}/update`,
   async (item, thunkAPI) => {
     try {
-      return await update(entity, item.data, item.id, item.token);
+      return await update(entity, item.data, item.id, item.token, false);
     } catch (error) {
       const message =
         (error.response &&
@@ -166,41 +123,16 @@ export const entitySlice = createSlice({
   name: entity,
   initialState,
   reducers: {
-    REVERSE: (state) => {
-      state.didSave = false;
-      state.didUpdate = false;
-      state.didTweak = false;
+    REVERT: (state) => {
+      state.didSubmit = false;
+    },
+    INJECT: (state, data) => {
+      state.catalogs.push(data.payload);
     },
     RESET: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      //GETSECTIONS
-      .addCase(GETSECTIONS.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(GETSECTIONS.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.handleSections = action.payload;
-      })
-      .addCase(GETSECTIONS.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      //GETSUBJECTS
-      .addCase(GETSUBJECTS.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(GETSUBJECTS.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.handleSubjects = action.payload;
-      })
-      .addCase(GETSUBJECTS.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
       // BROWSE
       .addCase(BROWSE.pending, (state) => {
         state.isLoading = true;
@@ -214,31 +146,32 @@ export const entitySlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // LIST
-      .addCase(LIST.pending, (state) => {
+
+      // Machines
+      .addCase(MACHINES.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(LIST.fulfilled, (state, action) => {
+      .addCase(MACHINES.fulfilled, (state, action) => {
         state.isLoading = false;
         state.catalogs = action.payload;
       })
-      .addCase(LIST.rejected, (state, action) => {
+      .addCase(MACHINES.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
+
       // FIND
       .addCase(FIND.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(FIND.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.record = action.payload;
+        state.catalogs = action.payload;
       })
       .addCase(FIND.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.didTweak = true;
         state.message = action.payload;
       })
 
@@ -248,8 +181,8 @@ export const entitySlice = createSlice({
       })
       .addCase(SAVE.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.didSave = true;
-        state.catalogs.push(action.payload);
+        state.record = action.payload;
+        state.didSubmit = true;
       })
       .addCase(SAVE.rejected, (state, action) => {
         state.isLoading = false;
@@ -263,7 +196,6 @@ export const entitySlice = createSlice({
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.didUpdate = true;
         const index = state.catalogs.findIndex(
           (e) => e._id === action.payload._id
         );
@@ -291,5 +223,5 @@ export const entitySlice = createSlice({
   },
 });
 
-export const { RESET, REVERSE } = entitySlice.actions;
+export const { RESET, INJECT, REVERT } = entitySlice.actions;
 export default entitySlice.reducer;

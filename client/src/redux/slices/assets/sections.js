@@ -3,6 +3,7 @@ import { browse, find, save, destroy, update } from "../../sqlbuilder";
 
 const initialState = {
     catalogs: [],
+    handleSections: [],
     handleSubjects: [],
     handleSections: [],
     record: {},
@@ -13,13 +14,13 @@ const initialState = {
     isError: false,
     message: "",
   },
-  entity = "assets/batch";
+  entity = "assets/Sections";
 
 export const BROWSE = createAsyncThunk(
-  `${entity}/enrollment`,
-  async (token, thunkAPI) => {
+  `${entity}/browse`,
+  async ({ token }, thunkAPI) => {
     try {
-      return await browse(`${entity}/enrollment`, "", token);
+      return await browse(`assets/Sections/browse`, "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -33,11 +34,11 @@ export const BROWSE = createAsyncThunk(
   }
 );
 
-export const GETSUBJECTS = createAsyncThunk(
-  `${entity}/getsubjects`,
+export const GETBATCH = createAsyncThunk(
+  `${entity}/getbatch`,
   async ({ token }, thunkAPI) => {
     try {
-      return await browse(`assets/subjects/browse`, "", token);
+      return await browse(`assets/batch/browse`, "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -189,14 +190,14 @@ export const entitySlice = createSlice({
         state.message = action.payload;
       })
       //GETSUBJECTS
-      .addCase(GETSUBJECTS.pending, (state) => {
+      .addCase(GETBATCH.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(GETSUBJECTS.fulfilled, (state, action) => {
+      .addCase(GETBATCH.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.handleSubjects = action.payload;
+        state.catalogs = action.payload;
       })
-      .addCase(GETSUBJECTS.rejected, (state, action) => {
+      .addCase(GETBATCH.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -207,7 +208,7 @@ export const entitySlice = createSlice({
       })
       .addCase(BROWSE.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.catalogs = action.payload;
+        state.handleSections = action.payload;
       })
       .addCase(BROWSE.rejected, (state, action) => {
         state.isLoading = false;
