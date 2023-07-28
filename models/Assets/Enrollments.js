@@ -12,8 +12,15 @@ const modelSchema = new mongoose.Schema(
       ref: "Users",
     },
     level: {
+      type: Number,
+    },
+    strand: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "levels",
+      ref: "Strands",
+    },
+    section: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Sections",
     },
     assessedBy: {
       type: mongoose.Schema.Types.ObjectId,
