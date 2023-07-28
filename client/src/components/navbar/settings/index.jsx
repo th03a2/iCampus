@@ -17,9 +17,10 @@ import SettingsMaxPage from "./maxPage";
 import SettingsCalculator from "./calculator";
 import { isMobile } from "mobile-device-detect";
 import PlatformCard from "./card";
+import platform from "../../../fakeDb/json/platforms.json";
 
 const NavbarSettings = () => {
-  const handleBasicClick = value => {
+  const handleBasicClick = (value) => {
     if (value === basicActive) {
       return;
     }
@@ -36,9 +37,9 @@ const NavbarSettings = () => {
   useEffect(() => {
     function debounce(fn, ms) {
       let timer;
-      return _ => {
+      return (_) => {
         clearTimeout(timer);
-        timer = setTimeout(_ => {
+        timer = setTimeout((_) => {
           timer = null;
           fn.apply(this, arguments);
         }, ms);
@@ -52,11 +53,9 @@ const NavbarSettings = () => {
     return () => window.removeEventListener("resize", debounceResize);
   }, []);
   useEffect(() => {
-    console.log("sonDuty", onDuty);
-
+    let plan = platform.filter((data) => onDuty?.access?.includes(data.code));
     if (onDuty?.access) {
-      // _idUser & BranchId
-      setPortals(onDuty?.access);
+      setPortals(plan);
       onDuty?.access.length === 1 && setBasicActive("tab2");
     }
   }, [onDuty]);

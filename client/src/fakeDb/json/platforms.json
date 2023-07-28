@@ -35,42 +35,14 @@
     "description": "A person who administers and grades examinations to test people's knowledge or proficiency",
     "icon": "pen-fancy"
   },
-  {
-    "code": "laboratory",
-    "title": "Laboratory  Portal",
-    "description": "Laboratory Scientist Portal",
-    "icon": "pen-fancy"
-  },
-  {
-    "code": "radiology",
-    "title": "Radiology  Portal",
-    "description": "Radiology Portals",
-    "icon": "pen-fancy"
-  },
-  {
-    "code": "pharmacy",
-    "title": "Pharmacist  Portal",
-    "description": "Pharmacy Portal",
-    "icon": "pen-fancy"
-  },
+
   {
     "code": "clinical",
     "title": "clinical Portal",
     "description": "Ward Portals",
     "icon": "pen-fancy"
   },
-  {
-    "code": "therapist",
-    "title": "Therapist  Portal",
-    "description": "Physical Therapist Portal",
-    "icon": "pen-fancy"
-  },
-  {
-    "code": "dietician",
-    "title": "Dietician Portal",
-    "description": "educate patients on proper diet and help them manage conditions, such as obesity and diabetes.",
-    "icon": "cash-register"
-  },
+
   {
     "code": "utility",
     "title": "Utilities Portal",
@@ -120,8 +92,14 @@
     "icon": "cash-register"
   },
   {
-    "code": "patron",
-    "title": "Patron Portal",
+    "code": "student",
+    "title": "Student Portal",
+    "description": "a customer, especially a regular one.",
+    "icon": "user-injured"
+  },
+  {
+    "code": "faculty",
+    "title": "Faculty Portal",
     "description": "a customer, especially a regular one.",
     "icon": "user-injured"
   }

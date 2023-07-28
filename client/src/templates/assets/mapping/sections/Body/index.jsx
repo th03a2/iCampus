@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
-import { nameFormatter } from "../../../../../components/utilities";
 import field from "../../../../../fakeDb/json/subjects";
 import level from "../../../../../fakeDb/json/levels";
 
