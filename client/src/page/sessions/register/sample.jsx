@@ -61,6 +61,8 @@ export default function Registration() {
       mobile: "",
       email: "",
       password: "",
+      mother: "",
+      father: "",
       confirmPassword: "",
       agreed: false,
       tabs: {
