@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
+import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import { nameFormatter } from "../../../../../../components/utilities";
-export function Body({ levelId, department }) {
+export function Body({ levelId, department, setVisibility, setContent }) {
   const { theme } = useSelector(({ auth }) => auth);
   const [sections, setSections] = useState([]);
 
-  //   useEffect(() => {
-  //     section && setSections(section);
-  //   }, [section]);
-
   useEffect(() => {
     const findSection = department.filter((data) => data.levelId === levelId);
-    console.log(department);
     if (findSection.length > 0) {
       setSections(findSection);
     } else {
       setSections([]);
     }
   }, [levelId, department]);
+
+  const handleSubjects = (subject) => {
+    setContent(subject);
+    setVisibility(true);
+  };
 
   return (
     <MDBTable align="middle" hover responsive color={theme.color}>
@@ -28,6 +28,7 @@ export function Body({ levelId, department }) {
           <th>Name</th>
           <th>Accumulate</th>
           <th>Adviser</th>
+          <th>Action</th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
@@ -38,6 +39,11 @@ export function Body({ levelId, department }) {
               <td>{data.name}</td>
               <td>{data.accumulate}</td>
               <td>{nameFormatter(data.adviser?.fullName)}</td>
+              <td>
+                <MDBBtn type="button" onClick={() => handleSubjects(data)}>
+                  Subjects
+                </MDBBtn>
+              </td>
             </tr>
           ))
         ) : (

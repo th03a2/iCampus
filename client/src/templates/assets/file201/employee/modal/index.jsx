@@ -41,7 +41,7 @@ export default function Modal({
       const choosen = Array.from(
         new Set(access?.map(({ flatform }) => flatform))
       );
-      const newChoosen = ["headquarter", ...choosen];
+      const newChoosen = ["headquarter", "student", ...choosen];
 
       const _platforms = platform
         .filter(({ code }) => !newChoosen.includes(code))
@@ -59,31 +59,31 @@ export default function Modal({
     setAccess(catalogs);
   }, [catalogs]);
 
-  const handleApproval = (id, flatform, status) => {
+  const handleApproval = (id, platform, status) => {
     dispatch(
       UPDATE({
-        data: { status: status ? false : true, approvedBy: auth._id, flatform },
+        data: { status: status ? false : true, approvedBy: auth._id, platform },
         token,
         id,
       })
     );
   };
 
-  const selectedOption = flatform => {
+  const selectedOption = (platform) => {
     dispatch(
       SAVE({
         form: {
           branchId: onDuty._id,
           userId,
           approvedBy: auth._id,
-          flatform,
+          platform,
         },
         token,
       })
     );
     Swal.fire({
       title: "Successfully",
-      text: `${flatform} Successfully Added`,
+      text: `${platform} Successfully Added`,
       icon: "success",
       timer: 4000,
     });
@@ -97,7 +97,7 @@ export default function Modal({
       inputPlaceholder: "Select platform",
       showCancelButton: true,
       confirmButtonText: "Add",
-    }).then(result => {
+    }).then((result) => {
       if (result.isConfirmed) {
         selectedOption(platforms[result.value]);
       }

@@ -37,6 +37,11 @@ export default [
     icon: "user-tie",
   },
   {
+    name: "Employee",
+    path: "access",
+    icon: "universal-access",
+  },
+  {
     name: "Mapping",
     path: "mapping",
     icon: "user-tie",
