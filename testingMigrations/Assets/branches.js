@@ -1,20 +1,9 @@
 const branches = [
   {
     _id: "637097f0535529a3a57e933e",
-    name: "General Tinio National High School",
-    acronym: "GTNHS",
     companyId: "636ab9ca4b154f3c30400830",
-    companyName: "DepEd",
-    ao: "636d37e0187c30ab0f611ce2",
     category: "jhs",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    isMain: true,
+    principal: "636d37e0187c30ab0f611ce0", // Benedict Earle
     contacts: {
       mobile: "9321852464",
       email: "gtnhs@gmail.com",
@@ -26,34 +15,17 @@ const branches = [
     },
     onDemo: true,
     trial: 30, // left
-    start: "3/12/2023, 10:51:08 AM",
-    settings: {
-      hasMenu: true,
-      hasReference: true,
-      hasEmployee: true,
-      hasVendor: true,
-      hasPhysician: true,
-      hasSectionHead: true,
-      isProperlySetup: false,
-    },
+    start: "3/12/2023, 10:51:08 AM", // trial start
+    strand: ["HUMS", "ABM"],
   },
   {
-    _id: "637097f0535529a3a57e934e",
-    name: "Camp Tinio National High School",
-    acronym: "CTNHS",
-    category: "shs",
+    _id: "637097f0535529a3a57e933f",
     companyId: "636ab9ca4b154f3c30400830",
-    companyName: "DepEd",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
+    category: "shs",
+    principal: "636d37e0187c30ab0f611cf2", // Debralene Gay R.
     contacts: {
       mobile: "9321852464",
-      email: "ctnhs@gmail.com",
+      email: "gtnhs@gmail.com",
     },
     hos: 8,
     schedule: {
@@ -61,56 +33,9 @@ const branches = [
       day: "mon-sat",
     },
     onDemo: true,
-    trial: 30,
-    start: "3/12/2023, 10:51:08 AM",
-  },
-  {
-    _id: "637097f0535529a3a57e935e",
-    name: "Nueva Ecija National High School",
-    acronym: "NENHS",
-    category: "integrated",
-    companyId: "636ab9ca4b154f3c30400830",
-    companyName: "DepEd",
-    ao: "636d37e0187c30ab0f611ce2",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "nenhs@gmail.com",
-    },
-    credentials: { laboratory: "primary" },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
-  },
-  {
-    _id: "637097f0535529a3a57e936e",
-    name: "Cabanatuan East Central School",
-    acronym: "CECS",
-    category: "elem",
-    companyId: "636ab9ca4b154f3c30400830",
-    companyName: "DepEd",
-    address: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: "Mabini Extension",
-      street: "#25",
-    },
-    contacts: {
-      mobile: "9321852464",
-      email: "cecs@gmail.com",
-    },
-    schedule: {
-      time: "8am-5pm",
-      day: "mon-sat",
-    },
+    trial: 30, // left
+    start: "3/12/2023, 10:51:08 AM", // trial start
+    strand: ["HUMS", "ABM"],
   },
 ];
 

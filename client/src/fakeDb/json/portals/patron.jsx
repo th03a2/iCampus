@@ -42,7 +42,7 @@ export default [
     icon: "user-tie",
     children: [
       {
-        name: "Grade Level",
+        name: "Year Level",
         icon: "user-graduate",
         path: "level",
       },

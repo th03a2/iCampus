@@ -98,35 +98,9 @@ export default function Modal({
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
-          <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer`}>
-            <form onSubmit={handleSubmit}>
-              <MDBRow>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Acumulate"
-                    name="accumulate"
-                    value={form.accumulate}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-              </MDBRow>
-              <MDBContainer className="d-flex justify-content-end mt-4">
-                <MDBBtn type="submit">{isUpdate ? "Update" : "Submit"}</MDBBtn>
-              </MDBContainer>
-            </form>
-          </MDBModalBody>
+          <MDBModalBody
+            className={`${theme.bg} ${theme.text} gui-viewer`}
+          ></MDBModalBody>
         </MDBModalContent>
       </MDBModalDialog>
     </MDBModal>

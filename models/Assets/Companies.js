@@ -10,26 +10,18 @@ const modelSchema = new mongoose.Schema(
       trim: true,
     },
     acronym: { type: String },
-    subName: {
+    address: {
+      region: { type: String },
+      province: { type: String },
+      city: { type: String },
+      barangay: { type: String },
+      street: { type: String },
+    },
+    tagline: {
       type: String,
       trim: true,
     },
-    category: {
-      type: String,
-      enum: {
-        values: [
-          "supplier",
-          "laboratory",
-          "outsource",
-          "insource",
-          "support",
-          "clinic",
-          "infirmary",
-        ],
-        message: "{VALUE} is not supported, please select appropriate options",
-      },
-    },
-    tagline: {
+    schoolId: {
       type: String,
       trim: true,
     },

@@ -79,6 +79,7 @@ export default function Enrollees() {
             visibility={visibility}
             setVisibility={setVisibility}
             information={information}
+            setInformation={setInformation}
           />
         )}
       </MDBContainer>

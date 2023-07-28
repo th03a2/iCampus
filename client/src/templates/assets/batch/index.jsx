@@ -61,11 +61,10 @@ export function TBLbatch({
           <th>#</th>
           <th scope="col">Semester </th>
           <th scope="col">SY </th>
-          <th scope="col">Stages </th>
           <th scope="col">Enrollment Start </th>
           <th scope="col">Enrollment End </th>
-          <th scope="col">School Start </th>
-          <th scope="col">School End </th>
+          <th scope="col">Classes Start </th>
+          <th scope="col">Classes End </th>
           <th>Action</th>
         </tr>
       </MDBTableHead>
@@ -76,7 +75,6 @@ export function TBLbatch({
               <td>{1 + index}</td>
               <td>{data.semester}</td>
               <td>{data.SY}</td>
-              <td>{data.stages}</td>
               <td>
                 {new Date(data.e_start).toLocaleDateString(undefined, options)}
               </td>

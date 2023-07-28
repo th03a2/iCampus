@@ -9,77 +9,55 @@ import {
   MDBModalBody,
   MDBInput,
   MDBIcon,
-  MDBContainer,
   MDBRow,
+  MDBTable,
+  MDBTableBody,
+  MDBTableHead,
   MDBCol,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 // import { Statement } from "../../../../../../fakeDb";
 import { SAVE, UPDATE } from "../../../../../../redux/slices/query";
-
-export default function Modal({
-  visibility,
-  setVisibility,
-  update,
-  setIsUpdate,
-  isUpdate,
-}) {
-  const { theme, token } = useSelector(({ auth }) => auth);
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    lvl: "",
-    stage: "",
-  });
-  const dispatch = useDispatch();
+import field from "../../../../../../fakeDb/json/subjects";
+export default function Modal({ visibility, setVisibility, content }) {
+  const { description, subjects, strand } = content,
+    [isStrand, setIsStrand] = useState(false),
+    { theme } = useSelector(({ auth }) => auth),
+    [topic, setTopic] = useState([]),
+    [specifications, setSpecifications] = useState("");
 
   useEffect(() => {
-    if (isUpdate) {
-      setForm(update);
-    }
-  }, [isUpdate]);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isUpdate) {
-      dispatch(
-        UPDATE({
-          entity: "assets/levels",
-          data: form,
-          id: form._id,
-          token,
-        })
+    if (subjects) {
+      const filterField = subjects.map((subject) =>
+        field.find(({ id }) => id === subject)
       );
+      setTopic(filterField);
     } else {
-      dispatch(
-        SAVE({
-          entity: "assets/levels",
-          data: form,
-          token,
-        })
-      );
+      setIsStrand(true);
     }
-    setVisibility(false);
-  };
+  }, [content, field, subjects]);
 
   const handleClose = () => {
     setVisibility(false);
-    setIsUpdate(false);
-    setForm({
-      name: "",
-      description: "",
-      lvl: "",
-      stage: "",
-    });
   };
+  const handleSubmit = () => {};
 
+  const handleSearch = () => {
+    const findStrand = strand.find(
+      (data) => data.specifications === specifications
+    );
+    console.log(findStrand);
+    if (findStrand) {
+      const subjects = [...findStrand.subject];
+
+      const filterField = subjects.map((id) =>
+        field.find((data) => data.id === id)
+      );
+      setTopic(filterField);
+    } else {
+      setTopic([]);
+    }
+  };
   return (
     <MDBModal show={visibility} setShow={setVisibility} staticBackdrop>
       <MDBModalDialog size="lg">
@@ -92,60 +70,55 @@ export default function Modal({
                 style={{ width: "20px" }}
                 color="warning"
               />{" "}
-              Grade Level
+              {description}
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
           <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer`}>
-            <form onSubmit={handleSubmit}>
+            {isStrand && (
               <MDBRow>
                 <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Level"
-                    name="lvl"
-                    value={form.lvl}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <MDBInput
+                      label="Specifications"
+                      value={specifications}
+                      type="text"
+                      onChange={(e) =>
+                        setSpecifications(e.target.value.toUpperCase())
+                      }
+                    />
+                    <MDBBtn onClick={handleSearch}>Search</MDBBtn>
+                  </div>
                 </MDBCol>
               </MDBRow>
-              <MDBRow className="mt-4">
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Stage"
-                    name="stage"
-                    value={form.stage}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Description"
-                    name="description"
-                    value={form.description}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
-              </MDBRow>
-              <MDBContainer className="d-flex justify-content-end mt-4">
-                <MDBBtn type="submit">{isUpdate ? "Update" : "Submit"}</MDBBtn>
-              </MDBContainer>
-            </form>
+            )}
+            <MDBRow>
+              <MDBTable align="middle" hover responsive color={theme.color}>
+                <MDBTableHead>
+                  <tr>
+                    <th>#</th>
+                    <th scope="col" colSpan={5}>
+                      Name{" "}
+                    </th>
+                  </tr>
+                </MDBTableHead>
+                <MDBTableBody>
+                  {topic?.length > 0 ? (
+                    topic.map((data, index) => (
+                      <tr key={`temperature-${index}`}>
+                        <td>{1 + index}</td>
+                        <td>{data.name}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="text-center">
+                      <td colSpan={3}>No Staff accounts.</td>
+                    </tr>
+                  )}
+                </MDBTableBody>
+              </MDBTable>
+            </MDBRow>
+            {/* <form onSubmit={handleSubmit}></form> */}
           </MDBModalBody>
         </MDBModalContent>
       </MDBModalDialog>

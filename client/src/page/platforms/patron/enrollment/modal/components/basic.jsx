@@ -99,9 +99,8 @@ export default function BasicInformation({
 
         <MDBRow className="my-3">
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Unit"
+            <select
+              className="form-control"
               value={form?.units}
               onChange={(e) => {
                 setForm({
@@ -110,7 +109,12 @@ export default function BasicInformation({
                 });
               }}
               required
-            />
+            >
+              <option value={""}>Unit</option>
+              <option value={"old"}>Old</option>
+              <option value={"transferee"}>Transferee</option>
+              <option value={"returnee"}>Returnee</option>
+            </select>
           </MDBCol>
           <MDBCol md={6}>
             <MDBInput
