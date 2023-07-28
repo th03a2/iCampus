@@ -9,12 +9,12 @@ exports.browse = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const { approvedBy, status, flatform } = req.body;
+  const { approvedBy, status, platform } = req.body;
   const data = {
     approvedBy,
     status,
   };
-  Entity.findOneAndUpdate({ userId: req.query.id, flatform }, data, {
+  Entity.findOneAndUpdate({ userId: req.query.id, platform }, data, {
     new: true,
   })
     .then((item) => res.json(item))

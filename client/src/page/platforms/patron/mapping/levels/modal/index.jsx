@@ -17,47 +17,38 @@ import {
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 // import { Statement } from "../../../../../../fakeDb";
-import { SAVE, UPDATE } from "../../../../../../redux/slices/query";
 import field from "../../../../../../fakeDb/json/subjects";
+import levels from "../../../../../../fakeDb/json/levels";
+
 export default function Modal({ visibility, setVisibility, content }) {
-  const { description, subjects, strand } = content,
-    [isStrand, setIsStrand] = useState(false),
-    { theme } = useSelector(({ auth }) => auth),
-    [topic, setTopic] = useState([]),
-    [specifications, setSpecifications] = useState("");
+  // const { description, subjects, strand } = content,
+  const { theme } = useSelector(({ auth }) => auth),
+    [topic, setTopic] = useState([]);
 
   useEffect(() => {
+    const findLevel = levels.find((level) => level.id === content.levelId);
+    const { subjects } = findLevel;
+
     if (subjects) {
-      const filterField = subjects.map((subject) =>
-        field.find(({ id }) => id === subject)
+      const newArray = subjects.map((id) =>
+        field.find((data) => data.id === id)
       );
-      setTopic(filterField);
+      setTopic(newArray);
     } else {
-      setIsStrand(true);
+      const findStrand = findLevel.strand?.find(
+        (data) => data.specifications === content.specification
+      );
+
+      const newArray = [...findStrand.subject];
+      const result = newArray.map((id) => field.find((data) => data.id == id));
+      setTopic(result);
     }
-  }, [content, field, subjects]);
+  }, [content, field]);
 
   const handleClose = () => {
     setVisibility(false);
   };
-  const handleSubmit = () => {};
 
-  const handleSearch = () => {
-    const findStrand = strand.find(
-      (data) => data.specifications === specifications
-    );
-    console.log(findStrand);
-    if (findStrand) {
-      const subjects = [...findStrand.subject];
-
-      const filterField = subjects.map((id) =>
-        field.find((data) => data.id === id)
-      );
-      setTopic(filterField);
-    } else {
-      setTopic([]);
-    }
-  };
   return (
     <MDBModal show={visibility} setShow={setVisibility} staticBackdrop>
       <MDBModalDialog size="lg">
@@ -70,28 +61,11 @@ export default function Modal({ visibility, setVisibility, content }) {
                 style={{ width: "20px" }}
                 color="warning"
               />{" "}
-              {description}
+              {content.name}
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
           <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer`}>
-            {isStrand && (
-              <MDBRow>
-                <MDBCol md={6}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <MDBInput
-                      label="Specifications"
-                      value={specifications}
-                      type="text"
-                      onChange={(e) =>
-                        setSpecifications(e.target.value.toUpperCase())
-                      }
-                    />
-                    <MDBBtn onClick={handleSearch}>Search</MDBBtn>
-                  </div>
-                </MDBCol>
-              </MDBRow>
-            )}
             <MDBRow>
               <MDBTable align="middle" hover responsive color={theme.color}>
                 <MDBTableHead>

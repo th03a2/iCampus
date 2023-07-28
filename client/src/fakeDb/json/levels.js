@@ -69,7 +69,7 @@ const levels = [
     description: "Grade 6",
     lvl: "6",
     category: "elementary",
-    subjects: [1, 2, 3, 4, 5],
+    subjects: [1, 2, 3, 7, 8],
   },
   {
     id: 10,

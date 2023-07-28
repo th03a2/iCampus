@@ -16,7 +16,7 @@ export const BROWSE = createAsyncThunk(
   async (item, thunkAPI) => {
     try {
       return await browse(
-        `${entity}/${item.endPoint ? "employees" : "browse"}`,
+        `${entity}/employees`, //${item.endPoint ? "employees" : "browse"}`
         { key: item.key, branch: item.branch },
         item.token
       );

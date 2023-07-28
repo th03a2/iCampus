@@ -19,6 +19,7 @@ import Articles from "./mapping/articles";
 import Batch from "./batch";
 import Enrollment from "./enrollment";
 import Enrollees from "./enrollees";
+import Access from "./access";
 
 const routes = {
   name: "patron",
@@ -55,6 +56,10 @@ const routes = {
     {
       path: "history",
       element: <History />,
+    },
+    {
+      path: "access",
+      element: <Access />,
     },
     {
       path: "blank",

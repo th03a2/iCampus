@@ -61,7 +61,7 @@ export function TBLemployee({ page, handleAccess }) {
                     </p>
                     <p className="text-muted mb-0">
                       <p className="text-muted mb-0">
-                        {Role.find(petitioner?.designation).name} |{" "}
+                        {Role.find(petitioner?.designation)?.name} |{" "}
                         <MDBBadge
                           color={
                             petitioner.status === "banned" ? "danger" : "info"
