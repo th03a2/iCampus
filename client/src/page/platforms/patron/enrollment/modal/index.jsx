@@ -22,6 +22,7 @@ import Parents from "./components/parents";
 import Guardian from "./components/guardian";
 import Siblings from "./components/siblings";
 import Credentials from "./components/credentials";
+import Personnel from "./components/personnel";
 import { toast } from "react-toastify";
 import { SAVE } from "../../../../../redux/slices/query";
 import { UPLOAD } from "../../../../../redux/slices/assets/persons/auth";
@@ -37,14 +38,17 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
     [sf10Image, setSf10Image] = useState(null),
     [goodmoralImage, setGoodmoralImage] = useState(null),
     [form, setForm] = useState({
-      units: "",
-      levelId: null,
       phone: "",
       attachments: {
         sf10: "",
         goodmoral: "",
         nso: "",
       },
+    }),
+    [schoolInfo, setSchoolInfo] = useState({
+      levelId: 0,
+      specifications: "",
+      units: "",
     });
 
   const [numberOfSiblings, setNumberOfSiblings] = useState(0);
@@ -114,6 +118,7 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
   };
   const [link, setLink] = useState({
     basic: true,
+    personnel: false,
     guardian: false,
     parents: false,
     siblings: false,
@@ -168,8 +173,12 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
 
   const tabs = [
     {
-      title: "Informations",
+      title: "School",
       key: "basic",
+    },
+    {
+      title: "Personnel",
+      key: "personnel",
     },
     {
       title: "Guardian",
@@ -320,11 +329,22 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
           />
         );
 
+      case "personnel":
+        return (
+          <Personnel
+            setForm={setForm}
+            form={form}
+            setActiveItem={setActiveItem}
+            link={link}
+            setLink={setLink}
+          />
+        );
+
       default:
         return (
           <Basic
-            setForm={setForm}
-            form={form}
+            schoolInfo={schoolInfo}
+            setSchoolInfo={setSchoolInfo}
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
@@ -344,11 +364,11 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
             <MDBModalTitle>
               <MDBIcon
                 fas
-                icon="user-graduate"
-                style={{ width: "20px" }}
+                icon="info-circle"
+                style={{ width: "30px" }}
                 color="warning"
               />
-              Enrollment
+              <strong>Information</strong>
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>

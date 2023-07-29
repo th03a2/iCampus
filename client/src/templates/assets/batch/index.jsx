@@ -60,10 +60,10 @@ export function TBLbatch({
         <tr>
           <th rowSpan={2}>#</th>
           <th scope="col" rowSpan={2}>
-            Semester{" "}
+            SY{" "}
           </th>
           <th scope="col" rowSpan={2}>
-            SY{" "}
+            Semester{" "}
           </th>
           <th scope="col" colSpan={2} style={{ paddingLeft: "95px" }}>
             Enrollment
@@ -85,8 +85,8 @@ export function TBLbatch({
           paginationHandler(batch, page, maxPage).map((data, index) => (
             <tr key={`temperature-${index}`}>
               <td>{1 + index}</td>
-              <td>{data.semester}</td>
               <td>{data.SY}</td>
+              <td>{data.semester} semester</td>
               <td>
                 {new Date(data.e_start).toLocaleDateString(undefined, options)}
               </td>

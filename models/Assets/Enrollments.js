@@ -18,10 +18,17 @@ const modelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
-    units: {
+    categorization: {
       type: String,
       enum: {
-        values: ["old", "new", "transferee", "returnee"], //old student, new student, transferre, returnee
+        values: [
+          "freshman",
+          "sophomore",
+          "junior",
+          "senior",
+          "returning",
+          "transferrees ",
+        ], //old student, new student, transferre, returnee
         message: "{VALUE} is not supported, please select appropriate options",
       },
     },

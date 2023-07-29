@@ -108,6 +108,16 @@ export default function Modal({
               <MDBRow>
                 <MDBCol md={6}>
                   <MDBInput
+                    type="text"
+                    label="School Year"
+                    name="SY"
+                    value={form.SY}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBCol>
+                <MDBCol md={6}>
+                  <MDBInput
                     type="number"
                     label="Semester"
                     name="semester"
@@ -116,32 +126,8 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
-                <MDBCol md={6}>
-                  <select
-                    className="form-control"
-                    name="levelId"
-                    onChange={handleChange}
-                    value={form.levelId}
-                    required
-                  >
-                    <option value={""}>Grade Level</option>
-                    {levels.map((level) => (
-                      <option value={level.id}>{level.description}</option>
-                    ))}
-                  </select>
-                </MDBCol>
               </MDBRow>
               <MDBRow className="mt-4">
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="SY"
-                    name="SY"
-                    value={form.SY}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
@@ -152,8 +138,6 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
-              </MDBRow>
-              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
@@ -164,6 +148,8 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
+              </MDBRow>
+              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
@@ -174,8 +160,6 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
-              </MDBRow>
-              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
