@@ -14,7 +14,7 @@ import {
   MDBCol,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
-// import { Statement } from "../../../../../../fakeDb";
+import levels from "../../../../../fakeDb/json/levels";
 import { SAVE, UPDATE } from "../../../../../redux/slices/query";
 
 export default function Modal({
@@ -27,7 +27,7 @@ export default function Modal({
   const { theme, token, onDuty } = useSelector(({ auth }) => auth);
   const [form, setForm] = useState({
     semester: "",
-    stages: "",
+    levelId: 0,
     SY: "",
     e_start: "",
     e_end: "",
@@ -65,7 +65,7 @@ export default function Modal({
       dispatch(
         SAVE({
           entity: "assets/batch",
-          data: { ...form, status: "pending", school_id: onDuty._id },
+          data: { ...form, status: "pending", schoolId: onDuty._id },
           token,
         })
       );
@@ -78,7 +78,7 @@ export default function Modal({
     setIsUpdate(false);
     setForm({
       semester: "",
-      stages: "",
+      levelId: 0,
       SY: "",
       e_start: "",
       e_end: "",
@@ -117,14 +117,18 @@ export default function Modal({
                   />
                 </MDBCol>
                 <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Stages"
-                    name="stages"
-                    value={form.stages}
+                  <select
+                    className="form-control"
+                    name="levelId"
                     onChange={handleChange}
+                    value={form.levelId}
                     required
-                  />
+                  >
+                    <option value={""}>Grade Level</option>
+                    {levels.map((level) => (
+                      <option value={level.id}>{level.description}</option>
+                    ))}
+                  </select>
                 </MDBCol>
               </MDBRow>
               <MDBRow className="mt-4">

@@ -11,9 +11,8 @@ const modelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
-    level: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "levels",
+    levelId: {
+      type: Number,
     },
     assessedBy: {
       type: mongoose.Schema.Types.ObjectId,

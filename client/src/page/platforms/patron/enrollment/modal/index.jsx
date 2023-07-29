@@ -14,6 +14,7 @@ import {
   MDBCard,
   MDBIcon,
   MDBCardBody,
+  MDBContainer,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import Basic from "./components/basic";
@@ -37,7 +38,7 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
     [goodmoralImage, setGoodmoralImage] = useState(null),
     [form, setForm] = useState({
       units: "",
-      level: "",
+      levelId: null,
       phone: "",
       attachments: {
         sf10: "",
@@ -351,32 +352,34 @@ export default function Modal({ visibility, setVisibility, schoolId }) {
             </MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
-          <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer`}>
-            <MDBCard className="h-100">
-              <MDBCardBody>
-                <MDBTabs justify fill>
-                  {tabs.map((tab, index) => (
-                    <MDBTabsItem key={`registration-${index}`}>
-                      <MDBTabsLink
-                        onClick={() => {
-                          if (link[tab.key]) {
-                            setActiveItem(tab.key);
-                          } else {
-                            toast.warn("Complete the previous tab first.");
-                          }
-                        }}
-                        active={activeItem === tab.key}
-                      >
-                        {tab.title}
-                      </MDBTabsLink>
-                    </MDBTabsItem>
-                  ))}
-                </MDBTabs>
-                <MDBTabsContent activeItem={activeItem}>
-                  {handleActiveContent(activeItem)}
-                </MDBTabsContent>
-              </MDBCardBody>
-            </MDBCard>
+          <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer `}>
+            {/* <MDBCard className="h-100">
+              <MDBCardBody> */}
+            <MDBContainer className="shadow-4">
+              <MDBTabs justify fill>
+                {tabs.map((tab, index) => (
+                  <MDBTabsItem key={`registration-${index}`}>
+                    <MDBTabsLink
+                      onClick={() => {
+                        if (link[tab.key]) {
+                          setActiveItem(tab.key);
+                        } else {
+                          toast.warn("Complete the previous tab first.");
+                        }
+                      }}
+                      active={activeItem === tab.key}
+                    >
+                      {tab.title}
+                    </MDBTabsLink>
+                  </MDBTabsItem>
+                ))}
+              </MDBTabs>
+              <MDBTabsContent activeItem={activeItem}>
+                {handleActiveContent(activeItem)}
+              </MDBTabsContent>
+            </MDBContainer>
+            {/* </MDBCardBody>
+            </MDBCard> */}
           </MDBModalBody>
         </MDBModalContent>
       </MDBModalDialog>

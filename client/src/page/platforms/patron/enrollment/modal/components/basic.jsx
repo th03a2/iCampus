@@ -5,11 +5,15 @@ import {
   MDBInput,
   MDBRow,
   MDBBtn,
+  MDBTable,
+  MDBTableBody,
+  MDBTableHead,
 } from "mdb-react-ui-kit";
 import { validateContactNumber } from "../../../../../../components/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { nameFormatter } from "../../../../../../components/utilities";
-import { BROWSE } from "../../../../../../redux/slices/query";
+import levels from "../../../../../../fakeDb/json/levels";
+import field from "../../../../../../fakeDb/json/subjects";
 
 export default function BasicInformation({
   setForm,
@@ -19,23 +23,31 @@ export default function BasicInformation({
   setLink,
 }) {
   const { auth, token } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ query }) => query),
-    [levels, setLevels] = useState([]),
-    dispatch = useDispatch();
+    [topic, setTopic] = useState([]),
+    [isStrand, setIsStrand] = useState(false),
+    [strands, setStrands] = useState([]);
 
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        entity: "assets/levels",
-        data: "",
-        token,
-      })
-    );
-  }, [catalogs]);
+    if (form.levelId) {
+      const filterLevel = levels.find((data) => data.id === form.levelId);
+      const { subjects, strand } = filterLevel;
 
-  useEffect(() => {
-    setLevels(catalogs);
-  }, [catalogs]);
+      if (subjects) {
+        const filterSubjects = subjects.map((id) =>
+          field.find((data) => data.id === id)
+        );
+        setTopic([...filterSubjects]);
+        setIsStrand(false);
+      } else {
+        setStrands([...strand]);
+        setIsStrand(true);
+        setTopic([]);
+      }
+    } else {
+      setTopic([]);
+      setIsStrand(false);
+    }
+  }, [form.levelId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -138,23 +150,65 @@ export default function BasicInformation({
             <select
               className="form-control"
               required
-              value={form.level}
+              value={form.levelId}
               onChange={(e) =>
                 setForm({
                   ...form,
-                  level: e.target.value,
+                  levelId: Number(e.target.value),
                 })
               }
             >
               <option value={""}> Grade Levels</option>
 
-              {catalogs.map((data) => (
-                <option value={data._id}> {data.lvl}</option>
+              {levels.map((level, index) => (
+                <option value={level.id} key={index}>
+                  {" "}
+                  {level.description}
+                </option>
               ))}
             </select>
           </MDBCol>
+          <MDBCol md={6}>
+            {isStrand && (
+              <select className="form-control">
+                <option value={""}>Strand</option>
+                {strands.length > 0 &&
+                  strands.map((strand) => (
+                    <option>{strand.specifications}</option>
+                  ))}
+              </select>
+            )}
+          </MDBCol>
         </MDBRow>
-
+        <h5 className="mt-4 text-center">
+          <strong>Subjects</strong>
+        </h5>
+        <MDBRow className="d-flex justify-content-center">
+          <MDBCol md={6}>
+            <MDBTable
+              align="middle"
+              hover
+              responsive
+              className="table table-hover"
+            >
+              <MDBTableHead>
+                <tr>
+                  <th>#</th>
+                  <th scope="col">Name </th>
+                </tr>
+              </MDBTableHead>
+              <MDBTableBody>
+                {topic.length > 0 &&
+                  topic.map((data, index) => (
+                    <tr>
+                      <td>{index}</td>
+                      <td>{data.name}</td>
+                    </tr>
+                  ))}
+              </MDBTableBody>
+            </MDBTable>
+          </MDBCol>
+        </MDBRow>
         <div className="text-end">
           <MDBBtn type="submit">Next</MDBBtn>
         </div>

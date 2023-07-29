@@ -58,13 +58,25 @@ export function TBLbatch({
       </caption>
       <MDBTableHead>
         <tr>
-          <th>#</th>
-          <th scope="col">Semester </th>
-          <th scope="col">SY </th>
-          <th scope="col">Enrollment Start </th>
-          <th scope="col">Enrollment End </th>
-          <th scope="col">Classes Start </th>
-          <th scope="col">Classes End </th>
+          <th rowSpan={2}>#</th>
+          <th scope="col" rowSpan={2}>
+            Semester{" "}
+          </th>
+          <th scope="col" rowSpan={2}>
+            SY{" "}
+          </th>
+          <th scope="col" colSpan={2} style={{ paddingLeft: "95px" }}>
+            Enrollment
+          </th>
+          <th scope="col" colSpan={2} style={{ paddingLeft: "110px" }}>
+            Class
+          </th>
+        </tr>
+        <tr>
+          <th>Start</th>
+          <th>End</th>
+          <th>Start</th>
+          <th>End</th>
           <th>Action</th>
         </tr>
       </MDBTableHead>
@@ -88,10 +100,10 @@ export function TBLbatch({
                 {new Date(data.c_end).toLocaleDateString(undefined, options)}
               </td>
               <td>
-                <MDBBtnGroup>
-                  <MDBBtn color="danger" onClick={() => handleDelete(data._id)}>
+                <MDBBtnGroup size="sm">
+                  {/* <MDBBtn color="danger" onClick={() => handleDelete(data._id)}>
                     <MDBIcon fas icon="trash" />
-                  </MDBBtn>
+                  </MDBBtn> */}
                   <MDBBtn onClick={() => handleUpdate(data)}>
                     <MDBIcon fas icon="pencil-alt" />
                   </MDBBtn>

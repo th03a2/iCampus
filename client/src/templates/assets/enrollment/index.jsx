@@ -46,9 +46,9 @@ export function TBLenrollment({ schools, page, setSchoolId, setVisibility }) {
           paginationHandler(schools, page, maxPage).map((school, index) => (
             <tr key={`temperature-${index}`}>
               <td>{1 + index}</td>
-              <td>{school.school_id?.name}</td>
-              <td>{school.school_id?.category}</td>
-              <td>{addressFormatter(school.school_id?.address)}</td>
+              <td>{school.schoolId?.name}</td>
+              <td>{school.schoolId?.category}</td>
+              <td>{addressFormatter(school.schoolId?.address)}</td>
               <td>
                 <MDBBtnGroup>
                   <MDBBtn

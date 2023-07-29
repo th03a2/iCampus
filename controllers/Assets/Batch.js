@@ -32,8 +32,8 @@ exports.browse = (req, res) => {
 };
 
 exports.enrollment = (req, res) => {
-  Entity.find({ status: "start" })
-    .populate("school_id")
+  Entity.find({ schoolId: req.query.branch, status: "start" })
+    .populate("schoolId")
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 };

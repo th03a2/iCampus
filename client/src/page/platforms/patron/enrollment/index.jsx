@@ -14,7 +14,7 @@ const path = [
 ];
 
 export default function Enrollment() {
-  const { token, maxPage, theme } = useSelector(({ auth }) => auth),
+  const { token, maxPage, theme, onDuty } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ enrollment }) => enrollment),
     [visibility, setVisibility] = useState(false),
     [schools, setSchools] = useState([]),
@@ -24,12 +24,15 @@ export default function Enrollment() {
     dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        token,
-      })
-    );
-  }, [dispatch, token]);
+    if (onDuty._id) {
+      dispatch(
+        BROWSE({
+          branch: onDuty._id,
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
     setSchools(catalogs);

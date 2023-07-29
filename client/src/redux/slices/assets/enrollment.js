@@ -17,9 +17,13 @@ const initialState = {
 
 export const BROWSE = createAsyncThunk(
   `${entity}/enrollment`,
-  async (token, thunkAPI) => {
+  async (item, thunkAPI) => {
     try {
-      return await browse(`${entity}/enrollment`, "", token);
+      return await browse(
+        `${entity}/enrollment`,
+        { key: item.key, branch: item.branch },
+        item.token
+      );
     } catch (error) {
       const message =
         (error.response &&

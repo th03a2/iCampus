@@ -7,7 +7,7 @@ const modelSchema = new mongoose.Schema(
       ref: "Branches",
     },
     semester: { type: Number },
-    stages: { type: String },
+    levelId: { type: Number },
     SY: { type: String },
     e_start: { type: String }, //enrollment start
     e_end: { type: String }, //enrollment end

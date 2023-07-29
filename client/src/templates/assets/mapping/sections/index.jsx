@@ -23,34 +23,6 @@ export function TBLsections({ sections, page }) {
     setActiveIndex(activeIndex === index ? -1 : index);
   };
 
-  // const handleUpdate = (school) => {
-  //   setVisibility(true);
-  //   setUpdate(school);
-  //   setIsUpdate(true);
-  // };
-  // const handleDelete = (id) => {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "You won't be able to revert this!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete it!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       dispatch(
-  //         DESTROY({
-  //           entity: "assets/Sections",
-  //           id,
-  //           token,
-  //         })
-  //       );
-  //       Swal.fire("Deleted!", "Your file has been deleted.", "success");
-  //     }
-  //   });
-  // };
-
   return (
     <MDBContainer>
       <MDBCard className="mt-4">

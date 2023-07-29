@@ -18,21 +18,24 @@ import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/assets/levels";
 import { Body } from "./Body";
 import Modal from "./modal";
+
 const path = [
   {
     path: "Levels",
   },
 ];
+
 export default function Levels() {
-  const { maxPage, token, onDuty } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ levels }) => levels),
-    [sections, setSections] = useState([]),
-    [content, setContent] = useState({}),
-    [visibility, setVisibility] = useState(false),
-    [activeIndex, setActiveIndex] = useState(null),
-    [totalPages, setTotalPages] = useState(1),
-    [page, setPage] = useState(1),
-    dispatch = useDispatch();
+  const { maxPage, token, onDuty } = useSelector(({ auth }) => auth);
+  const { catalogs } = useSelector(({ levels }) => levels);
+  const [sections, setSections] = useState([]);
+  const [content, setContent] = useState({});
+  const [visibility, setVisibility] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (catalogs.length === 0) {
       dispatch(
@@ -56,6 +59,7 @@ export default function Levels() {
       page > totalPages && setPage(totalPages);
     }
   }, [levels, page, maxPage]);
+
   const toggleShow = (index) => {
     setActiveIndex(activeIndex === index ? -1 : index);
   };
@@ -63,60 +67,74 @@ export default function Levels() {
   return (
     <>
       <BreadCrumb title="Levels" paths={path} />
-      <MDBContainer className="py-5 mt-5 bg-white">
-        {/* <MDBCard className="mt-4"> */}
+      <MDBContainer className="py-5 mt-5">
         <Pager setPage={setPage} total={totalPages} page={page} />
-        {/* <MDBCardBody> */}
-        <div className="row  text-dark font-weight-bold mb-3">
-          <div className="col-1">#</div>
-          <div className="col-2">Name</div>
-          <div className="col-2">Abbreviation</div>
-          <div className="col-2">stage</div>
-          <div className="col-2">Sections</div>
-        </div>
-        {levels?.length > 0 ? (
-          paginationHandler(levels, page, maxPage).map((level, index) => (
-            <div className="row mb-3" key={index}>
-              <div className="col-1">{1 + index}</div>
-              <div className="col-2">{level.description}</div>
-              <div className="col-2">{level.name}</div>
-              <div className="col-2">{level.stage}</div>
-              <div className="col-2">
-                <MDBBtn
-                  onClick={() => toggleShow(index)}
-                  size="sm"
-                  className="shadow-0 ms-3"
-                >
-                  <MDBIcon
-                    icon={`caret-${activeIndex === index ? "down" : "left"}`}
-                    color="white"
-                  />
-                </MDBBtn>
-              </div>
-
-              <div className="col-2"></div>
-              {activeIndex === index && (
-                <div className="w-100">
-                  <div className="row mt-3">
-                    <div className="col">
-                      <Body
-                        levelId={level.id}
-                        department={sections}
-                        setActiveIndex={setActiveIndex}
-                        setVisibility={setVisibility}
-                        setContent={setContent}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
+        <MDBCard className="mt-2">
+          <MDBCardBody>
+            <div className="table-responsive">
+              <table className="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Abbreviation</th>
+                    <th>Stage</th>
+                    <th>Sections</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {levels?.length > 0 ? (
+                    paginationHandler(levels, page, maxPage).map(
+                      (level, index) => (
+                        <React.Fragment key={index}>
+                          <tr
+                            onClick={() => toggleShow(index)}
+                            className="cursor-pointer"
+                          >
+                            <td>{1 + index}</td>
+                            <td>{level.description}</td>
+                            <td>{level.name}</td>
+                            <td>{level.stage}</td>
+                            <td>
+                              <MDBIcon
+                                icon={`caret-${
+                                  activeIndex === index ? "down" : "left"
+                                }`}
+                                color="primary"
+                                className="ml-3"
+                              />
+                            </td>
+                            <td></td>
+                          </tr>
+                          {activeIndex === index && (
+                            <tr>
+                              <td colSpan="6">
+                                <Body
+                                  levelId={level.id}
+                                  department={sections}
+                                  setActiveIndex={setActiveIndex}
+                                  setVisibility={setVisibility}
+                                  setContent={setContent}
+                                />
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      )
+                    )
+                  ) : (
+                    <tr>
+                      <td colSpan="6">
+                        <MDBTypography>No levels</MDBTypography>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-          ))
-        ) : (
-          <MDBTypography>No levels</MDBTypography>
-        )}
-        {/* </MDBCardBody> */}
-        {/* </MDBCard> */}
+          </MDBCardBody>
+        </MDBCard>
         {visibility && (
           <Modal
             visibility={visibility}

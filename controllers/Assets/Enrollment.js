@@ -16,7 +16,6 @@ exports.browse = (req, res) => {
   Entity.find()
     .populate("batch")
     .populate("student")
-    .populate("level")
     .then((batchs) => {
       const batchFilter = batchs.filter((item) => !item.deletedAt);
 
