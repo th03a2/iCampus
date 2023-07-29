@@ -27,7 +27,7 @@ const SidebarCard = ({
 
   useEffect(() => {
     const child = menus.children.find(
-      (child) =>
+      child =>
         `/${BASE}/${onDuty?.platform}/${menus.path}/${child.path}` ===
         currentPath
     );
@@ -39,7 +39,7 @@ const SidebarCard = ({
   }, [currentPath, menus]);
 
   useEffect(() => {
-    const handleEvent = (e) =>
+    const handleEvent = e =>
       e.target.id !== `side-${menus.name}` && setActiveMenu(null);
 
     if (menus.name === activeMenu) {
@@ -61,7 +61,7 @@ const SidebarCard = ({
           className="dropbtn-sidebar m-0 px-0 w-100 shadow-0 text-light"
           color="transparent"
           onClick={() => {
-            setActiveMenu((prev) => (prev === menus.name ? null : menus.name));
+            setActiveMenu(prev => (prev === menus.name ? null : menus.name));
           }}
         >
           <MDBIcon

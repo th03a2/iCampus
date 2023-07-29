@@ -273,32 +273,25 @@ export const authSlice = createSlice({
     PROGRESS: (state, { payload }) => {
       state.progress = payload;
     },
-    RESET: (state) => {
+    RESET: state => {
       state.isSuccess = false;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // LOGIN
-      .addCase(LOGIN.pending, (state) => {
+      .addCase(LOGIN.pending, state => {
         state.isLoading = true;
       })
       .addCase(LOGIN.fulfilled, (state, action) => {
         const { auth, token, branches, isCeo, access } = action.payload;
         state.auth = auth;
-        // const filter = access.filter(
-        //   (data) => data === "manager" || data === "medtech" || data === "owner"
-        // );
 
-        // const cart = JSON.parse(localStorage.getItem(`${state.auth._id}`));
-        // socket.emit("recived_cart", filter.length ? filter[0] : cart);
-        //para malaman kung pwede ba siyang mag approve sa mga request
-        // state.access = filter[0] ? filter[0] : "";
         let _branches = branches.map(
           ({ _id, companyId, designation, name, company, status }) => {
             let _access = [];
             _access = access
-              .filter((data) => _id === data.branchId)
+              .filter(data => _id === data.branchId)
               .map(({ platform }) => platform.toLowerCase());
             return {
               _id,
@@ -368,7 +361,7 @@ export const authSlice = createSlice({
       })
 
       // VALIDATE USER ON REFRESH
-      .addCase(REFRESH.pending, (state) => {
+      .addCase(REFRESH.pending, state => {
         state.isLoading = true;
       })
       .addCase(REFRESH.fulfilled, (state, { payload }) => {
@@ -385,7 +378,7 @@ export const authSlice = createSlice({
         let _branches = branches.map(
           ({ _id, companyId, designation, name, company, status }) => {
             let _access = access
-              .filter((data) => _id === data.branchId)
+              .filter(data => _id === data.branchId)
               .map(({ platform }) => platform.toLowerCase());
             return {
               _id,
@@ -431,7 +424,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(LOGOUT.pending, (state) => {
+      .addCase(LOGOUT.pending, state => {
         state.isLoading = true;
       })
       .addCase(LOGOUT.fulfilled, (state, action) => {
@@ -446,7 +439,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(ATTENDANCE.pending, (state) => {
+      .addCase(ATTENDANCE.pending, state => {
         state.isLoading = true;
       })
       .addCase(ATTENDANCE.fulfilled, (state, action) => {
@@ -458,7 +451,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(UPDATE.pending, (state) => {
+      .addCase(UPDATE.pending, state => {
         state.isLoading = true;
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
@@ -469,7 +462,7 @@ export const authSlice = createSlice({
       .addCase(UPDATE.rejected, (state, action) => {
         state.isLoading = false;
       })
-      .addCase(ACTIVEPLATFORM.pending, (state) => {
+      .addCase(ACTIVEPLATFORM.pending, state => {
         state.isLoading = true;
       })
       .addCase(ACTIVEPLATFORM.fulfilled, (state, action) => {
@@ -481,7 +474,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(CHANGEPASSWORD.pending, (state) => {
+      .addCase(CHANGEPASSWORD.pending, state => {
         state.isLoading = true;
       })
       .addCase(CHANGEPASSWORD.fulfilled, (state, action) => {
@@ -492,7 +485,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(UPLOAD.pending, (state) => {
+      .addCase(UPLOAD.pending, state => {
         state.isLoading = true;
       })
       .addCase(UPLOAD.fulfilled, (state, action) => {
