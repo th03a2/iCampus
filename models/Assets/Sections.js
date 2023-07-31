@@ -5,9 +5,8 @@ const modelSchema = new mongoose.Schema(
     batchId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "batchs",
-      // required: true,
+      required: true,
     },
-
     adviser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
@@ -16,20 +15,8 @@ const modelSchema = new mongoose.Schema(
     specification: { type: String },
     levelId: { type: Number },
     accumulate: { type: String }, //
-    studenArr: { type: Array }, //
+    studenArr: { type: Array }, // students.length/accumulate
     deletedAt: { type: String },
-    // user: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Users",
-    // },
-    // category: {
-    //   type: String,
-    //   enum: {
-    //     values: ["brand-new", "refurbish"],
-    //     message: "{VALUE} is not supported",
-    //   },
-    //   default: "refurbish",
-    // },
   },
   {
     timestamps: true,

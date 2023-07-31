@@ -8,6 +8,7 @@ const modelSchema = new mongoose.Schema(
       mobile: { type: String },
       email: { type: String },
     },
+    name: { type: String },
     category: {
       type: String,
       enum: {

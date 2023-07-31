@@ -33,24 +33,24 @@ const TopNavigation = ({ toggle }) => {
     [role, setRole] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    socket.on("send_cart", data => {
-      if (!!data) {
-        if (data === "medtech" || data === "manager" || data === "medtech") {
-          setHasPendingPurchase(false);
-        } else {
-          if (data.length !== 0) {
-            setHasPendingPurchase(true);
-            setQuantity(data.length);
-          } else {
-            setHasPendingPurchase(false);
-          }
-        }
-      } else {
-        setHasPendingPurchase(false);
-      }
-    });
-  }, [auth._id]);
+  // useEffect(() => {
+  //   socket.on("send_cart", data => {
+  //     if (!!data) {
+  //       if (data === "medtech" || data === "manager" || data === "medtech") {
+  //         setHasPendingPurchase(false);
+  //       } else {
+  //         if (data.length !== 0) {
+  //           setHasPendingPurchase(true);
+  //           setQuantity(data.length);
+  //         } else {
+  //           setHasPendingPurchase(false);
+  //         }
+  //       }
+  //     } else {
+  //       setHasPendingPurchase(false);
+  //     }
+  //   });
+  // }, [auth._id]);
 
   useEffect(() => {
     if (!!cart) {
@@ -94,7 +94,7 @@ const TopNavigation = ({ toggle }) => {
               <MDBTooltip
                 tag="span"
                 wrapperClass="d-inline-block"
-                title={onDuty?.company}
+                title={Company?.name}
                 placement="bottom"
               >
                 <MDBBadge
@@ -113,7 +113,7 @@ const TopNavigation = ({ toggle }) => {
                 placement="bottom"
               >
                 <MDBBadge pill className="cursor-pointer">
-                  {role?.name}
+                  {onDuty?.category?.toUpperCase()}
                 </MDBBadge>
               </MDBTooltip>
             </MDBNavbarItem>

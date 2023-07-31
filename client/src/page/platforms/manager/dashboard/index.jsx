@@ -8,7 +8,8 @@ import DashboardCompleted from "../../../../widgets/progress/completed";
 import Registers from "../../../../widgets/progress/daily";
 
 const Manager = () => {
-  const { theme } = useSelector(({ auth }) => auth);
+  const { theme, onDuty } = useSelector(({ auth }) => auth);
+  console.log("onDuty", onDuty);
   // auth, onDuty
   return (
     <>
