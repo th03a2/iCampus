@@ -47,7 +47,6 @@ exports.saveSiblings = (req, res) => {
   User.find({ _id: req.query.id })
     .then((datas) => {
       if (!datas || datas.length === 0) {
-        console.log("No matching user found.");
         return res.status(404).json({ error: "No matching user found." });
       }
 
@@ -74,17 +73,14 @@ exports.saveSiblings = (req, res) => {
               res.json({ message: "Siblings updated successfully." });
             })
             .catch((error) => {
-              console.error("Failed to update siblings:", error);
               res.status(500).json({ error: "Failed to update siblings." });
             });
         })
         .catch((error) => {
-          console.error("Failed to create user:", error);
           res.status(500).json({ error: "Failed to create user." });
         });
     })
     .catch((error) => {
-      console.error("Error fetching user:", error);
       res.status(500).json({ error: "Failed to fetch user." });
     });
 };
@@ -107,40 +103,7 @@ exports.addSiblings = (req, res) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.getGuardian = (req, res) => {
-  User.find({ _id: req.query.id })
-    .then((datas) => {
-      const guardian = datas.find((data) => !data.deletedAt);
-      res.json(guardian);
-    })
-    .catch((err) => res.status(400).json(err));
-};
-
-exports.getSiblings = (req, res) => {
-  User.find({ _id: req.query.id })
-    .then((datas) => {
-      const users = datas.filter((user) => !user.deletedAt);
-      const siblingsArray = users.flatMap((user) => user.siblings);
-      if (siblingsArray.length > 0) {
-        Promise.all(siblingsArray.map((id) => User.find({ _id: id })))
-          .then((siblingsData) => {
-            const flattenedData = siblingsData.flat();
-            const searchSiblings = flattenedData.map((data) => data);
-
-            res.json(searchSiblings);
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).json({ error: "Failed to fetch siblings data." });
-          });
-      } else {
-        res.json([]);
-      }
-    })
-    .catch((err) => res.status(400).json({ err }));
-};
-
-exports.siblings = (req, res) => {
+exports.search = (req, res) => {
   User.find({
     // dob: req.query.dob,
     // Remarks: its a case sensitive

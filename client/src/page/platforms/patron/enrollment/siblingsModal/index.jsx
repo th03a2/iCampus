@@ -46,7 +46,7 @@ export default function SiblingsModal({ visibility, setVisibility }) {
     } else if (_siblings) {
       _siblings = `?key=${_siblings}`;
     }
-    await axios.get(`assets/persons/users/siblings${_siblings}`).then((res) => {
+    await axios.get(`assets/persons/users/search${_siblings}`).then((res) => {
       if (res.data.error) {
         toast.warn(res.data.error);
         throw new Error(res.data.error);

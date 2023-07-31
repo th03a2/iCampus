@@ -90,6 +90,11 @@ export default function Personnel({
 
         <MDBRow className="my-3">
           <MDBCol md={6}>
+            <MDBInputGroup textBefore="Email">
+              <input value={auth.email} className="form-control" readOnly />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={6}>
             <MDBInputGroup textBefore="Mobile (+63)">
               <input
                 value={form.phone}

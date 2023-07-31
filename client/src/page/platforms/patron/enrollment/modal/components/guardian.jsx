@@ -16,6 +16,7 @@ export default function Guardian({
   const { auth } = useSelector(({ auth }) => auth);
   const [visibility, setVisibility] = useState(false);
   const [hasGuardian, setHasGuardian] = useState(false);
+  const [noSubmitted, setNoSubmitted] = useState(true);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -36,30 +37,10 @@ export default function Guardian({
       setHasGuardian(false);
     } else {
       setHasGuardian(true);
-      getGuardian();
+      setGuardian(auth.yourGuardian);
     }
   }, [auth.guardian]);
 
-  const getGuardian = async () => {
-    let _siblings = auth.guardian;
-    if (typeof _siblings === "object") {
-      _siblings = `?${Object.keys(_siblings)
-        .map((i) => `${i}=${_siblings[i]}`)
-        .join("&")}`;
-    } else if (_siblings) {
-      _siblings = `?key=${_siblings}`;
-    }
-    await axios
-      .get(`assets/persons/users/getGuardian${_siblings}`)
-      .then((res) => {
-        if (res.data.error) {
-          toast.warn(res.data.error);
-          throw new Error(res.data.error);
-        } else {
-          setGuardian(res.data);
-        }
-      });
-  };
   return (
     <MDBContainer className="mt-4">
       <form onSubmit={handleSubmit}>
@@ -71,6 +52,7 @@ export default function Guardian({
                   type="text"
                   className="form-control"
                   readOnly
+                  onClick={handleModal}
                   value={nameFormatter(guardian.fullName)}
                 />
               ) : (
@@ -78,6 +60,8 @@ export default function Guardian({
                   type="text"
                   className="form-control"
                   onClick={handleModal}
+                  value={noSubmitted ? "" : nameFormatter(guardian.fullName)}
+                  required
                 />
               )}
             </MDBInputGroup>
@@ -97,6 +81,7 @@ export default function Guardian({
       </form>
       {visibility && (
         <GuardianModal
+          setNoSubmitted={setNoSubmitted}
           setVisibility={setVisibility}
           visibility={visibility}
           guardian={guardian}

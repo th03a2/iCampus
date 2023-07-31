@@ -24,28 +24,12 @@ export default function Siblings({ setActiveItem, link, setLink }) {
   const options = { year: "numeric", month: "long", day: "numeric" };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `assets/persons/users/getSiblings?id=${auth._id}`
-        );
-        if (response.data.error) {
-          toast.warn(response.data.error);
-          throw new Error(response.data.error);
-        } else {
-          if (response.data[0] === null) {
-            setSiblings([]);
-          } else {
-            setSiblings(response.data);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [auth._id]);
+    if (auth.yourSiblings.length > 0) {
+      setSiblings(auth.yourSiblings);
+    } else {
+      setSiblings([]);
+    }
+  }, [auth.yourSiblings]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

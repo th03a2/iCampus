@@ -133,6 +133,7 @@ export default function Modal({
   });
 
   const [guardian, setGuardian] = useState({
+    id: "",
     fullName: {
       fname: "",
       mname: "",
@@ -142,8 +143,9 @@ export default function Modal({
     isMale: true,
     mobile: "",
     dob: "",
-    relationShip: "",
+    relationship: "",
   });
+  console.log(guardian);
 
   const [parents, setParents] = useState({
     father: {
@@ -242,22 +244,7 @@ export default function Modal({
               specifications: schoolInfo.specifications,
               status: "pending",
             },
-            guardians:
-              siblingsData.length > 0
-                ? [
-                    { ...guardian, studentId: auth._id },
-                    { ...parents.father, studentId: auth._id },
-                    { ...parents.mother, studentId: auth._id },
-                    ...siblingsData.map((sibling) => ({
-                      ...sibling,
-                      studentId: auth._id,
-                    })),
-                  ]
-                : [
-                    { ...guardian, studentId: auth._id },
-                    { ...parents.father, studentId: auth._id },
-                    { ...parents.mother, studentId: auth._id },
-                  ],
+            guardians: guardian,
           },
           token,
         })
