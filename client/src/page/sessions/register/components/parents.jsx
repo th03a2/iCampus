@@ -18,7 +18,7 @@ export default function Parents({ setForm, form, setActiveItem }) {
     [mother, setMother] = useState({}),
     dispatch = useDispatch();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const tabs = { ...form.tabs };
@@ -40,7 +40,7 @@ export default function Parents({ setForm, form, setActiveItem }) {
     }
   };
 
-  const handleSearch = gender => {
+  const handleSearch = (gender) => {
     setGender(gender);
     setLook(true);
   };

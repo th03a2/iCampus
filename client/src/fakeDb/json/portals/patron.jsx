@@ -112,5 +112,17 @@ export default [
     name: "Enrollees",
     icon: "restroom",
     path: "enrollees",
+    children: [
+      {
+        name: "Pending",
+        icon: "thumbs-down",
+        path: "pending",
+      },
+      {
+        name: "Approved",
+        icon: "thumbs-up",
+        path: "approved",
+      },
+    ],
   },
 ];

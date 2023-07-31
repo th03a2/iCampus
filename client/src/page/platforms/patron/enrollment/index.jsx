@@ -18,7 +18,7 @@ export default function Enrollment() {
     { catalogs } = useSelector(({ enrollment }) => enrollment),
     [visibility, setVisibility] = useState(false),
     [schools, setSchools] = useState([]),
-    [schoolId, setSchoolId] = useState({}),
+    [schoolInformation, setSchoolInformation] = useState({}),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
@@ -72,14 +72,14 @@ export default function Enrollment() {
         <TBLenrollment
           schools={schools}
           page={page}
-          setSchoolId={setSchoolId}
+          setSchoolInformation={setSchoolInformation}
           setVisibility={setVisibility}
         />
         {visibility && (
           <Modal
             visibility={visibility}
             setVisibility={setVisibility}
-            schoolId={schoolId}
+            schoolInformation={schoolInformation}
           />
         )}
       </MDBContainer>

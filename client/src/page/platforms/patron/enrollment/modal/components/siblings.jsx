@@ -1,22 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   MDBContainer,
   MDBBtn,
-  MDBCheckbox,
   MDBRow,
   MDBCol,
   MDBInput,
+  MDBTable,
+  MDBTableBody,
+  MDBTableHead,
+  MDBInputGroup,
+  MDBIcon,
 } from "mdb-react-ui-kit";
+import SiblingsModal from "../../siblingsModal";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { nameFormatter, getAge } from "../../../../../../components/utilities";
 
-export default function Siblings({
-  handleNumberOfSiblingsChange,
-  siblingsData,
-  handleInputChange,
-  numberOfSiblings,
-  setActiveItem,
-  link,
-  setLink,
-}) {
+export default function Siblings({ setActiveItem, link, setLink }) {
+  const { auth } = useSelector(({ auth }) => auth);
+  const [visibility, setVisibility] = useState(false);
+  const [siblings, setSiblings] = useState([]);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `assets/persons/users/getSiblings?id=${auth._id}`
+        );
+        if (response.data.error) {
+          toast.warn(response.data.error);
+          throw new Error(response.data.error);
+        } else {
+          if (response.data[0] === null) {
+            setSiblings([]);
+          } else {
+            setSiblings(response.data);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [auth._id]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -31,119 +61,56 @@ export default function Siblings({
   return (
     <MDBContainer className="mt-4">
       <form onSubmit={handleSubmit}>
-        <div className="container mt-4">
-          <label htmlFor="numberOfSiblings" className="form-label">
-            How many siblings do you have?
-          </label>
-          <input
-            type="number"
-            id="numberOfSiblings"
-            value={numberOfSiblings}
-            onChange={handleNumberOfSiblingsChange}
-            className="form-control"
-          />
-
-          {siblingsData.map((data, index) => (
-            <div key={index} className="mb-4">
-              <MDBRow>
-                <MDBCol md={4}>
-                  <label htmlFor={`fname${index + 1}`} className="form-label">
-                    First Name:
-                  </label>
-                  <input
-                    type="text"
-                    id={`fname${index + 1}`}
-                    value={data.fname || ""}
-                    onChange={(e) =>
-                      handleInputChange(index, "fname", e.target.value)
-                    }
-                    className="form-control"
-                    required
-                  />
-                </MDBCol>
-                <MDBCol md={4}>
-                  <label htmlFor={`mname${index + 1}`} className="form-label">
-                    Middle Name:
-                  </label>
-                  <input
-                    type="text"
-                    id={`mname${index + 1}`}
-                    value={data.mname || ""}
-                    onChange={(e) =>
-                      handleInputChange(index, "mname", e.target.value)
-                    }
-                    className="form-control"
-                  />
-                </MDBCol>
-                <MDBCol md={4}>
-                  <label htmlFor={`lname${index + 1}`} className="form-label">
-                    Last Name:
-                  </label>
-                  <input
-                    type="text"
-                    id={`lname${index + 1}`}
-                    value={data.lname || ""}
-                    required
-                    onChange={(e) =>
-                      handleInputChange(index, "lname", e.target.value)
-                    }
-                    className="form-control"
-                  />
-                </MDBCol>
-              </MDBRow>
-              <MDBRow>
-                <MDBCol md={4}>
-                  <label htmlFor={`bday${index + 1}`} className="form-label">
-                    Date of Birth:
-                  </label>
-                  <input
-                    required
-                    type="date"
-                    id={`bday${index + 1}`}
-                    value={data.dob || ""}
-                    onChange={(e) =>
-                      handleInputChange(index, "dob", e.target.value)
-                    }
-                    className="form-control"
-                  />
-                </MDBCol>
-                {/* <MDBCol md={4}>
-                  <label htmlFor={`age${index + 1}`} className="form-label">
-                    Age:
-                  </label>
-                  <input
-                    type="number"
-                    id={`age${index + 1}`}
-                    value={data.age || ""}
-                    onChange={(e) =>
-                      handleInputChange(index, "age", e.target.value)
-                    }
-                    className="form-control"
-                  />
-                </MDBCol> */}
-                <MDBCol md={4}>
-                  <label htmlFor={`gender${index + 1}`} className="form-label">
-                    Gender:
-                  </label>
-                  <select
-                    required
-                    id={`gender${index + 1}`}
-                    value={data.isMale || ""}
-                    onChange={(e) =>
-                      handleInputChange(index, "isMale", e.target.value)
-                    }
-                    className="form-select"
-                  >
-                    <option value="">Select</option>
-                    <option value={true}>Male</option>
-                    <option value={false}>Female</option>
-                  </select>
-                </MDBCol>
-              </MDBRow>
-              <MDBRow></MDBRow>
-            </div>
-          ))}
-        </div>
+        <MDBRow>
+          <MDBCol md={6}>
+            <MDBInputGroup textBefore="Do you want to add sibling ?">
+              <input
+                type="text"
+                className="form-control"
+                onClick={() => setVisibility(true)}
+              />
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow className="mt-4">
+          <MDBCol md={12}>
+            <MDBTable>
+              <MDBTableHead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Age</th>
+                  <th scope="col">Date of Birth</th>
+                </tr>
+              </MDBTableHead>
+              <MDBTableBody>
+                {siblings.map((sibling, index) => (
+                  <tr>
+                    <td>{1 + index}</td>
+                    <td>
+                      {nameFormatter(sibling.fullName).toLocaleUpperCase()}
+                    </td>
+                    <td>
+                      {sibling.isMale ? (
+                        <MDBIcon fas icon="male" color="warning" size="2x" />
+                      ) : (
+                        <MDBIcon fas icon="female" color="warning" size="2x" />
+                      )}
+                    </td>
+                    <td>{getAge(sibling.dob)}</td>
+                    <td>
+                      {new Date(sibling.dob).toLocaleDateString(
+                        undefined,
+                        options
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </MDBTableBody>
+            </MDBTable>
+          </MDBCol>
+        </MDBRow>
         <div className="d-flex justify-content-between mt-4">
           <MDBBtn
             onClick={() => setActiveItem("parents")}
@@ -156,6 +123,9 @@ export default function Siblings({
           <MDBBtn type="submit">Next</MDBBtn>
         </div>
       </form>
+      {visibility && (
+        <SiblingsModal setVisibility={setVisibility} visibility={visibility} />
+      )}
     </MDBContainer>
   );
 }

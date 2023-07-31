@@ -14,6 +14,9 @@ const modelSchema = new mongoose.Schema(
     levelId: {
       type: Number,
     },
+    specifications: {
+      type: String,
+    },
     assessedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
@@ -50,7 +53,7 @@ const modelSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["pending", "active", "denied", "onprogress"], //pending, approved,denied,missing documents
+        values: ["pending", "denied", "onprogress", "approved"], //pending, approved,denied,missing documents
         message: "{VALUE} is not supported, please select appropriate options",
       },
     }, //

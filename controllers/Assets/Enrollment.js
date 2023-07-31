@@ -55,9 +55,9 @@ exports.find = (req, res) =>
 //
 
 // entity/update?id
-exports.update = (req, res) =>
+exports.approved = (req, res) =>
   Entity.findByIdAndUpdate(req.query.id, req.body, {
-    new: true,
+    status: "active",
   })
     .then((item) => res.json(item))
     .catch((error) => res.status(400).json({ error: error.message }));

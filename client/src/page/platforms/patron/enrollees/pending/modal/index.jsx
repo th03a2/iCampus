@@ -11,9 +11,7 @@ import {
   MDBTabs,
   MDBTabsItem,
   MDBTabsLink,
-  MDBCard,
   MDBIcon,
-  MDBCardBody,
   MDBContainer,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,13 +22,10 @@ import Siblings from "./components/siblings";
 import Credentials from "./components/credentials";
 import Personnel from "./components/personnel";
 import { toast } from "react-toastify";
-import { SAVE } from "../../../../../redux/slices/query";
-import { UPLOAD } from "../../../../../redux/slices/assets/persons/auth";
-export default function Modal({
-  visibility,
-  setVisibility,
-  schoolInformation,
-}) {
+import { SAVE } from "../../../../../../redux/slices/query";
+import { UPLOAD } from "../../../../../../redux/slices/assets/persons/auth";
+import Swal from "sweetalert2";
+export default function Modal({ visibility, setVisibility, information }) {
   const { theme, token, auth } = useSelector(({ auth }) => auth);
 
   const dispatch = useDispatch();
@@ -52,96 +47,35 @@ export default function Modal({
     [schoolInfo, setSchoolInfo] = useState({
       levelId: 0,
       units: "",
-      specifications: "",
+      specifications: "null",
     });
 
-  const [numberOfSiblings, setNumberOfSiblings] = useState(0);
-  const [siblingsData, setSiblingsData] = useState([]);
   const [levels, setLevels] = useState([]);
   const [category, setCategory] = useState("");
 
-  const handleInputChange = (index, property, value) => {
-    setSiblingsData((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[index] = { ...updatedData[index], [property]: value };
-      return updatedData;
-    });
-  };
-
-  const handleNumberOfSiblingsChange = (e) => {
-    const count = parseInt(e.target.value, 10);
-    setNumberOfSiblings(count || 0);
-    setSiblingsData(new Array(count).fill({}));
-  };
-
-  const convertNsoToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result);
-        setNsoImage(reader.result.split(",")[1]);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-  const convertSf10ToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result);
-        setSf10Image(reader.result.split(",")[1]);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-  const convertGoodmoralToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result);
-        setGoodmoralImage(reader.result.split(",")[1]);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-  const handleNsoChange = async (event) => {
-    const file = event.target.files[0];
-    const base64Image = await convertNsoToBase64(file);
-    setNso(base64Image);
-  };
-  const handleSf10Change = async (event) => {
-    const file = event.target.files[0];
-    const base64Image = await convertSf10ToBase64(file);
-    setSf10(base64Image);
-  };
-  const handleGoodmoralChange = async (event) => {
-    const file = event.target.files[0];
-    const base64Image = await convertGoodmoralToBase64(file);
-    setGoodMoral(base64Image);
-  };
   const [link, setLink] = useState({
     basic: true,
-    personnel: false,
-    guardian: false,
-    parents: false,
-    siblings: false,
-    credentials: false,
-    success: false,
+    personnel: true,
+    guardian: true,
+    parents: true,
+    siblings: true,
+    credentials: true,
+    approved: false,
   });
 
   const [guardian, setGuardian] = useState({
-    fullName: {
-      fname: "",
-      mname: "",
-      lname: "",
-      suffix: "",
-    },
-    isMale: true,
-    mobile: "",
-    dob: "",
+    studentId: auth._id,
+    fname: "",
+    mname: "",
+    lname: "",
+    suffix: "",
+    isMale: "",
+    phone: "",
+    street: "",
+    brgy: "",
+    occupation: "",
+    muni: "",
+    province: "",
     relationShip: "",
   });
 
@@ -201,85 +135,6 @@ export default function Modal({
     },
   ];
 
-  useEffect(() => {
-    if (link.success) {
-      const credentials = {
-        nso: nsoImage,
-        goodmoral: goodmoralImage,
-        sf10: sf10Image,
-      };
-      Object.entries(credentials).map(([key, value]) => {
-        if (value) {
-          dispatch(
-            UPLOAD({
-              data: {
-                path: `enrollment/credentials/${auth.email}`,
-                base64: value,
-                name: `${key}.png`,
-              },
-            })
-          );
-          return true;
-        }
-      });
-      const attachments = {
-        nso: nsoImage ? "nso" : "",
-        sf10: sf10Image ? "sf10" : "",
-        goodmoral: goodmoralImage ? "goodmoral" : "",
-      };
-
-      dispatch(
-        SAVE({
-          entity: "assets/enrollment",
-          data: {
-            enrollee: {
-              ...form,
-              batch: schoolInformation._id,
-              student: auth._id,
-              attachments,
-              categorization: schoolInfo.units,
-              levelId: schoolInfo.levelId,
-              specifications: schoolInfo.specifications,
-              status: "pending",
-            },
-            guardians:
-              siblingsData.length > 0
-                ? [
-                    { ...guardian, studentId: auth._id },
-                    { ...parents.father, studentId: auth._id },
-                    { ...parents.mother, studentId: auth._id },
-                    ...siblingsData.map((sibling) => ({
-                      ...sibling,
-                      studentId: auth._id,
-                    })),
-                  ]
-                : [
-                    { ...guardian, studentId: auth._id },
-                    { ...parents.father, studentId: auth._id },
-                    { ...parents.mother, studentId: auth._id },
-                  ],
-          },
-          token,
-        })
-      );
-    }
-  }, [
-    link,
-    parents.mother,
-    parents.father,
-    guardian,
-    dispatch,
-    auth._id,
-    auth.fullName,
-    form,
-    goodmoralImage,
-    nsoImage,
-    schoolInformation,
-    sf10Image,
-    siblingsData,
-    token,
-  ]);
-
   const handleActiveContent = (activeItem) => {
     switch (activeItem) {
       case "guardian":
@@ -307,39 +162,27 @@ export default function Modal({
       case "siblings":
         return (
           <Siblings
-            setForm={setForm}
-            handleInputChange={handleInputChange}
+            information={information}
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
-            handleNumberOfSiblingsChange={handleNumberOfSiblingsChange}
-            numberOfSiblings={numberOfSiblings}
-            siblingsData={siblingsData}
           />
         );
 
       case "credentials":
         return (
           <Credentials
-            setForm={setForm}
-            handleNsoChange={handleNsoChange}
-            form={form}
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
-            nso={nso}
-            handleSf10Change={handleSf10Change}
-            handleGoodmoralChange={handleGoodmoralChange}
-            goodmoral={goodmoral}
-            sf10={sf10}
+            information={information}
           />
         );
 
       case "personnel":
         return (
           <Personnel
-            setForm={setForm}
-            form={form}
+            information={information}
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
@@ -358,6 +201,7 @@ export default function Modal({
             setLink={setLink}
             setCategory={setCategory}
             category={category}
+            information={information}
           />
         );
     }

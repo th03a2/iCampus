@@ -2,7 +2,7 @@ const router = require("express").Router(),
   {
     browse,
     destroy,
-    update,
+    approved,
     save,
   } = require("../../controllers/Assets/Enrollment"),
   { protect } = require("../../middleware");
@@ -10,7 +10,7 @@ const router = require("express").Router(),
 router
   .get("/browse", browse)
   .delete("/destroy", protect, destroy)
-  .put("/update", protect, update)
+  .put("/approved", protect, approved)
   .post("/save", save);
 
 module.exports = router;

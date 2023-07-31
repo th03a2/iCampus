@@ -16,16 +16,16 @@ export const ENDPOINT = "http://localhost:5000";
 export const socket = io.connect(ENDPOINT);
 export const adminRoom = "636d37e0187c30ab0f611ce0";
 
-export const register = data =>
+export const register = (data) =>
   axios
     .post("assets/persons/auth/save", data)
-    .then(res => res.data)
-    .catch(err => {
+    .then((res) => res.data)
+    .catch((err) => {
       throw new Error(err.response.data.error);
     });
 
-export const handleTimer = mili => {
-  const padTo2Digits = num => num.toString().padStart(2, "0");
+export const handleTimer = (mili) => {
+  const padTo2Digits = (num) => num.toString().padStart(2, "0");
 
   if (mili > 0) {
     let seconds = Math.floor(mili / 1000);
@@ -49,7 +49,7 @@ export const handleTimer = mili => {
   }
 };
 
-export const miliToHours = mili => {
+export const miliToHours = (mili) => {
   let seconds = mili / 1000;
   let minutes = seconds / 60;
   let hours = minutes / 60;
@@ -81,7 +81,7 @@ export const months = [
   "December",
 ];
 
-export const formatCurrency = num => {
+export const formatCurrency = (num) => {
   if (num && num > 0) {
     return num.toLocaleString("en-US", { style: "currency", currency: "PHP" });
   } else {
@@ -89,14 +89,14 @@ export const formatCurrency = num => {
   }
 };
 
-export const nameFormatter = fullName => {
+export const nameFormatter = (fullName) => {
   if (typeof fullName === "object") {
     const { fname, mname, lname, suffix } = fullName;
     let middleName = "";
     if (mname) {
       middleName = `${mname
         .split(" ")
-        .map(middle => middle.toUpperCase())
+        .map((middle) => middle.toUpperCase())
         .join("")}`;
     }
     return `${lname}, ${fname} y ${middleName} ${
@@ -118,7 +118,7 @@ export const properNameFormatter = (fullName, isProper = false) => {
   } ${String(lname).toUpperCase()} ${fullName?.suffix || ""}`;
 };
 
-export const genderFormatter = isMale => {
+export const genderFormatter = (isMale) => {
   if (isMale) {
     return "Male";
   } else {
@@ -137,10 +137,10 @@ export const fullAddress = (address, complete = true) => {
   }
   return "-";
 };
-export const mobileFormatter = mobile =>
+export const mobileFormatter = (mobile) =>
   mobile &&
   `+63 ${mobile.slice(0, 3)}-${mobile.slice(3, 6)}-${mobile.slice(6, 10)}`;
-export const roleBadge = id => {
+export const roleBadge = (id) => {
   switch (id) {
     case 18:
       return "secondary";
@@ -153,7 +153,7 @@ export const roleBadge = id => {
   }
 };
 
-export const getAge = dob => {
+export const getAge = (dob) => {
   if (dob) {
     var ageInMilliseconds = new Date() - new Date(dob);
     const age = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
@@ -171,7 +171,7 @@ export const getAge = dob => {
   }
 };
 
-export const getDevelopment = dob => {
+export const getDevelopment = (dob) => {
   // [
   //   "Newborn",
   //   "Infant",
@@ -193,7 +193,7 @@ export const getDevelopment = dob => {
   }
 };
 
-export const fullMobile = mobile => {
+export const fullMobile = (mobile) => {
   if (mobile) {
     return `+63 (${mobile.slice(0, 3)}) ${mobile.slice(3, 6)}-${mobile.slice(
       6,
@@ -204,7 +204,7 @@ export const fullMobile = mobile => {
   }
 };
 
-export const profileProgress = async auth => {
+export const profileProgress = async (auth) => {
   if (auth) {
     const { fullName, address, verified, dob, alias, rate, bio } = auth;
     let validate = 0,
@@ -225,7 +225,7 @@ export const profileProgress = async auth => {
 
     const newArr = Object.keys(required);
 
-    newArr.map(key => {
+    newArr.map((key) => {
       if (required[key]) {
         validate += 1;
       } else {
@@ -241,7 +241,7 @@ export const profileProgress = async auth => {
   }
 };
 
-export const validateContactNumber = e => {
+export const validateContactNumber = (e) => {
   if (
     (e.keyCode >= 48 && e.keyCode <= 58) ||
     (e.keyCode >= 96 && e.keyCode <= 105) ||
@@ -253,7 +253,7 @@ export const validateContactNumber = e => {
   }
 };
 
-export const validateMiddleName = e => {
+export const validateMiddleName = (e) => {
   if (
     (e.keyCode >= 48 && e.keyCode <= 58) ||
     (e.keyCode >= 96 && e.keyCode <= 105) ||
@@ -271,7 +271,7 @@ export const arrayEquals = (a, b) =>
   a.length === b.length &&
   a.every((val, index) => val === b[index]);
 
-export const currencyFormatter = num =>
+export const currencyFormatter = (num) =>
   num && num > 0
     ? num.toLocaleString("en-US", { style: "currency", currency: "PHP" })
     : "-";
@@ -387,27 +387,27 @@ export const templates = [
 export const paginationHandler = (array, page, maxPage) =>
   array.slice((page - 1) * maxPage, maxPage + (page - 1) * maxPage);
 
-export const serviceFormConverter = deals => {
-  var _services = deals.map(deal => Services.whereIn(deal.menuId.packages)),
+export const serviceFormConverter = (deals) => {
+  var _services = deals.map((deal) => Services.whereIn(deal.menuId.packages)),
     _forms = [];
 
-  _forms = _services.map(service =>
+  _forms = _services.map((service) =>
     service.map(
       ({ department, template }) =>
-        templates.find(model => model.department === department).components[
+        templates.find((model) => model.department === department).components[
           template
         ]
     )
   );
   var forms = [...new Set(_forms[0])];
 
-  return { forms: Array.from(new Set(forms.map(test => test))), _services };
+  return { forms: Array.from(new Set(forms.map((test) => test))), _services };
 };
 
 export const onlyUnique = (value, index, array) =>
   array.indexOf(value) === index;
 
-export const harvestTask = deals =>
+export const harvestTask = (deals) =>
   Services.whereIn(
     deals.reduce(
       (collections, deal) => collections.concat(deal.menuId.packages),

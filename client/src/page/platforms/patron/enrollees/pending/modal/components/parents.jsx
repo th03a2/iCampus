@@ -8,8 +8,8 @@ import {
 import {
   validateContactNumber,
   properNameFormatter,
-} from "../../../../../../components/utilities";
-import { ModalSearchUsers } from "../../../../../../templates/assets";
+} from "../../../../../../../components/utilities";
+import { ModalSearchUsers } from "../../../../../../../templates/assets";
 import { useState } from "react";
 
 export default function Parents({

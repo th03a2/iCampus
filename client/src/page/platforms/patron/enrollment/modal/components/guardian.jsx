@@ -1,14 +1,11 @@
-import React from "react";
-import {
-  MDBBtn,
-  MDBCol,
-  MDBContainer,
-  MDBInput,
-  MDBRow,
-  MDBTextArea,
-} from "mdb-react-ui-kit";
-import { validateContactNumber } from "../../../../../../components/utilities";
+import React, { useEffect, useState } from "react";
+import { MDBBtn, MDBCol, MDBContainer, MDBInputGroup } from "mdb-react-ui-kit";
+import { useSelector } from "react-redux";
 
+import GuardianModal from "../../guardianModal";
+import { nameFormatter } from "../../../../../../components/utilities";
+import axios from "axios";
+import { toast } from "react-toastify";
 export default function Guardian({
   setActiveItem,
   setGuardian,
@@ -16,6 +13,9 @@ export default function Guardian({
   link,
   setLink,
 }) {
+  const { auth } = useSelector(({ auth }) => auth);
+  const [visibility, setVisibility] = useState(false);
+  const [hasGuardian, setHasGuardian] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -27,167 +27,62 @@ export default function Guardian({
     setActiveItem("parents");
   };
 
+  const handleModal = () => {
+    setVisibility(true);
+  };
+  useEffect(() => {
+    const hasNoAttributes = Object.keys(auth.guardian).length === 0;
+    if (hasNoAttributes) {
+      setHasGuardian(false);
+    } else {
+      setHasGuardian(true);
+      getGuardian();
+    }
+  }, [auth.guardian]);
+
+  const getGuardian = async () => {
+    let _siblings = auth.guardian;
+    if (typeof _siblings === "object") {
+      _siblings = `?${Object.keys(_siblings)
+        .map((i) => `${i}=${_siblings[i]}`)
+        .join("&")}`;
+    } else if (_siblings) {
+      _siblings = `?key=${_siblings}`;
+    }
+    await axios
+      .get(`assets/persons/users/getGuardian${_siblings}`)
+      .then((res) => {
+        if (res.data.error) {
+          toast.warn(res.data.error);
+          throw new Error(res.data.error);
+        } else {
+          setGuardian(res.data);
+        }
+      });
+  };
   return (
     <MDBContainer className="mt-4">
       <form onSubmit={handleSubmit}>
-        <MDBRow>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="First Name"
-              value={guardian.fname}
-              onChange={(e) =>
-                setGuardian({ ...guardian, fname: e.target.value })
-              }
-              required
-            />
+        <MDBContainer className="d-flex justify-content-center">
+          <MDBCol md={8}>
+            <MDBInputGroup textBefore="Guardian">
+              {hasGuardian ? (
+                <input
+                  type="text"
+                  className="form-control"
+                  readOnly
+                  value={nameFormatter(guardian.fullName)}
+                />
+              ) : (
+                <input
+                  type="text"
+                  className="form-control"
+                  onClick={handleModal}
+                />
+              )}
+            </MDBInputGroup>
           </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Middle Name(Optional)"
-              value={guardian.mname}
-              onChange={(e) =>
-                setGuardian({ ...guardian, mname: e.target.value })
-              }
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Last Name"
-              required
-              value={guardian.lname}
-              onChange={(e) =>
-                setGuardian({ ...guardian, lname: e.target.value })
-              }
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-4">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Suffix"
-              onChange={(e) =>
-                setGuardian({ ...guardian, suffix: e.target.value })
-              }
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="date"
-              label="Date Of birth"
-              required
-              value={guardian.dob}
-              onChange={(e) =>
-                setGuardian({ ...guardian, dob: e.target.value })
-              }
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <select
-              className="form-control"
-              value={guardian.isMale}
-              required
-              onChange={(e) =>
-                setGuardian({ ...guardian, isMale: e.target.value })
-              }
-            >
-              <option value={""}>Gender</option>
-              <option value={true}>Male</option>
-              <option value={false}>Female</option>
-            </select>
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-4">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Mobile (+63) "
-              required
-              value={guardian.phone}
-              onChange={(e) =>
-                setGuardian({
-                  ...guardian,
-                  phone: e.target.value,
-                })
-              }
-              onKeyDown={validateContactNumber}
-              maxLength={10}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Province"
-              required
-              value={guardian.province}
-              onChange={(e) =>
-                setGuardian({ ...guardian, province: e.target.value })
-              }
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Municipality"
-              required
-              value={guardian.muni}
-              onChange={(e) =>
-                setGuardian({ ...guardian, muni: e.target.value })
-              }
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-4">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Barangay"
-              required
-              value={guardian.brgy}
-              onChange={(e) =>
-                setGuardian({ ...guardian, brgy: e.target.value })
-              }
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Street"
-              value={guardian.street}
-              required
-              onChange={(e) =>
-                setGuardian({ ...guardian, street: e.target.value })
-              }
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Relationship"
-              required
-              value={guardian.relationship}
-              onChange={(e) =>
-                setGuardian({ ...guardian, relationship: e.target.value })
-              }
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-4">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Occupation"
-              required
-              value={guardian.occupation}
-              onChange={(e) =>
-                setGuardian({ ...guardian, occupation: e.target.value })
-              }
-            />
-          </MDBCol>
-        </MDBRow>
+        </MDBContainer>
         <div className="d-flex justify-content-between mt-4">
           <MDBBtn
             onClick={() => setActiveItem("basic")}
@@ -200,6 +95,14 @@ export default function Guardian({
           <MDBBtn type="submit">Next</MDBBtn>
         </div>
       </form>
+      {visibility && (
+        <GuardianModal
+          setVisibility={setVisibility}
+          visibility={visibility}
+          guardian={guardian}
+          setGuardian={setGuardian}
+        />
+      )}
     </MDBContainer>
   );
 }

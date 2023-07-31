@@ -9,7 +9,7 @@ import {
   MDBTableHead,
   MDBInputGroup,
 } from "mdb-react-ui-kit";
-import levels from "../../../../../../fakeDb/json/levels";
+import degree from "../../../../../../fakeDb/json/levels";
 import field from "../../../../../../fakeDb/json/subjects";
 
 export default function BasicInformation({
@@ -18,26 +18,36 @@ export default function BasicInformation({
   setActiveItem,
   link,
   setLink,
+  levels,
+  setLevels,
+  category,
+  setCategory,
 }) {
   const [topic, setTopic] = useState([]),
     [isStrand, setIsStrand] = useState(false),
     [strands, setStrands] = useState([]),
     [isShow, setIsShow] = useState(false);
+  const categories = ["shs", "jhs", "elementary", "prep"];
+  useEffect(() => {
+    if (category) {
+      const findLevel = degree.filter((data) => data.category === category);
+      setLevels(findLevel);
+    }
+  }, [category]);
 
   useEffect(() => {
     if (schoolInfo.levelId) {
       const filterLevel = levels.find((data) => data.id === schoolInfo.levelId);
-      const { subjects, strand } = filterLevel;
-
+      const { subjects, strand } = filterLevel || [];
       if (subjects) {
         const filterSubjects = subjects.map((id) =>
           field.find((data) => data.id === id)
         );
-        setTopic([...filterSubjects]);
-        setIsShow(true);
+        setTopic([...filterSubjects] || []);
         setIsStrand(false);
+        setIsShow(true);
       } else {
-        setStrands([...strand]);
+        setStrands(strand || []);
         setIsStrand(true);
         setIsShow(false);
         setTopic([]);
@@ -47,15 +57,14 @@ export default function BasicInformation({
       setIsStrand(false);
       setIsShow(false);
     }
-    setSchoolInfo({ ...schoolInfo, specifications: "" });
-  }, [schoolInfo.levelId]);
+  }, [schoolInfo.levelId, levels]);
 
   useEffect(() => {
     if (schoolInfo.specifications) {
       const filterStrand = strands.find(
         (strand) => strand.specifications === schoolInfo.specifications
       );
-      const filterSubjects = filterStrand.subject?.map((id) =>
+      const filterSubjects = filterStrand?.subject.map((id) =>
         field.find((data) => data.id === id)
       );
 
@@ -86,12 +95,17 @@ export default function BasicInformation({
         <MDBRow>
           <MDBCol md={6}>
             <MDBInputGroup textBefore="Category">
-              <select className="form-control">
+              <select
+                className="form-control"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
                 <option></option>
-                <option>Prep</option>
-                <option>Elem</option>
-                <option>Junior High School</option>
-                <option>Senior High School</option>
+                {categories.map((data, index) => (
+                  <option value={data} key={index}>
+                    {data}
+                  </option>
+                ))}
               </select>
             </MDBInputGroup>
           </MDBCol>
@@ -109,9 +123,12 @@ export default function BasicInformation({
                 required
               >
                 <option></option>
-                <option value={"old"}>Old</option>
-                <option value={"transferee"}>Transferee</option>
-                <option value={"returnee"}>Returnee</option>
+                <option value={"freshman"}>Freshman</option>
+                <option value={"sophomore"}>Sophomore</option>
+                <option value={"junior"}>junior</option>
+                <option value={"senior"}>Senior</option>
+                <option value={"transferrees"}>Transferrees</option>
+                <option value={"returning"}>Returning</option>
               </select>
             </MDBInputGroup>
           </MDBCol>
@@ -132,11 +149,12 @@ export default function BasicInformation({
               >
                 <option> </option>
 
-                {levels.map((level, index) => (
-                  <option value={level.id} key={index}>
-                    {level.description}
-                  </option>
-                ))}
+                {levels.length > 0 &&
+                  levels.map((level, index) => (
+                    <option value={level.id} key={index}>
+                      {level.description}
+                    </option>
+                  ))}
               </select>
             </MDBInputGroup>
           </MDBCol>
@@ -153,7 +171,7 @@ export default function BasicInformation({
                   })
                 }
               >
-                <option value={""}>Strand</option>
+                <option>Strand</option>
                 {strands.length > 0 &&
                   strands.map((strand) => (
                     <option value={strand.specifications}>

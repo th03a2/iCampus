@@ -118,6 +118,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    siblings: {
+      type: Array,
+      default: [],
+    },
+    guardian: {
+      id: {
+        type: String,
+      },
+      relationship: {
+        type: String,
+      },
+    },
     deletedAt: {
       type: String,
     },

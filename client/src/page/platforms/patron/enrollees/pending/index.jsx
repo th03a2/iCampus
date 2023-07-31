@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
-import Pager from "../../../../components/pager";
-import BreadCrumb from "../../../../components/breadcrumb";
-import { BROWSE } from "../../../../redux/slices/query";
-import { TBLenrollees } from "../../../../templates";
+import Pager from "../../../../../components/pager";
+import BreadCrumb from "../../../../../components/breadcrumb";
+import { BROWSE } from "../../../../../redux/slices/query";
+import { TBLpending } from "../../../../../templates";
 import Modal from "./modal";
 
 const path = [
@@ -13,7 +13,7 @@ const path = [
   },
 ];
 
-export default function Enrollees() {
+export default function Pending() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
@@ -22,7 +22,7 @@ export default function Enrollees() {
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
-
+  console.log(information);
   useEffect(() => {
     dispatch(
       BROWSE({
@@ -68,7 +68,7 @@ export default function Enrollees() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLenrollees
+        <TBLpending
           enrollees={enrollees}
           page={page}
           setInformation={setInformation}
@@ -79,7 +79,6 @@ export default function Enrollees() {
             visibility={visibility}
             setVisibility={setVisibility}
             information={information}
-            setInformation={setInformation}
           />
         )}
       </MDBContainer>

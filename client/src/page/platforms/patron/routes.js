@@ -18,7 +18,7 @@ import Banks from "./mapping/banks";
 import Articles from "./mapping/articles";
 import Batch from "./batch";
 import Enrollment from "./enrollment";
-import Enrollees from "./enrollees";
+import Pending from "./enrollees/pending";
 import Access from "./access";
 
 const routes = {
@@ -71,7 +71,12 @@ const routes = {
     },
     {
       path: "enrollees",
-      element: <Enrollees />,
+      grandsons: [
+        {
+          path: "pending",
+          element: <Pending />,
+        },
+      ],
     },
     {
       path: "enrollment",

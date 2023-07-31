@@ -10,13 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   paginationHandler,
   nameFormatter,
-} from "../../../components/utilities";
-export function TBLenrollees({
-  enrollees,
-  page,
-  setInformation,
-  setVisibility,
-}) {
+} from "../../../../components/utilities";
+export function TBLpending({ enrollees, page, setInformation, setVisibility }) {
   const { theme, maxPage } = useSelector(({ auth }) => auth);
 
   const handleInformation = (information) => {

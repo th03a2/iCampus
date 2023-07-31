@@ -11,11 +11,11 @@ exports.browse = (req, res) =>
       select: "-createdAt -updatedAt -approved -__v",
     })
     .sort({ createdAt: -1 })
-    .then(users =>
+    .then((users) =>
       Personnel.find({ isDefault: true })
         .select("-createdAt -updatedAt -__v")
-        .then(roles => {
-          const available = users.filter(user => !user.deletedAt);
+        .then((roles) => {
+          const available = users.filter((user) => !user.deletedAt);
 
           var newArr = [];
 
@@ -26,7 +26,7 @@ exports.browse = (req, res) =>
               roleId: 1,
             };
 
-            roles.find(role => {
+            roles.find((role) => {
               if (role?.user.equals(user._id)) {
                 _role = role;
               }
@@ -39,10 +39,131 @@ exports.browse = (req, res) =>
 
           res.json(newArr);
         })
-        .catch(error => res.status(400).json({ error: error.message }))
+        .catch((error) => res.status(400).json({ error: error.message }))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
-// patients
+    .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.saveSiblings = (req, res) => {
+  User.find({ _id: req.query.id })
+    .then((datas) => {
+      if (!datas || datas.length === 0) {
+        console.log("No matching user found.");
+        return res.status(404).json({ error: "No matching user found." });
+      }
+
+      const siblingsArray = datas.flatMap((data) => data.siblings);
+
+      User.create({
+        fullName: {
+          fname: req.query.fname,
+          mname: req.query.mname,
+          lname: req.query.lname,
+        },
+        isMale: req.query.isMale,
+        dob: req.query.dob,
+        email: `${req.query.fname}${req.query.mname}${req.query.lname}@gmail.com`,
+        password: "password",
+      })
+        .then((newUser) => {
+          siblingsArray.push(newUser._id); // Push the ID directly to siblingsArray
+
+          User.findByIdAndUpdate(datas[0]._id, {
+            siblings: siblingsArray,
+          })
+            .then(() => {
+              res.json({ message: "Siblings updated successfully." });
+            })
+            .catch((error) => {
+              console.error("Failed to update siblings:", error);
+              res.status(500).json({ error: "Failed to update siblings." });
+            });
+        })
+        .catch((error) => {
+          console.error("Failed to create user:", error);
+          res.status(500).json({ error: "Failed to create user." });
+        });
+    })
+    .catch((error) => {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ error: "Failed to fetch user." });
+    });
+};
+
+exports.addSiblings = (req, res) => {
+  User.find({ _id: req.query.id })
+    .then((datas) => {
+      const users = datas.filter((user) => !user.deletedAt);
+      const siblingsArray = users.flatMap((user) => user.siblings);
+      siblingsArray.push(req.query.siblingsId);
+
+      User.findByIdAndUpdate(users[0]._id, {
+        siblings: siblingsArray,
+      })
+        .then((data) => {
+          res.json(data);
+        })
+        .catch((err) => res.status(400).json({ err: error }));
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
+
+exports.getGuardian = (req, res) => {
+  User.find({ _id: req.query.id })
+    .then((datas) => {
+      const guardian = datas.find((data) => !data.deletedAt);
+      res.json(guardian);
+    })
+    .catch((err) => res.status(400).json(err));
+};
+
+exports.getSiblings = (req, res) => {
+  User.find({ _id: req.query.id })
+    .then((datas) => {
+      const users = datas.filter((user) => !user.deletedAt);
+      const siblingsArray = users.flatMap((user) => user.siblings);
+      if (siblingsArray.length > 0) {
+        Promise.all(siblingsArray.map((id) => User.find({ _id: id })))
+          .then((siblingsData) => {
+            const flattenedData = siblingsData.flat();
+            const searchSiblings = flattenedData.map((data) => data);
+
+            res.json(searchSiblings);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).json({ error: "Failed to fetch siblings data." });
+          });
+      } else {
+        res.json([]);
+      }
+    })
+    .catch((err) => res.status(400).json({ err }));
+};
+
+exports.siblings = (req, res) => {
+  User.find({
+    // dob: req.query.dob,
+    // Remarks: its a case sensitive
+    "fullName.fname": { $regex: req.query.fname },
+    "fullName.mname": { $regex: req.query.mname },
+    "fullName.lname": { $regex: req.query.lname },
+    // "fullName.suffix": req.query.suffix,
+  })
+    // .select("-password -createdAt -updatedAt -__v -address")
+    .then((datas) =>
+      res.json(
+        datas
+          .filter((data) => !data.deletedAt)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      )
+    )
+
+    .catch((error) => {
+      // Catch any error that occurred during User.find
+      res.status(500).json({ error: "Failed to fetch user data." });
+    });
+};
+
 exports.parents = (req, res) =>
   User.find({
     ismale: req.query.gender,
@@ -55,14 +176,14 @@ exports.parents = (req, res) =>
   })
     // not included in the query string
     .select("-password -createdAt -updatedAt -__v -address")
-    .then(datas =>
+    .then((datas) =>
       res.json(
         datas
-          .filter(data => !data.deletedAt)
+          .filter((data) => !data.deletedAt)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       )
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 // users/physicians
 exports.physicians = (req, res) =>
   // User.find({ fullName: { $elemMatch: { title: "Dr." } } })
@@ -75,11 +196,11 @@ exports.physicians = (req, res) =>
       select: "-createdAt -updatedAt -approved -__v",
     })
     .sort({ createdAt: -1 })
-    .then(users =>
+    .then((users) =>
       Personnel.find({ isDefault: true })
         .select("-createdAt -updatedAt -__v")
-        .then(roles => {
-          const available = users.filter(user => !user.deletedAt);
+        .then((roles) => {
+          const available = users.filter((user) => !user.deletedAt);
 
           var newArr = [];
 
@@ -90,7 +211,7 @@ exports.physicians = (req, res) =>
               roleId: 1,
             };
 
-            roles.find(role => {
+            roles.find((role) => {
               if (role?.user.equals(user._id)) {
                 _role = role;
               }
@@ -103,9 +224,9 @@ exports.physicians = (req, res) =>
 
           res.json(newArr);
         })
-        .catch(error => res.status(400).json({ error: error.message }))
+        .catch((error) => res.status(400).json({ error: error.message }))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 exports.affiliated = (req, res) =>
   User.find({ "fullName.title": "Dr." })
     .select("-password -createdAt -updatedAt -__v -address")
@@ -114,11 +235,11 @@ exports.affiliated = (req, res) =>
       select: "-createdAt -updatedAt -approved -__v",
     })
     .sort({ createdAt: -1 })
-    .then(users =>
+    .then((users) =>
       Personnel.find({ isDefault: true })
         .select("-createdAt -updatedAt -__v")
-        .then(roles => {
-          const available = users.filter(user => !user.deletedAt);
+        .then((roles) => {
+          const available = users.filter((user) => !user.deletedAt);
 
           var newArr = [];
 
@@ -129,7 +250,7 @@ exports.affiliated = (req, res) =>
               roleId: 1,
             };
 
-            roles.find(role => {
+            roles.find((role) => {
               if (role?.user.equals(user._id)) {
                 _role = role;
               }
@@ -142,9 +263,9 @@ exports.affiliated = (req, res) =>
 
           res.json(newArr);
         })
-        .catch(error => res.status(400).json({ error: error.message }))
+        .catch((error) => res.status(400).json({ error: error.message }))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 // entity/archive
 exports.archive = (req, res) =>
   User.find()
@@ -156,8 +277,8 @@ exports.archive = (req, res) =>
     //   select: "-createdAt -updatedAt -approved -__v",
     // })
     .sort({ createdAt: -1 })
-    .then(items => res.json(items.filter(item => item.deletedAt)))
-    .catch(error => res.status(400).json({ error: error.message }));
+    .then((items) => res.json(items.filter((item) => item.deletedAt)))
+    .catch((error) => res.status(400).json({ error: error.message }));
 
 // entity/:id/find
 exports.find = (req, res) =>
@@ -167,8 +288,8 @@ exports.find = (req, res) =>
     //   path: "fullName.mname fullName.lname",
     //   select: "-createdAt -updatedAt -approved -__v",
     // })
-    .then(user => res.json(user.deletedAt ? "No user found" : user))
-    .catch(error => res.status(400).json({ error: error.message }));
+    .then((user) => res.json(user.deletedAt ? "No user found" : user))
+    .catch((error) => res.status(400).json({ error: error.message }));
 
 // entity/:id/update
 exports.update = (req, res) => {
@@ -176,8 +297,8 @@ exports.update = (req, res) => {
     new: true,
   })
     .select("-password")
-    .then(item => res.json(item))
-    .catch(error => res.status(400).json({ error: error.message }));
+    .then((item) => res.json(item))
+    .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 // entity/:id/restore
@@ -199,7 +320,7 @@ exports.restore = (req, res) => {
         user: res.locals.callerId,
       }).then(() => res.json(req.query.id))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 // entity/:id/destroy
@@ -215,4 +336,4 @@ exports.destroy = (req, res) =>
         user: res.locals.callerId,
       }).then(() => res.json(req.query.id))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
