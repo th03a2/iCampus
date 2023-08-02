@@ -40,7 +40,7 @@ export default function Personnel({
   };
 
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
@@ -112,11 +112,20 @@ export default function Personnel({
             </MDBInputGroup>
           </MDBCol>
         </MDBRow>
-        <div className="d-flex justify-content-between my-4">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "35px",
+            left: "120px",
+            right: "120px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("basic")}
             type="button"
-            color="light"
+            color="warning"
             className="shadow-0"
           >
             Previous

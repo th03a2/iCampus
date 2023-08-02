@@ -53,6 +53,13 @@ const getGuardian = async (fk) =>
       console.log(error);
     });
 
+const getParents = async (fk) =>
+  User.find({ _id: fk })
+    .then((datas) => datas[0])
+    .catch((error) => {
+      console.log(error);
+    });
+
 const getAccess = async (access) =>
   Access.find()
     .byUserId(access)
@@ -93,7 +100,6 @@ const getAffiliated = async (fk) =>
       select: "name companyId companyNames category",
     })
     .then(async (affiliates) => {
-      console.log("affiliates", affiliates);
       return affiliates.map((a) => ({
         _id: a.branch?._id,
         lastVisit: a.lastVisit,
@@ -155,6 +161,9 @@ exports.login = (req, res) => {
             let guardian = hasGuardian
               ? await getGuardian(user.guardian.id)
               : {};
+            let mother = await getParents(user.motherId);
+            let father = user.fatherId && (await getParents(user.fatherId));
+
             let branches = [];
             let access = ["principal", "staff", "faculty", "aor"]; //  deafult access for owner
             let isCeo = false;
@@ -170,6 +179,7 @@ exports.login = (req, res) => {
             res.json({
               auth: {
                 ..._user,
+                parents: { mother, father: father ? father : {} },
                 yourSiblings: siblings,
                 yourGuardian: guardian,
               },
@@ -252,11 +262,13 @@ exports.validateRefresh = (req, res) => {
                       })
                     )
                   : [];
-              console.log("siblings", siblings);
               let hasGuardian = Object.keys(user.guardian).length > 0;
               let guardian = hasGuardian
                 ? await getGuardian(user.guardian.id)
                 : {};
+
+              let mother = await getParents(user.motherId);
+              let father = user.fatherId && (await getParents(user.fatherId));
               let branches = [];
               let access = [];
               let isCeo = false;
@@ -274,6 +286,7 @@ exports.validateRefresh = (req, res) => {
               res.json({
                 auth: {
                   ...user._doc,
+                  parents: { mother, father: father ? father : {} },
                   yourGuardian: guardian,
                   yourSiblings: siblings,
                 },

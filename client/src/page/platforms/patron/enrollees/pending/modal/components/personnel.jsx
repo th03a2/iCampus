@@ -5,6 +5,7 @@ import {
   MDBInput,
   MDBRow,
   MDBBtn,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import { nameFormatter } from "../../../../../../../components/utilities";
@@ -15,7 +16,7 @@ export default function Personnel({
   link,
   setLink,
 }) {
-  const { auth } = useSelector(({ auth }) => auth);
+  const options = { year: "numeric", month: "long", day: "numeric" };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,62 +37,94 @@ export default function Personnel({
     }
   };
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="First name"
-              value={nameFormatter(auth.fullName)}
-              readOnly
-              autoFocus
-            />
+            <MDBInputGroup textBefore="Full Name">
+              <input
+                type="text"
+                className="form-control"
+                value={nameFormatter(information.student?.fullName)}
+                readOnly
+                autoFocus
+              />
+            </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Gender"
-              value={auth.isMale ? "Male" : "Female"}
-              readOnly
-            />
+            <MDBInputGroup textBefore="Gender">
+              <input
+                type="text"
+                className="form-control"
+                value={information.student?.isMale ? "Male" : "Female"}
+                readOnly
+              />
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className="my-3">
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Date Of Birth"
-              value={auth.dob}
-              readOnly
-            />
+            <MDBInputGroup textBefore="Date of Birth">
+              <input
+                type="text"
+                value={new Date(information.student?.dob).toLocaleDateString(
+                  undefined,
+                  options
+                )}
+                readOnly
+                className="form-control"
+              />
+            </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Place Of Birth"
-              value={addressFormatter(auth.address)}
-              readOnly
-            />
+            <MDBInputGroup textBefore="Place of Birth">
+              <input
+                type="text"
+                className="form-control"
+                value={addressFormatter(information.student?.bop)}
+                readOnly
+              />
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className="my-3">
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Mobile (+63) "
-              value={information.student?.mobile}
-              readOnly
-            />
+            <MDBInputGroup textBefore="Email">
+              <input
+                type="text"
+                className="form-control"
+                value={information.student?.email}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={6}>
+            <MDBInputGroup textBefore="Mobile">
+              <input
+                type="text"
+                className="form-control"
+                value={information.student?.mobile}
+                readOnly
+              />
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
-        <div className="d-flex justify-content-between my-4">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "35px",
+            left: "120px",
+            right: "120px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("basic")}
             type="button"
-            color="light"
+            color="warning"
             className="shadow-0"
           >
             Previous

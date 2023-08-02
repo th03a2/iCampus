@@ -1,28 +1,18 @@
 import {
-  MDBCol,
   MDBContainer,
-  MDBInput,
-  MDBRow,
   MDBBtn,
+  MDBCol,
+  MDBRow,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import {
-  validateContactNumber,
-  properNameFormatter,
+  getAge,
+  nameFormatter,
 } from "../../../../../../../components/utilities";
-import { ModalSearchUsers } from "../../../../../../../templates/assets";
-import { useState } from "react";
 
-export default function Parents({
-  parents,
-  setParents,
-  setActiveItem,
-  link,
-  setLink,
-}) {
-  const [visibility, setVisibility] = useState(false),
-    [gender, setGender] = useState(true),
-    [father, setFather] = useState({}),
-    [mother, setMother] = useState({});
+export default function Parents({ setActiveItem, link, setLink, information }) {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -34,484 +24,216 @@ export default function Parents({
     setActiveItem("siblings");
   };
 
-  const handleParents = (user, isMale) => {
-    if (isMale) {
-      setFather(user);
-    } else {
-      setMother(user);
-    }
-  };
-
-  const handleSearch = (gender) => {
-    setGender(gender);
-    setVisibility(true);
-  };
-
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
-        {/* <div className="text-center">
-          <strong className="text-center">Father</strong>
-        </div>
-        <MDBRow className="mt-3">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="First Name"
-              value={parents.father?.fname}
-              required
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    fname: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Middle Name(Optional)"
-              value={parents.father?.mname}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    mname: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Last Name"
-              value={parents.father?.lname}
-              required
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    lname: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-2">
-          <MDBCol md={4}>
-            <select
-              className="form-control"
-              value={parents.father?.isMale}
-              required
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    isMale: e.target.value,
-                  },
-                });
-              }}
-            >
-              <option value={""}>Gender</option>
-              <option value={true}>Male</option>
-              <option value={false}>Female</option>
-            </select>
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Mobile (+63) (Optional)"
-              value={parents.father.phone}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    phone: e.target.value,
-                  },
-                });
-              }}
-              onKeyDown={validateContactNumber}
-              maxLength={10}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Province"
-              value={parents.father?.province}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    province: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-2">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Municipality"
-              value={parents.father?.muni}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    muni: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Barangay"
-              value={parents.father?.brgy}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    brgy: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Street"
-              value={parents.father?.street}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    street: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-2">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Relationship"
-              value={parents.father?.relationship}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    relationship: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Suffix"
-              value={parents.father?.suffix}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    suffix: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Occupation"
-              value={parents.father?.occupation}
-              required
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  father: {
-                    ...parents.father,
-                    occupation: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-        </MDBRow>
-        <div className="text-center mt-4">
-          <strong className="text-center">Mother</strong>
-        </div>
-        <MDBRow className="mt-3">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="First Name"
-              value={parents.mother?.fname}
-              required
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    fname: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Middle Name(Optional)"
-              value={parents.mother?.mname}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    mname: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Last Name"
-              value={parents.mother?.lname}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    lname: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-2">
-          <MDBCol md={4}>
-            <select
-              className="form-control"
-              value={parents.mother?.isMale}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    isMale: e.target.value,
-                  },
-                });
-              }}
-              required
-            >
-              <option value={""}>Gender</option>
-              <option value={true}>Male</option>
-              <option value={false}>Female</option>
-            </select>
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Mobile (+63) (Optional)"
-              value={parents.mother.phone}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    phone: e.target.value,
-                  },
-                });
-              }}
-              onKeyDown={validateContactNumber}
-              maxLength={10}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Province"
-              value={parents.mother?.province}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    province: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-2">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Municipality"
-              value={parents.mother?.muni}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    muni: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Barangay"
-              value={parents.mother?.brgy}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    brgy: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Street"
-              value={parents.mother?.street}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    street: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="mt-2">
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Relationship"
-              value={parents.mother?.relationship}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    relationship: e.target.value,
-                  },
-                });
-              }}
-              required
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Suffix"
-              value={parents.mother?.suffix}
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    suffix: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-          <MDBCol md={4}>
-            <MDBInput
-              type="text"
-              label="Occupation"
-              value={parents.mother?.occupation}
-              required
-              onChange={(e) => {
-                setParents({
-                  ...parents,
-                  mother: {
-                    ...parents.mother,
-                    occupation: e.target.value,
-                  },
-                });
-              }}
-            />
-          </MDBCol>
-        </MDBRow> */}
-        <MDBCol md={12} className="mb-5 mb-md-0 ">
-          <MDBInput
-            type="text"
-            label="Father"
-            name="father"
-            value={
-              father?.fullName ? properNameFormatter(father?.fullName) : ""
-            }
-            onClick={() => handleSearch(true)}
-          />
-        </MDBCol>
+        {information.father.fullName.fname?.length > 0 && (
+          <>
+            <h5 className="text-center">
+              <strong>Father</strong>
+            </h5>
+            <MDBRow className="mt-3">
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Full Name">
+                  <input
+                    className="form-control"
+                    value={nameFormatter(information.father?.fullName)}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Gender">
+                  <input
+                    className="form-control"
+                    value={information.father?.isMale ? "Male" : "Female"}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Age">
+                  <input
+                    className="form-control"
+                    value={getAge(information.father?.dob)}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow className="mt-3">
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Date of Birth">
+                  <input
+                    className="form-control"
+                    value={new Date(information.father?.dob).toLocaleDateString(
+                      undefined,
+                      options
+                    )}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Mobile">
+                  <input
+                    className="form-control"
+                    value={information.father?.mobile}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
 
-        <MDBCol md={12} className="mt-4 mb-5">
-          <MDBInput
-            type="text"
-            label="Mother"
-            name="mother"
-            value={
-              mother?.fullName ? properNameFormatter(mother?.fullName) : ""
-            }
-            onClick={() => handleSearch(false)}
-          />
-        </MDBCol>
-        <div className="d-flex justify-content-between mt-4">
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Relationship">
+                  <input
+                    className="form-control"
+                    value={information?.student?.guardian?.relationship}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow className="mt-3">
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Region">
+                  <input
+                    className="form-control"
+                    value={information.father?.address?.region}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Province">
+                  <input
+                    className="form-control"
+                    value={information.father?.address?.province}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="City">
+                  <input
+                    className="form-control"
+                    value={information.father?.address?.city}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+            </MDBRow>
+          </>
+        )}
+        <h5 className="text-center mt-3">
+          <strong>Mother</strong>
+        </h5>
+        <MDBRow className="mt-3">
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Full Name">
+              <input
+                className="form-control"
+                value={nameFormatter(information.mother?.fullName)}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Gender">
+              <input
+                className="form-control"
+                value={information.mother?.isMale ? "Male" : "Female"}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Age">
+              <input
+                className="form-control"
+                value={getAge(information.mother?.dob)}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
+
+        <MDBRow className="mt-3">
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Date of Birth">
+              <input
+                className="form-control"
+                value={new Date(information.mother?.dob).toLocaleDateString(
+                  undefined,
+                  options
+                )}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Mobile">
+              <input
+                className="form-control"
+                value={information.mother?.mobile}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Relationship">
+              <input
+                className="form-control"
+                value={information?.student?.guardian?.relationship}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow className="mt-3">
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Region">
+              <input
+                className="form-control"
+                value={information.mother?.address?.region}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Province">
+              <input
+                className="form-control"
+                value={information.mother?.address?.province}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="City">
+              <input
+                className="form-control"
+                value={information.mother?.address?.city}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "35px",
+            left: "120px",
+            right: "120px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("guardian")}
             type="button"
-            color="light"
+            color="warning"
             className="shadow-0"
           >
             Previous
@@ -519,14 +241,6 @@ export default function Parents({
           <MDBBtn type="submit">Next</MDBBtn>
         </div>
       </form>
-      {visibility && (
-        <ModalSearchUsers
-          visibility={visibility}
-          setVisibility={setVisibility}
-          gender={gender}
-          handleParents={handleParents}
-        />
-      )}
     </MDBContainer>
   );
 }

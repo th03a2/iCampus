@@ -11,9 +11,7 @@ import {
   MDBTabs,
   MDBTabsItem,
   MDBTabsLink,
-  MDBCard,
   MDBIcon,
-  MDBCardBody,
   MDBContainer,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,22 +29,28 @@ export default function Modal({
   setVisibility,
   schoolInformation,
 }) {
-  const { theme, token, auth } = useSelector(({ auth }) => auth);
+  const { theme, token, auth, onDuty } = useSelector(({ auth }) => auth);
 
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState("basic"),
     [nso, setNso] = useState(null),
-    [sf10, setSf10] = useState(null),
+    [sf10B, setSf10B] = useState(null),
     [goodmoral, setGoodMoral] = useState(null),
+    [sf10A, setSf10A] = useState(null),
+    [profileImage, setProfileImage] = useState(null),
+    [profile, setProfile] = useState(null),
     [nsoImage, setNsoImage] = useState(null),
-    [sf10Image, setSf10Image] = useState(null),
+    [sf10AImage, setSf10AImage] = useState(null),
+    [sf10BImage, setSf10BImage] = useState(null),
     [goodmoralImage, setGoodmoralImage] = useState(null),
     [form, setForm] = useState({
       phone: "",
       attachments: {
-        sf10: "",
+        sf10A: "",
+        sf10B: "",
         goodmoral: "",
         nso: "",
+        profile: "",
       },
     }),
     [schoolInfo, setSchoolInfo] = useState({
@@ -54,25 +58,30 @@ export default function Modal({
       units: "",
       specifications: "",
     });
+  const [yourSiblings, setYourSiblings] = useState([]);
 
-  const [numberOfSiblings, setNumberOfSiblings] = useState(0);
-  const [siblingsData, setSiblingsData] = useState([]);
   const [levels, setLevels] = useState([]);
   const [category, setCategory] = useState("");
+  const [hasGuardian, setHasGuardian] = useState(false);
+  const [noSubmitted, setNoSubmitted] = useState(true);
+  const [fatherSubmitted, setFatherSubmitted] = useState(false);
 
-  const handleInputChange = (index, property, value) => {
-    setSiblingsData((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[index] = { ...updatedData[index], [property]: value };
-      return updatedData;
-    });
-  };
-
-  const handleNumberOfSiblingsChange = (e) => {
-    const count = parseInt(e.target.value, 10);
-    setNumberOfSiblings(count || 0);
-    setSiblingsData(new Array(count).fill({}));
-  };
+  useEffect(() => {
+    if (auth.yourSiblings.length > 0) {
+      setYourSiblings(auth.yourSiblings);
+    } else {
+      setYourSiblings([]);
+    }
+  }, [auth.yourSiblings]);
+  useEffect(() => {
+    const hasNoAttributes = Object.keys(auth.guardian).length === 0;
+    if (hasNoAttributes) {
+      setHasGuardian(false);
+    } else {
+      setHasGuardian(true);
+      setGuardian(auth.yourGuardian);
+    }
+  }, [auth.guardian]);
 
   const convertNsoToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -85,12 +94,23 @@ export default function Modal({
       reader.readAsDataURL(file);
     });
   };
-  const convertSf10ToBase64 = (file) => {
+  const convertSf10AToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         resolve(reader.result);
-        setSf10Image(reader.result.split(",")[1]);
+        setSf10AImage(reader.result.split(",")[1]);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+  const convertSf10BToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result);
+        setSf10BImage(reader.result.split(",")[1]);
       };
       reader.onerror = reject;
       reader.readAsDataURL(file);
@@ -112,11 +132,35 @@ export default function Modal({
     const base64Image = await convertNsoToBase64(file);
     setNso(base64Image);
   };
-  const handleSf10Change = async (event) => {
+  const handleSf10AChange = async (event) => {
     const file = event.target.files[0];
-    const base64Image = await convertSf10ToBase64(file);
-    setSf10(base64Image);
+    const base64Image = await convertSf10AToBase64(file);
+    setSf10A(base64Image);
   };
+  const handleSf10BChange = async (event) => {
+    const file = event.target.files[0];
+    const base64Image = await convertSf10BToBase64(file);
+    setSf10B(base64Image);
+  };
+
+  const convertProfileBToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result);
+        setProfileImage(reader.result.split(",")[1]);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleProfileChange = async (event) => {
+    const file = event.target.files[0];
+    const base64Image = await convertProfileBToBase64(file);
+    setProfile(base64Image);
+  };
+
   const handleGoodmoralChange = async (event) => {
     const file = event.target.files[0];
     const base64Image = await convertGoodmoralToBase64(file);
@@ -131,7 +175,6 @@ export default function Modal({
     credentials: false,
     success: false,
   });
-
   const [guardian, setGuardian] = useState({
     id: "",
     fullName: {
@@ -140,40 +183,35 @@ export default function Modal({
       lname: "",
       suffix: "",
     },
+    address: {
+      barangay: "",
+      city: "",
+      province: "",
+      region: "",
+    },
     isMale: true,
     mobile: "",
     dob: "",
     relationship: "",
   });
-  console.log(guardian);
 
   const [parents, setParents] = useState({
     father: {
-      fname: "",
-      mname: "",
-      lname: "",
-      suffix: "",
-      isMale: "",
-      phone: "",
-      street: "",
-      brgy: "",
-      occupation: "",
-      muni: "",
-      province: "",
+      id: "1",
+      fullName: {
+        fname: "",
+        mname: "",
+        lname: "",
+        suffix: "",
+      },
+      address: {
+        region: "",
+        province: "",
+        city: "",
+      },
+      mobile: "",
     },
-    mother: {
-      fname: "",
-      mname: "",
-      lname: "",
-      suffix: "",
-      isMale: "",
-      phone: "",
-      street: "",
-      brgy: "",
-      occupation: "",
-      muni: "",
-      province: "",
-    },
+    mother: {},
   });
 
   const tabs = [
@@ -202,20 +240,30 @@ export default function Modal({
       key: "credentials",
     },
   ];
+  let hasFather = Object.keys(auth.parents?.father).length > 0;
+  useEffect(() => {
+    if (hasFather) {
+      setParents(auth.parents);
+    } else {
+      setParents({ ...parents, mother: auth.parents?.mother });
+    }
+  }, [auth.parents]);
 
   useEffect(() => {
     if (link.success) {
       const credentials = {
         nso: nsoImage,
         goodmoral: goodmoralImage,
-        sf10: sf10Image,
+        sf10A: sf10AImage,
+        sf10B: sf10BImage,
+        profile: profileImage,
       };
       Object.entries(credentials).map(([key, value]) => {
         if (value) {
           dispatch(
             UPLOAD({
               data: {
-                path: `enrollment/credentials/${auth.email}`,
+                path: `enrollment/batch/${onDuty._id}/${auth.email}`,
                 base64: value,
                 name: `${key}.png`,
               },
@@ -226,9 +274,25 @@ export default function Modal({
       });
       const attachments = {
         nso: nsoImage ? "nso" : "",
-        sf10: sf10Image ? "sf10" : "",
+        sf10A: sf10AImage ? "sf10A" : "",
+        sf10B: sf10BImage ? "sf10B" : "",
         goodmoral: goodmoralImage ? "goodmoral" : "",
+        profile: profileImage ? "profile" : "",
       };
+
+      const createSiblings = yourSiblings.map((data) => {
+        if (data._id === undefined) {
+          return data;
+        }
+      });
+
+      const oldSiblings = yourSiblings
+        .map((siblings) => siblings._id)
+        .filter((id) => auth.siblings.includes(id));
+
+      const newSiblings = yourSiblings
+        .map((sibling) => sibling._id)
+        .filter((siblingId) => !auth.siblings.includes(siblingId));
 
       dispatch(
         SAVE({
@@ -245,6 +309,12 @@ export default function Modal({
               status: "pending",
             },
             guardians: guardian,
+            currentSiblings: [...oldSiblings, ...newSiblings],
+            createSiblings,
+            father: {
+              isCreate: hasFather ? false : true,
+              information: { ...parents.father },
+            },
           },
           token,
         })
@@ -262,8 +332,8 @@ export default function Modal({
     goodmoralImage,
     nsoImage,
     schoolInformation,
-    sf10Image,
-    siblingsData,
+    sf10AImage,
+    sf10BImage,
     token,
   ]);
 
@@ -277,6 +347,9 @@ export default function Modal({
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
+            hasGuardian={hasGuardian}
+            noSubmitted={noSubmitted}
+            setNoSubmitted={setNoSubmitted}
           />
         );
 
@@ -288,6 +361,9 @@ export default function Modal({
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
+            hasFather={hasFather}
+            fatherSubmitted={fatherSubmitted}
+            setFatherSubmitted={setFatherSubmitted}
           />
         );
 
@@ -295,13 +371,11 @@ export default function Modal({
         return (
           <Siblings
             setForm={setForm}
-            handleInputChange={handleInputChange}
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
-            handleNumberOfSiblingsChange={handleNumberOfSiblingsChange}
-            numberOfSiblings={numberOfSiblings}
-            siblingsData={siblingsData}
+            yourSiblings={yourSiblings}
+            setYourSiblings={setYourSiblings}
           />
         );
 
@@ -315,10 +389,15 @@ export default function Modal({
             link={link}
             setLink={setLink}
             nso={nso}
-            handleSf10Change={handleSf10Change}
+            handleSf10AChange={handleSf10AChange}
+            handleSf10BChange={handleSf10BChange}
             handleGoodmoralChange={handleGoodmoralChange}
+            handleProfileChange={handleProfileChange}
             goodmoral={goodmoral}
-            sf10={sf10}
+            sf10A={sf10A}
+            sf10B={sf10B}
+            profile={profile}
+            nsoImage={nsoImage}
           />
         );
 
@@ -370,8 +449,6 @@ export default function Modal({
             <MDBBtn className="btn-close" color="none" onClick={handleClose} />
           </MDBModalHeader>
           <MDBModalBody className={`${theme.bg} ${theme.text} gui-viewer `}>
-            {/* <MDBCard className="h-100">
-              <MDBCardBody> */}
             <MDBContainer className="shadow-4">
               <MDBTabs justify fill>
                 {tabs.map((tab, index) => (
@@ -395,8 +472,6 @@ export default function Modal({
                 {handleActiveContent(activeItem)}
               </MDBTabsContent>
             </MDBContainer>
-            {/* </MDBCardBody>
-            </MDBCard> */}
           </MDBModalBody>
         </MDBModalContent>
       </MDBModalDialog>

@@ -90,7 +90,7 @@ export default function BasicInformation({
   };
 
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
@@ -100,7 +100,7 @@ export default function BasicInformation({
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option></option>
+                <option value={""}></option>
                 {categories.map((data, index) => (
                   <option value={data} key={index}>
                     {data}
@@ -122,7 +122,7 @@ export default function BasicInformation({
                 }}
                 required
               >
-                <option></option>
+                <option value={""}></option>
                 <option value={"freshman"}>Freshman</option>
                 <option value={"sophomore"}>Sophomore</option>
                 <option value={"junior"}>junior</option>
@@ -147,7 +147,7 @@ export default function BasicInformation({
                   })
                 }
               >
-                <option> </option>
+                <option value={""}> </option>
 
                 {levels.length > 0 &&
                   levels.map((level, index) => (
@@ -171,7 +171,7 @@ export default function BasicInformation({
                   })
                 }
               >
-                <option>Strand</option>
+                <option value={""}>Strand</option>
                 {strands.length > 0 &&
                   strands.map((strand) => (
                     <option value={strand.specifications}>
@@ -190,33 +190,41 @@ export default function BasicInformation({
             </h5>
             <MDBRow className="d-flex justify-content-center">
               <MDBCol md={6}>
-                <MDBTable
-                  align="middle"
-                  hover
-                  responsive
-                  className="table table-hover"
+                <div
+                  className="table-container"
+                  style={{ maxHeight: "300px", overflowY: "auto" }}
                 >
-                  <MDBTableHead>
-                    <tr>
-                      <th>#</th>
-                      <th scope="col">Name </th>
-                    </tr>
-                  </MDBTableHead>
-                  <MDBTableBody>
-                    {topic.length > 0 &&
-                      topic.map((data, index) => (
-                        <tr>
-                          <td>{1 + index}</td>
-                          <td>{data.name}</td>
-                        </tr>
-                      ))}
-                  </MDBTableBody>
-                </MDBTable>
+                  <MDBTable>
+                    <MDBTableHead>
+                      <tr>
+                        <th>#</th>
+                        <th scope="col">Name</th>
+                      </tr>
+                    </MDBTableHead>
+                    <MDBTableBody>
+                      {topic.length > 0 &&
+                        topic.map((data, index) => (
+                          <tr key={index}>
+                            <td>{1 + index}</td>
+                            <td>{data.name}</td>
+                          </tr>
+                        ))}
+                    </MDBTableBody>
+                  </MDBTable>
+                </div>
               </MDBCol>
             </MDBRow>
           </MDBContainer>
         )}
-        <div className="text-end">
+        <div
+          style={{
+            textAlign: "right",
+            position: "fixed",
+            bottom: "27px",
+            right: "120px",
+          }}
+          className="fixed-bottom"
+        >
           <MDBBtn type="submit" className="mb-2">
             Next
           </MDBBtn>

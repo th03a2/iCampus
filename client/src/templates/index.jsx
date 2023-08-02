@@ -19,6 +19,7 @@ export {
   TBLbatch,
   TBLenrollment,
   TBLpending,
+  ViewCredentials,
 } from "./assets";
 
 export { TBLmenu } from "./assets/menus";

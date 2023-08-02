@@ -66,7 +66,7 @@ export default function BasicInformation({
   };
 
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
@@ -74,6 +74,7 @@ export default function BasicInformation({
               <select
                 className="form-control"
                 value={category}
+                disabled
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option>{category}</option>
@@ -85,6 +86,7 @@ export default function BasicInformation({
               <select
                 className="form-control"
                 value={information?.categorization}
+                disabled
               >
                 <option>{information.categorization}</option>
               </select>
@@ -104,20 +106,22 @@ export default function BasicInformation({
             </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            {isStrand && (
-              <select
-                className="form-control"
-                value={specifications}
-                required
-                disabled
-              >
-                <option>{specifications}</option>
-              </select>
-            )}
+            <MDBInputGroup textBefore="Strand">
+              {isStrand && (
+                <select
+                  className="form-control"
+                  value={specifications}
+                  required
+                  disabled
+                >
+                  <option>{specifications}</option>
+                </select>
+              )}
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
-        <MDBContainer>
+        {/* <MDBContainer>
           <h5 className="mt-4 text-center">
             <strong>Subjects</strong>
           </h5>
@@ -147,9 +151,17 @@ export default function BasicInformation({
               </MDBTable>
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
+        </MDBContainer> */}
 
-        <div className="text-end">
+        <div
+          style={{
+            textAlign: "right",
+            position: "fixed",
+            bottom: "27px",
+            right: "120px",
+          }}
+          className="fixed-bottom"
+        >
           <MDBBtn type="submit" className="mb-2">
             Next
           </MDBBtn>

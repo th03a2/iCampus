@@ -39,13 +39,21 @@ const modelSchema = new mongoose.Schema(
       nso: {
         type: String,
       },
-      sf10: {
+      sf10A: {
         type: String,
       },
       goodmoral: {
         type: String,
       },
+      sf10B: {
+        type: String,
+      },
+      profile: {
+        type: String,
+      },
     },
+    siblings: { type: Array, default: [] },
+
     subjects: { type: Array },
     phone: { type: String }, //
     issues: { type: Array }, // title: String , date :kelan inissue,issued By:Sino nag issue,

@@ -12,24 +12,38 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 import SiblingsModal from "../../siblingsModal";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { nameFormatter, getAge } from "../../../../../../components/utilities";
+import Swal from "sweetalert2";
 
-export default function Siblings({ setActiveItem, link, setLink }) {
-  const { auth } = useSelector(({ auth }) => auth);
+export default function Siblings({
+  setActiveItem,
+  link,
+  setLink,
+  yourSiblings,
+  setYourSiblings,
+}) {
   const [visibility, setVisibility] = useState(false);
-  const [siblings, setSiblings] = useState([]);
   const options = { year: "numeric", month: "long", day: "numeric" };
 
-  useEffect(() => {
-    if (auth.yourSiblings.length > 0) {
-      setSiblings(auth.yourSiblings);
-    } else {
-      setSiblings([]);
-    }
-  }, [auth.yourSiblings]);
+  const handleDelete = (index) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newArray = [...yourSiblings];
+        newArray.splice(index, 1);
+        setYourSiblings(newArray);
+        Swal.fire("Deleted!", "Your sibling has  deleted.", "success");
+      }
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +57,7 @@ export default function Siblings({ setActiveItem, link, setLink }) {
   };
 
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
@@ -56,50 +70,87 @@ export default function Siblings({ setActiveItem, link, setLink }) {
             </MDBInputGroup>
           </MDBCol>
         </MDBRow>
-        <MDBRow className="mt-4">
-          <MDBCol md={12}>
-            <MDBTable>
-              <MDBTableHead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Full Name</th>
-                  <th scope="col">Gender</th>
-                  <th scope="col">Age</th>
-                  <th scope="col">Date of Birth</th>
-                </tr>
-              </MDBTableHead>
-              <MDBTableBody>
-                {siblings.map((sibling, index) => (
-                  <tr>
-                    <td>{1 + index}</td>
-                    <td>
-                      {nameFormatter(sibling.fullName).toLocaleUpperCase()}
-                    </td>
-                    <td>
-                      {sibling.isMale ? (
-                        <MDBIcon fas icon="male" color="warning" size="2x" />
-                      ) : (
-                        <MDBIcon fas icon="female" color="warning" size="2x" />
-                      )}
-                    </td>
-                    <td>{getAge(sibling.dob)}</td>
-                    <td>
-                      {new Date(sibling.dob).toLocaleDateString(
-                        undefined,
-                        options
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </MDBTableBody>
-            </MDBTable>
-          </MDBCol>
-        </MDBRow>
-        <div className="d-flex justify-content-between mt-4">
+        {yourSiblings.length > 0 && (
+          <MDBRow className="mt-4">
+            <MDBCol md={12}>
+              <div
+                className="table-container"
+                style={{ maxHeight: "400px", overflowY: "auto" }}
+              >
+                <MDBTable>
+                  <MDBTableHead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Full Name</th>
+                      <th scope="col">Gender</th>
+                      <th scope="col">Age</th>
+                      <th scope="col">Date of Birth</th>
+                      <th>Action</th>
+                    </tr>
+                  </MDBTableHead>
+                  <MDBTableBody>
+                    {yourSiblings.map((sibling, index) => (
+                      <tr>
+                        <td>{1 + index}</td>
+                        <td>
+                          {nameFormatter(sibling.fullName).toLocaleUpperCase()}
+                        </td>
+                        <td>
+                          {sibling.isMale ? (
+                            <MDBIcon
+                              fas
+                              icon="male"
+                              color="warning"
+                              size="2x"
+                            />
+                          ) : (
+                            <MDBIcon
+                              fas
+                              icon="female"
+                              color="warning"
+                              size="2x"
+                            />
+                          )}
+                        </td>
+                        <td>{getAge(sibling.dob)}</td>
+                        <td>
+                          {new Date(sibling.dob).toLocaleDateString(
+                            undefined,
+                            options
+                          )}
+                        </td>
+                        <td>
+                          <MDBBtn
+                            size="sm"
+                            type="button"
+                            onClick={() => handleDelete(index)}
+                            color="danger"
+                          >
+                            <MDBIcon fas icon="trash" />
+                          </MDBBtn>
+                        </td>
+                      </tr>
+                    ))}
+                  </MDBTableBody>
+                </MDBTable>
+              </div>
+            </MDBCol>
+          </MDBRow>
+        )}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "35px",
+            left: "120px",
+            right: "120px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("parents")}
             type="button"
-            color="light"
+            color="warning"
             className="shadow-0"
           >
             Previous
@@ -108,7 +159,12 @@ export default function Siblings({ setActiveItem, link, setLink }) {
         </div>
       </form>
       {visibility && (
-        <SiblingsModal setVisibility={setVisibility} visibility={visibility} />
+        <SiblingsModal
+          setVisibility={setVisibility}
+          visibility={visibility}
+          yourSiblings={yourSiblings}
+          setYourSiblings={setYourSiblings}
+        />
       )}
     </MDBContainer>
   );

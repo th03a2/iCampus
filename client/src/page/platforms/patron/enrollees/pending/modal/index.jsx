@@ -145,17 +145,17 @@ export default function Modal({ visibility, setVisibility, information }) {
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
+            information={information}
           />
         );
 
       case "parents":
         return (
           <Parents
-            setParents={setParents}
-            parents={parents}
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
+            information={information}
           />
         );
 

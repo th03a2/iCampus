@@ -9,11 +9,15 @@ import {
   MDBTable,
   MDBTableBody,
   MDBTableHead,
+  MDBIcon,
   // MDBInput,
 } from "mdb-react-ui-kit";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { nameFormatter } from "../../../../../../../components/utilities";
+import {
+  getAge,
+  nameFormatter,
+} from "../../../../../../../components/utilities";
 import { useSelector } from "react-redux";
 // import SiblingsModal from "../../siblingsModal";
 
@@ -26,31 +30,6 @@ export default function Siblings({
   const { theme } = useSelector(({ auth }) => auth);
   const [siblings, setSiblings] = useState([]);
   const options = { year: "numeric", month: "long", day: "numeric" };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `assets/persons/users/getSiblings?id=${information.student?._id}`
-        );
-        if (response.data.error) {
-          toast.warn(response.data.error);
-          throw new Error(response.data.error);
-        } else {
-          if (response.data[0] === null) {
-            setSiblings([]);
-          } else {
-            setSiblings(response.data);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [information]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -63,48 +42,71 @@ export default function Siblings({
   };
 
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
-        <MDBRow>
-          {/* {siblings.length > 0 && siblings.map((sibling) => )} */}
-
-          <MDBTable
-            align="middle"
-            hover
-            responsive
-            color={theme.color}
-            className="table table-hover"
-          >
-            <MDBTableHead>
-              <tr>
-                <th>#</th>
-                <th scope="col">Name </th>
-                <th scope="col">Gender </th>
-                <th scope="col">Date of Birth </th>
-              </tr>
-            </MDBTableHead>
-            <MDBTableBody>
-              {siblings.map((sibling, index) => (
-                <tr>
-                  <td>{1 + index}</td>
-                  <td>{nameFormatter(sibling.fullName)}</td>
-                  <td>{sibling.isMale ? "Male" : "Female"}</td>
-                  <td>
-                    {new Date(sibling.dob).toLocaleDateString(
-                      undefined,
-                      options
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </MDBTableBody>
-          </MDBTable>
+        <MDBRow className="mt-4">
+          <MDBCol md={12}>
+            <div
+              className="table-container"
+              style={{ maxHeight: "600px", overflowY: "auto" }}
+            >
+              <MDBTable>
+                <MDBTableHead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Date of Birth</th>
+                  </tr>
+                </MDBTableHead>
+                <MDBTableBody>
+                  {information.siblings.map((sibling, index) => (
+                    <tr>
+                      <td>{1 + index}</td>
+                      <td>
+                        {nameFormatter(sibling.fullName).toLocaleUpperCase()}
+                      </td>
+                      <td>
+                        {sibling.isMale ? (
+                          <MDBIcon fas icon="male" color="warning" size="2x" />
+                        ) : (
+                          <MDBIcon
+                            fas
+                            icon="female"
+                            color="warning"
+                            size="2x"
+                          />
+                        )}
+                      </td>
+                      <td>{getAge(sibling.dob)}</td>
+                      <td>
+                        {new Date(sibling.dob).toLocaleDateString(
+                          undefined,
+                          options
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </MDBTableBody>
+              </MDBTable>
+            </div>
+          </MDBCol>
         </MDBRow>
-        <div className="d-flex justify-content-between mt-4">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "35px",
+            left: "120px",
+            right: "120px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("parents")}
             type="button"
-            color="light"
+            color="warning"
             className="shadow-0"
           >
             Previous

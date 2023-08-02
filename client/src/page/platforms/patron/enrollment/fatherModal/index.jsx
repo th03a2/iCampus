@@ -25,12 +25,12 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { Philippines } from "../../../../../fakeDb";
-export default function GuardianModal({
+export default function FatherModal({
   setVisibility,
   visibility,
-  setGuardian,
-  guardian,
-  setNoSubmitted,
+  setParents,
+  parents,
+  setFatherSubmitted,
 }) {
   const { theme } = useSelector(({ auth }) => auth);
   const [datas, setDatas] = useState([]);
@@ -42,7 +42,7 @@ export default function GuardianModal({
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    let _siblings = guardian.fullName;
+    let _siblings = parents.father.fullName;
     if (typeof _siblings === "object") {
       _siblings = `?${Object.keys(_siblings)
         .map((i) => `${i}=${_siblings[i]}`)
@@ -69,7 +69,7 @@ export default function GuardianModal({
   const handlePick = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: " Do you want to register this in your guardian?",
+      text: " Do you want to register this in your parents?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -77,11 +77,11 @@ export default function GuardianModal({
       confirmButtonText: "Yes, registered it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setGuardian({ ...guardian, id: id });
-        setNoSubmitted(false);
+        setParents({ ...parents, father: { ...parents.father, id } });
+        setFatherSubmitted(true);
         Swal.fire(
           "Registered!",
-          "Your guardian has been registered.",
+          "Your parents has been registered.",
           "success"
         );
       } else {
@@ -93,8 +93,8 @@ export default function GuardianModal({
   useEffect(() => {
     if (isAdd) {
       Swal.fire({
-        title: "Your guardian is not registered in our database",
-        text: " Do you want to register this in your guardian?",
+        title: "Your parents is not registered in our database",
+        text: " Do you want to register this in your parents?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -102,10 +102,10 @@ export default function GuardianModal({
         confirmButtonText: "Yes, registered it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          setNoSubmitted(false);
+          setFatherSubmitted(true);
           Swal.fire(
             "Registered!",
-            "Your guardian has been registered.",
+            "Your parents has been registered.",
             "success"
           );
         } else {
@@ -156,36 +156,9 @@ export default function GuardianModal({
     }
   };
   useEffect(() => {
-    if (guardian.address.city.length < 2) {
-      setGuardian({ ...guardian, address });
-    }
-    if (guardian.address) {
-      const { region, province, city } = guardian.address;
-      if (region) {
-        const { code } = Philippines.regions.find(
-          ({ name }) => name === region
-        );
-        setProvinces(
-          Philippines.provinces.filter(
-            (province) => province.reg_code === Number(code)
-          )
-        );
-      }
-      if (province) {
-        const { code } = Philippines.provinces.find(
-          ({ name }) => name === province
-        );
-        setCities(
-          Philippines.cities.filter((city) => city.prov_code === Number(code))
-        );
-      }
-
-      if (city) {
-        const { code } = Philippines.cities.find(({ name }) => name === city);
-        setBarangays(
-          Philippines.barangays.filter((brgy) => brgy.mun_code === Number(code))
-        );
-      }
+    const _address = { ...parents.father.address };
+    if (!_address.city) {
+      setParents({ ...parents, father: { ...parents.father, address } });
     }
   }, [address]);
   return (
@@ -194,7 +167,7 @@ export default function GuardianModal({
         <MDBModalDialog size="xl">
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Guardian</MDBModalTitle>
+              <MDBModalTitle>Father</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -209,13 +182,16 @@ export default function GuardianModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={guardian.fullName?.fname}
+                        value={parents.father.fullName?.fname}
                         onChange={(e) =>
-                          setGuardian({
-                            ...guardian,
-                            fullName: {
-                              ...guardian.fullName,
-                              fname: e.target.value,
+                          setParents({
+                            ...parents,
+                            father: {
+                              ...parents.father,
+                              fullName: {
+                                ...parents.father.fullName,
+                                fname: e.target.value,
+                              },
                             },
                           })
                         }
@@ -228,13 +204,16 @@ export default function GuardianModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={guardian.fullName?.mname}
+                        value={parents.father.fullName?.mname}
                         onChange={(e) =>
-                          setGuardian({
-                            ...guardian,
-                            fullName: {
-                              ...guardian.fullName,
-                              mname: e.target.value,
+                          setParents({
+                            ...parents,
+                            father: {
+                              ...parents.father,
+                              fullName: {
+                                ...parents.father.fullName,
+                                mname: e.target.value,
+                              },
                             },
                           })
                         }
@@ -247,13 +226,16 @@ export default function GuardianModal({
                         type="text"
                         className="form-control"
                         required
-                        value={guardian.fullName.lname}
+                        value={parents.father.fullName.lname}
                         onChange={(e) =>
-                          setGuardian({
-                            ...guardian,
-                            fullName: {
-                              ...guardian.fullName,
-                              lname: e.target.value,
+                          setParents({
+                            ...parents,
+                            father: {
+                              ...parents.father,
+                              fullName: {
+                                ...parents.father.fullName,
+                                lname: e.target.value,
+                              },
                             },
                           })
                         }
@@ -266,13 +248,16 @@ export default function GuardianModal({
                     <MDBInputGroup textBefore="Suffix(Optional)">
                       <select
                         className="form-control"
-                        value={guardian.fullName?.suffix}
+                        value={parents.father.fullName?.suffix}
                         onChange={(e) =>
-                          setGuardian({
-                            ...guardian,
-                            fullName: {
-                              ...guardian.fullName,
-                              suffix: e.target.value,
+                          setParents({
+                            ...parents,
+                            father: {
+                              ...parents.father,
+                              fullName: {
+                                ...parents.father.fullName,
+                                suffix: e.target.value,
+                              },
                             },
                           })
                         }
@@ -292,42 +277,30 @@ export default function GuardianModal({
                         type="date"
                         className="form-control"
                         required
-                        value={guardian.dob}
+                        value={parents.father.dob}
                         onChange={(e) =>
-                          setGuardian({ ...guardian, dob: e.target.value })
+                          setParents({
+                            ...parents,
+                            father: { ...parents.father, dob: e.target.value },
+                          })
                         }
                       />
                     </MDBInputGroup>
                   </MDBCol>
-                  <MDBCol md={4}>
-                    <MDBInputGroup textBefore="Gender">
-                      <select
-                        className="form-control"
-                        value={guardian.isMale}
-                        required
-                        onChange={(e) =>
-                          setGuardian({ ...guardian, isMale: e.target.value })
-                        }
-                      >
-                        <option value={""}></option>
-                        <option value={true}>Male</option>
-                        <option value={false}>Female</option>
-                      </select>
-                    </MDBInputGroup>
-                  </MDBCol>
-                </MDBRow>
-                <MDBRow className="mt-4">
                   <MDBCol md={4}>
                     <MDBInputGroup textBefore="Mobile">
                       <input
                         type="text"
                         className="form-control"
                         required
-                        value={guardian.mobile}
+                        value={parents.father.mobile}
                         onChange={(e) =>
-                          setGuardian({
-                            ...guardian,
-                            mobile: e.target.value,
+                          setParents({
+                            ...parents,
+                            father: {
+                              ...parents.father,
+                              mobile: e.target.value,
+                            },
                           })
                         }
                         onKeyDown={validateContactNumber}
@@ -335,22 +308,8 @@ export default function GuardianModal({
                       />
                     </MDBInputGroup>
                   </MDBCol>
-                  <MDBCol md={4}>
-                    <MDBInputGroup textBefore="Relationship">
-                      <input
-                        type="text"
-                        className="form-control"
-                        required
-                        value={guardian.relationship}
-                        onChange={(e) =>
-                          setGuardian({
-                            ...guardian,
-                            relationship: e.target.value,
-                          })
-                        }
-                      />
-                    </MDBInputGroup>
-                  </MDBCol>
+                </MDBRow>
+                <MDBRow className="mt-4">
                   <MDBCol md={4}>
                     <MDBInputGroup textBefore="region">
                       <select
@@ -369,21 +328,6 @@ export default function GuardianModal({
                       </select>
                     </MDBInputGroup>
                   </MDBCol>
-                </MDBRow>
-                {/* <MDBCol md={4}>
-                  <MDBInputGroup textBefore="Occupation">
-                    <input
-                      className="form-control"
-                      type="text"
-                      required
-                      value={guardian.occupation}
-                      onChange={(e) =>
-                        setGuardian({ ...guardian, occupation: e.target.value })
-                      }
-                    />
-                  </MDBInputGroup>
-                </MDBCol> */}
-                <MDBRow className="mt-3">
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="Province">
                       <select
@@ -420,6 +364,8 @@ export default function GuardianModal({
                       </select>
                     </MDBInputGroup>
                   </MDBCol>
+                </MDBRow>
+                <MDBRow className="mt-3">
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="Baranggay">
                       <select

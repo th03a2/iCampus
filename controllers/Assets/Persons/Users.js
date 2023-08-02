@@ -43,66 +43,6 @@ exports.browse = (req, res) =>
     )
     .catch((error) => res.status(400).json({ error: error.message }));
 
-exports.saveSiblings = (req, res) => {
-  User.find({ _id: req.query.id })
-    .then((datas) => {
-      if (!datas || datas.length === 0) {
-        return res.status(404).json({ error: "No matching user found." });
-      }
-
-      const siblingsArray = datas.flatMap((data) => data.siblings);
-
-      User.create({
-        fullName: {
-          fname: req.query.fname,
-          mname: req.query.mname,
-          lname: req.query.lname,
-        },
-        isMale: req.query.isMale,
-        dob: req.query.dob,
-        email: `${req.query.fname}${req.query.mname}${req.query.lname}@gmail.com`,
-        password: "password",
-      })
-        .then((newUser) => {
-          siblingsArray.push(newUser._id); // Push the ID directly to siblingsArray
-
-          User.findByIdAndUpdate(datas[0]._id, {
-            siblings: siblingsArray,
-          })
-            .then(() => {
-              res.json({ message: "Siblings updated successfully." });
-            })
-            .catch((error) => {
-              res.status(500).json({ error: "Failed to update siblings." });
-            });
-        })
-        .catch((error) => {
-          res.status(500).json({ error: "Failed to create user." });
-        });
-    })
-    .catch((error) => {
-      res.status(500).json({ error: "Failed to fetch user." });
-    });
-};
-
-exports.addSiblings = (req, res) => {
-  User.find({ _id: req.query.id })
-    .then((datas) => {
-      const users = datas.filter((user) => !user.deletedAt);
-      const siblingsArray = users.flatMap((user) => user.siblings);
-      siblingsArray.push(req.query.siblingsId);
-
-      User.findByIdAndUpdate(users[0]._id, {
-        siblings: siblingsArray,
-      })
-        .then((data) => {
-          res.json(data);
-        })
-        .catch((err) => res.status(400).json({ err: error }));
-    })
-    .catch((error) => res.status(400).json({ error }));
-};
-
 exports.search = (req, res) => {
   User.find({
     // dob: req.query.dob,
