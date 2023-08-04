@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   MDBBtn,
   MDBCol,
@@ -19,6 +19,8 @@ export default function Guardian({
   hasGuardian,
   setNoSubmitted,
   noSubmitted,
+  hasFather,
+  parents,
 }) {
   const { auth } = useSelector(({ auth }) => auth);
   const [visibility, setVisibility] = useState(false);
@@ -34,10 +36,33 @@ export default function Guardian({
     setLink(tabs);
     setActiveItem("parents");
   };
-  const handleModal = () => {
-    setVisibility(true);
-  };
+  const handleChange = (event) => {
+    const value = event.target.value;
 
+    switch (value) {
+      case "father":
+        const father = { ...parents.father };
+        const id = father._id;
+        const _father = { ...father, id };
+        setGuardian(_father);
+        setNoSubmitted(false);
+        break;
+      case "mother":
+        const mother = { ...parents.mother };
+        const _id = mother._id;
+        const _mother = { ...mother, id: _id };
+        setGuardian(_mother);
+        setNoSubmitted(false);
+        break;
+      case "others":
+        setVisibility(true);
+        break;
+
+      default:
+        console.log("error");
+        break;
+    }
+  };
   return (
     <MDBContainer className="mt-4">
       <form onSubmit={handleSubmit}>
@@ -45,33 +70,31 @@ export default function Guardian({
           <MDBRow>
             <div className="d-flex justify-content-center">
               <MDBCol md={8}>
-                <MDBInputGroup textBefore="Guardian">
-                  {hasGuardian ? (
-                    <input
-                      type="text"
-                      className="form-control"
-                      readOnly
-                      onClick={handleModal}
-                      value={nameFormatter(guardian.fullName)}
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      className="form-control"
-                      onClick={handleModal}
-                      value={
-                        noSubmitted ? "" : nameFormatter(guardian.fullName)
-                      }
-                      required
-                    />
-                  )}
+                <MDBInputGroup
+                  textBefore={
+                    hasGuardian
+                      ? "Do you want change your guardian?"
+                      : "Guardian"
+                  }
+                >
+                  <select
+                    className="form-control"
+                    onChange={handleChange}
+                    required
+                  >
+                    <option
+                      value={hasGuardian || noSubmitted === false ? "done" : ""}
+                    ></option>
+                    {hasFather && <option value={"father"}>Father</option>}
+                    <option value="mother">Mother</option>
+                    <option value={"others"}>Others</option>
+                  </select>
                 </MDBInputGroup>
               </MDBCol>
             </div>
           </MDBRow>
           {hasGuardian || noSubmitted === false ? (
             <>
-              {" "}
               <MDBRow className="mt-5">
                 <MDBCol md={4}>
                   <MDBInputGroup textBefore="Full name">
@@ -81,7 +104,7 @@ export default function Guardian({
                       value={nameFormatter(guardian.fullName)}
                     />
                   </MDBInputGroup>
-                </MDBCol>{" "}
+                </MDBCol>
                 <MDBCol md={4}>
                   <MDBInputGroup textBefore="Age">
                     <input
@@ -113,7 +136,7 @@ export default function Guardian({
                       )}
                     />
                   </MDBInputGroup>
-                </MDBCol>{" "}
+                </MDBCol>
                 <MDBCol md={4}>
                   <MDBInputGroup textBefore="Mobile">
                     <input
@@ -129,8 +152,8 @@ export default function Guardian({
                       className="form-control"
                       readOnly
                       value={
-                        auth.guardian?.relationship
-                          ? auth.guardian?.relationship
+                        guardian.relationship === ""
+                          ? auth.guardian.relationship
                           : guardian.relationship
                       }
                     />
@@ -147,7 +170,7 @@ export default function Guardian({
                       readOnly
                     />
                   </MDBInputGroup>
-                </MDBCol>{" "}
+                </MDBCol>
                 <MDBCol md={4}>
                   <MDBInputGroup textBefore="Province">
                     <input
@@ -164,6 +187,18 @@ export default function Guardian({
                       type="text"
                       className="form-control"
                       value={guardian.address?.city}
+                      readOnly
+                    />
+                  </MDBInputGroup>
+                </MDBCol>
+              </MDBRow>
+              <MDBRow className="mt-4">
+                <MDBCol md={4}>
+                  <MDBInputGroup textBefore="Baranggay">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={guardian.address?.barangay}
                       readOnly
                     />
                   </MDBInputGroup>

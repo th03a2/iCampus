@@ -38,8 +38,7 @@ export default function FatherModal({
   const [address, setAddress] = useState([]),
     [provinces, setProvinces] = useState([]),
     [cities, setCities] = useState([]),
-    [barangays, setBarangays] = useState([]);
-
+    [brgys, setBrgys] = useState([]);
   const handleSearch = async (e) => {
     e.preventDefault();
     let _siblings = parents.father.fullName;
@@ -116,49 +115,73 @@ export default function FatherModal({
   }, [isAdd]);
 
   const handleAddress = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case "region":
-        setAddress({ ...address, region: value });
-        const code = Philippines.regions.find(
-          ({ name }) => name === value
-        ).code;
+    const { name, value, dataset } = e.target;
+    const { subname } = dataset;
+    var _patron = { ...parents.father[name] };
+    console.log(subname);
+    if (name === "fullName") {
+      _patron[subname] = value;
+    } else if (name === "address") {
+      if (subname === "region") {
+        const { code } = Philippines.regions.find(({ name }) => name === value);
         setProvinces(
           Philippines.provinces.filter(
-            ({ reg_code }) => reg_code === Number(code)
+            (province) => province.reg_code === Number(code)
           )
         );
-        break;
-      case "province":
-        setAddress({ ...address, province: value });
-        const province = Philippines.provinces.find(
+      } else if (subname === "province") {
+        const { code } = Philippines.provinces.find(
           ({ name }) => name === value
-        ).code;
+        );
         setCities(
-          Philippines.cities.filter(
-            ({ prov_code }) => prov_code === Number(province)
-          )
+          Philippines.cities.filter((city) => city.prov_code === Number(code))
         );
-        break;
-
-      case "barangay":
-
-      default:
-        setAddress({ ...address, city: value });
-        const cities = Philippines.cities.find(
-          ({ name }) => name === value
-        ).code;
-        setBarangays(
-          Philippines.barangays.filter(
-            ({ mun_code }) => mun_code === Number(cities)
-          )
+      } else if (subname === "city") {
+        const { code } = Philippines.cities.find(({ name }) => name === value);
+        setBrgys(
+          Philippines.barangays.filter((brgy) => brgy.mun_code === Number(code))
         );
+      }
+      _patron[subname] = value;
+    } else {
+      _patron = value;
     }
+    setParents({
+      ...parents,
+      father: {
+        ...parents.father,
+        [name]: _patron,
+      },
+    });
   };
   useEffect(() => {
-    const _address = { ...parents.father.address };
-    if (!_address.city) {
-      setParents({ ...parents, father: { ...parents.father, address } });
+    if (parents.father.address) {
+      const { region, province, city } = parents.father.address;
+      if (region) {
+        const { code } = Philippines.regions.find(
+          ({ name }) => name === region
+        );
+        setProvinces(
+          Philippines.provinces.filter(
+            (province) => province.reg_code === Number(code)
+          )
+        );
+      }
+      if (province) {
+        const { code } = Philippines.provinces.find(
+          ({ name }) => name === province
+        );
+        setCities(
+          Philippines.cities.filter((city) => city.prov_code === Number(code))
+        );
+      }
+
+      if (city) {
+        const { code } = Philippines.cities.find(({ name }) => name === city);
+        setBrgys(
+          Philippines.barangays.filter((brgy) => brgy.mun_code === Number(code))
+        );
+      }
     }
   }, [address]);
   return (
@@ -313,7 +336,8 @@ export default function FatherModal({
                   <MDBCol md={4}>
                     <MDBInputGroup textBefore="region">
                       <select
-                        name="region"
+                        name="address"
+                        data-subname="region"
                         value={address.region}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
@@ -332,7 +356,8 @@ export default function FatherModal({
                     <MDBInputGroup textBefore="Province">
                       <select
                         value={address.province}
-                        name="province"
+                        name="address"
+                        data-subname="province"
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
                         required
@@ -349,7 +374,8 @@ export default function FatherModal({
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="City">
                       <select
-                        name="city"
+                        name="address"
+                        data-subname="city"
                         value={address.city}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
@@ -369,13 +395,15 @@ export default function FatherModal({
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="Baranggay">
                       <select
-                        name="barangay"
+                        name="address"
+                        data-subname="barangay"
                         value={address?.barangay}
                         className={`form-control ${theme.bg} ${theme.text}`}
+                        onChange={handleAddress}
                         required
                       >
                         <option value={""} />
-                        {barangays.map(({ name }) => (
+                        {brgys.map(({ name }) => (
                           <option
                             key={`brgy-${name}`}
                             value={name.toUpperCase()}

@@ -128,6 +128,18 @@ export default function Guardian({
             </MDBInputGroup>
           </MDBCol>
         </MDBRow>
+        <MDBRow className="mt-3">
+          {" "}
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Barangay">
+              <input
+                className="form-control"
+                value={information.guardian?.address?.barangay}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
         <div
           style={{
             display: "flex",

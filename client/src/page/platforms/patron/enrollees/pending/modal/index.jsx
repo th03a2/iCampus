@@ -22,28 +22,11 @@ import Siblings from "./components/siblings";
 import Credentials from "./components/credentials";
 import Personnel from "./components/personnel";
 import { toast } from "react-toastify";
-import { SAVE } from "../../../../../../redux/slices/query";
-import { UPLOAD } from "../../../../../../redux/slices/assets/persons/auth";
-import Swal from "sweetalert2";
-export default function Modal({ visibility, setVisibility, information }) {
-  const { theme, token, auth } = useSelector(({ auth }) => auth);
 
-  const dispatch = useDispatch();
+export default function Modal({ visibility, setVisibility, information }) {
+  const { theme, auth } = useSelector(({ auth }) => auth);
+
   const [activeItem, setActiveItem] = useState("basic"),
-    [nso, setNso] = useState(null),
-    [sf10, setSf10] = useState(null),
-    [goodmoral, setGoodMoral] = useState(null),
-    [nsoImage, setNsoImage] = useState(null),
-    [sf10Image, setSf10Image] = useState(null),
-    [goodmoralImage, setGoodmoralImage] = useState(null),
-    [form, setForm] = useState({
-      phone: "",
-      attachments: {
-        sf10: "",
-        goodmoral: "",
-        nso: "",
-      },
-    }),
     [schoolInfo, setSchoolInfo] = useState({
       levelId: 0,
       units: "",
@@ -77,35 +60,6 @@ export default function Modal({ visibility, setVisibility, information }) {
     muni: "",
     province: "",
     relationShip: "",
-  });
-
-  const [parents, setParents] = useState({
-    father: {
-      fname: "",
-      mname: "",
-      lname: "",
-      suffix: "",
-      isMale: "",
-      phone: "",
-      street: "",
-      brgy: "",
-      occupation: "",
-      muni: "",
-      province: "",
-    },
-    mother: {
-      fname: "",
-      mname: "",
-      lname: "",
-      suffix: "",
-      isMale: "",
-      phone: "",
-      street: "",
-      brgy: "",
-      occupation: "",
-      muni: "",
-      province: "",
-    },
   });
 
   const tabs = [

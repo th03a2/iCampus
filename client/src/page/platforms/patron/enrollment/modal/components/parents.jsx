@@ -1,17 +1,11 @@
 import {
   MDBCol,
   MDBContainer,
-  MDBInput,
   MDBRow,
   MDBBtn,
   MDBInputGroup,
 } from "mdb-react-ui-kit";
-import {
-  validateContactNumber,
-  properNameFormatter,
-  nameFormatter,
-  getAge,
-} from "../../../../../../components/utilities";
+import { nameFormatter, getAge } from "../../../../../../components/utilities";
 import { useState } from "react";
 import FatherModal from "../../fatherModal";
 
@@ -138,7 +132,17 @@ export default function Parents({
                 <MDBInputGroup textBefore="City">
                   <input
                     type="text"
-                    value={parents.father.address.city}
+                    value={parents.father?.address.city}
+                    className="form-control"
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>{" "}
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Barangay">
+                  <input
+                    type="text"
+                    value={parents.father?.address.barangay}
                     className="form-control"
                     readOnly
                   />
@@ -157,7 +161,7 @@ export default function Parents({
             <MDBInputGroup textBefore="Full Name">
               <input
                 type="text"
-                value={nameFormatter(parents.mother.fullName)}
+                value={nameFormatter(parents.mother?.fullName)}
                 className="form-control"
                 readOnly
               />
@@ -167,7 +171,7 @@ export default function Parents({
             <MDBInputGroup textBefore="Age">
               <input
                 type="text"
-                value={getAge(parents.mother.dob)}
+                value={getAge(parents.mother?.dob)}
                 className="form-control"
                 readOnly
               />
@@ -178,7 +182,7 @@ export default function Parents({
               <input
                 className="form-control"
                 readOnly
-                value={new Date(parents.mother.dob).toLocaleDateString(
+                value={new Date(parents.mother?.dob).toLocaleDateString(
                   undefined,
                   options
                 )}
@@ -211,7 +215,7 @@ export default function Parents({
             <MDBInputGroup textBefore="Province">
               <input
                 type="text"
-                value={parents.mother.address.province}
+                value={parents.mother?.address.province}
                 className="form-control"
                 readOnly
               />
@@ -223,7 +227,17 @@ export default function Parents({
             <MDBInputGroup textBefore="City">
               <input
                 type="text"
-                value={parents.mother.address.city}
+                value={parents.mother?.address.city}
+                className="form-control"
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Barangay">
+              <input
+                type="text"
+                value={parents.mother?.address.barangay}
                 className="form-control"
                 readOnly
               />

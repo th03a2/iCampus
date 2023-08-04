@@ -123,6 +123,18 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 </MDBInputGroup>
               </MDBCol>
             </MDBRow>
+            <MDBRow className="mt-3">
+              {" "}
+              <MDBCol md={4}>
+                <MDBInputGroup textBefore="Barangay">
+                  <input
+                    className="form-control"
+                    value={information.father?.address?.barangay}
+                    readOnly
+                  />
+                </MDBInputGroup>
+              </MDBCol>
+            </MDBRow>
           </>
         )}
         <h5 className="text-center mt-3">
@@ -215,6 +227,18 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
               <input
                 className="form-control"
                 value={information.mother?.address?.city}
+                readOnly
+              />
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow className="mt-3">
+          {" "}
+          <MDBCol md={4}>
+            <MDBInputGroup textBefore="Barangay">
+              <input
+                className="form-control"
+                value={information.mother?.address?.barangay}
                 readOnly
               />
             </MDBInputGroup>

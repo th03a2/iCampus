@@ -54,7 +54,6 @@ export default function Credentials({
       toast.warn(" Upload image first!");
     }
   };
-  console.log(visibility);
 
   return (
     <MDBContainer className="mt-4" style={{ height: "580px" }}>

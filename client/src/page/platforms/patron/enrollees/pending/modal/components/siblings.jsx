@@ -10,6 +10,7 @@ import {
   MDBTableBody,
   MDBTableHead,
   MDBIcon,
+  MDBTypography,
   // MDBInput,
 } from "mdb-react-ui-kit";
 import axios from "axios";
@@ -44,55 +45,64 @@ export default function Siblings({
   return (
     <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
-        <MDBRow className="mt-4">
-          <MDBCol md={12}>
-            <div
-              className="table-container"
-              style={{ maxHeight: "600px", overflowY: "auto" }}
-            >
-              <MDBTable>
-                <MDBTableHead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Full Name</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Date of Birth</th>
-                  </tr>
-                </MDBTableHead>
-                <MDBTableBody>
-                  {information.siblings.map((sibling, index) => (
+        {information.siblings.length > 0 ? (
+          <MDBRow className="mt-4">
+            <MDBCol md={12}>
+              <div
+                className="table-container"
+                style={{ maxHeight: "600px", overflowY: "auto" }}
+              >
+                <MDBTable>
+                  <MDBTableHead>
                     <tr>
-                      <td>{1 + index}</td>
-                      <td>
-                        {nameFormatter(sibling.fullName).toLocaleUpperCase()}
-                      </td>
-                      <td>
-                        {sibling.isMale ? (
-                          <MDBIcon fas icon="male" color="warning" size="2x" />
-                        ) : (
-                          <MDBIcon
-                            fas
-                            icon="female"
-                            color="warning"
-                            size="2x"
-                          />
-                        )}
-                      </td>
-                      <td>{getAge(sibling.dob)}</td>
-                      <td>
-                        {new Date(sibling.dob).toLocaleDateString(
-                          undefined,
-                          options
-                        )}
-                      </td>
+                      <th scope="col">#</th>
+                      <th scope="col">Full Name</th>
+                      <th scope="col">Gender</th>
+                      <th scope="col">Age</th>
+                      <th scope="col">Date of Birth</th>
                     </tr>
-                  ))}
-                </MDBTableBody>
-              </MDBTable>
-            </div>
-          </MDBCol>
-        </MDBRow>
+                  </MDBTableHead>
+                  <MDBTableBody>
+                    {information.siblings?.map((sibling, index) => (
+                      <tr>
+                        <td>{1 + index}</td>
+                        <td>
+                          {nameFormatter(sibling.fullName).toLocaleUpperCase()}
+                        </td>
+                        <td>
+                          {sibling.isMale ? (
+                            <MDBIcon
+                              fas
+                              icon="male"
+                              color="warning"
+                              size="2x"
+                            />
+                          ) : (
+                            <MDBIcon
+                              fas
+                              icon="female"
+                              color="warning"
+                              size="2x"
+                            />
+                          )}
+                        </td>
+                        <td>{getAge(sibling.dob)}</td>
+                        <td>
+                          {new Date(sibling.dob).toLocaleDateString(
+                            undefined,
+                            options
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </MDBTableBody>
+                </MDBTable>
+              </div>
+            </MDBCol>
+          </MDBRow>
+        ) : (
+          <MDBTypography>No siblings</MDBTypography>
+        )}
         <div
           style={{
             display: "flex",

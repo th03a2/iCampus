@@ -32,13 +32,13 @@ export default function GuardianModal({
   guardian,
   setNoSubmitted,
 }) {
-  const { theme } = useSelector(({ auth }) => auth);
+  const { theme, auth } = useSelector(({ auth }) => auth);
   const [datas, setDatas] = useState([]);
   const [isAdd, setIsAdd] = useState(false);
   const [address, setAddress] = useState([]),
     [provinces, setProvinces] = useState([]),
     [cities, setCities] = useState([]),
-    [barangays, setBarangays] = useState([]);
+    [brgys, setBrgys] = useState([]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -116,49 +116,43 @@ export default function GuardianModal({
   }, [isAdd]);
 
   const handleAddress = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case "region":
-        setAddress({ ...address, region: value });
-        const code = Philippines.regions.find(
-          ({ name }) => name === value
-        ).code;
+    const { name, value, dataset } = e.target;
+    const { subname } = dataset;
+    var _patron = { ...guardian[name] };
+    console.log(subname);
+    if (name === "fullName") {
+      _patron[subname] = value;
+    } else if (name === "address") {
+      if (subname === "region") {
+        const { code } = Philippines.regions.find(({ name }) => name === value);
         setProvinces(
           Philippines.provinces.filter(
-            ({ reg_code }) => reg_code === Number(code)
+            (province) => province.reg_code === Number(code)
           )
         );
-        break;
-      case "province":
-        setAddress({ ...address, province: value });
-        const province = Philippines.provinces.find(
+      } else if (subname === "province") {
+        const { code } = Philippines.provinces.find(
           ({ name }) => name === value
-        ).code;
+        );
         setCities(
-          Philippines.cities.filter(
-            ({ prov_code }) => prov_code === Number(province)
-          )
+          Philippines.cities.filter((city) => city.prov_code === Number(code))
         );
-        break;
-
-      case "barangay":
-
-      default:
-        setAddress({ ...address, city: value });
-        const cities = Philippines.cities.find(
-          ({ name }) => name === value
-        ).code;
-        setBarangays(
-          Philippines.barangays.filter(
-            ({ mun_code }) => mun_code === Number(cities)
-          )
+      } else if (subname === "city") {
+        const { code } = Philippines.cities.find(({ name }) => name === value);
+        setBrgys(
+          Philippines.barangays.filter((brgy) => brgy.mun_code === Number(code))
         );
+      }
+      _patron[subname] = value;
+    } else {
+      _patron = value;
     }
+    setGuardian({
+      ...guardian,
+      [name]: _patron,
+    });
   };
   useEffect(() => {
-    if (guardian.address.city.length < 2) {
-      setGuardian({ ...guardian, address });
-    }
     if (guardian.address) {
       const { region, province, city } = guardian.address;
       if (region) {
@@ -182,7 +176,7 @@ export default function GuardianModal({
 
       if (city) {
         const { code } = Philippines.cities.find(({ name }) => name === city);
-        setBarangays(
+        setBrgys(
           Philippines.barangays.filter((brgy) => brgy.mun_code === Number(code))
         );
       }
@@ -341,21 +335,27 @@ export default function GuardianModal({
                         type="text"
                         className="form-control"
                         required
-                        value={guardian.relationship}
-                        onChange={(e) =>
+                        value={
+                          !guardian.relationship
+                            ? auth.guardian.relationship
+                            : guardian.relationship
+                        }
+                        onChange={(e) => {
+                          console.log("Typing:", e.target.value); // Add this line
                           setGuardian({
                             ...guardian,
                             relationship: e.target.value,
-                          })
-                        }
+                          });
+                        }}
                       />
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={4}>
                     <MDBInputGroup textBefore="region">
                       <select
-                        name="region"
-                        value={address.region}
+                        name="address"
+                        data-subname="region"
+                        value={guardian.address.region}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
                         required
@@ -387,8 +387,9 @@ export default function GuardianModal({
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="Province">
                       <select
-                        value={address.province}
-                        name="province"
+                        value={guardian.address.province}
+                        data-subname="province"
+                        name="address"
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
                         required
@@ -405,8 +406,9 @@ export default function GuardianModal({
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="City">
                       <select
-                        name="city"
-                        value={address.city}
+                        name="address"
+                        data-subname="city"
+                        value={guardian.address.city}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
                         required
@@ -423,15 +425,17 @@ export default function GuardianModal({
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="Baranggay">
                       <select
-                        name="barangay"
-                        value={address?.barangay}
+                        name="address"
+                        data-subname="barangay"
+                        value={guardian.address?.barangay}
+                        onChange={handleAddress}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         required
                       >
                         <option value={""} />
-                        {barangays.map(({ name }) => (
+                        {brgys.map(({ name }, index) => (
                           <option
-                            key={`brgy-${name}`}
+                            key={`barangay-${index}`}
                             value={name.toUpperCase()}
                           >
                             {name.toUpperCase()}
@@ -441,7 +445,6 @@ export default function GuardianModal({
                     </MDBInputGroup>
                   </MDBCol>
                 </MDBRow>
-
                 <MDBCol className="mt-4">
                   <div className="d-flex justify-content-end">
                     <MDBBtn type="submit">Search</MDBBtn>

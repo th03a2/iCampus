@@ -24,6 +24,7 @@ import Personnel from "./components/personnel";
 import { toast } from "react-toastify";
 import { SAVE } from "../../../../../redux/slices/query";
 import { UPLOAD } from "../../../../../redux/slices/assets/persons/auth";
+import { nameFormatter } from "../../../../../components/utilities";
 export default function Modal({
   visibility,
   setVisibility,
@@ -73,15 +74,6 @@ export default function Modal({
       setYourSiblings([]);
     }
   }, [auth.yourSiblings]);
-  useEffect(() => {
-    const hasNoAttributes = Object.keys(auth.guardian).length === 0;
-    if (hasNoAttributes) {
-      setHasGuardian(false);
-    } else {
-      setHasGuardian(true);
-      setGuardian(auth.yourGuardian);
-    }
-  }, [auth.guardian]);
 
   const convertNsoToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -195,6 +187,19 @@ export default function Modal({
     relationship: "",
   });
 
+  useEffect(() => {
+    const hasNoAttributes = Object.keys(auth.guardian).length === 0;
+    if (hasNoAttributes) {
+      setHasGuardian(false);
+    } else {
+      setHasGuardian(true);
+      setGuardian((prevGuardian) => ({
+        ...prevGuardian,
+        ...auth.yourGuardian,
+      }));
+    }
+  }, [auth.guardian, auth.yourGuardian, setGuardian, setHasGuardian]);
+
   const [parents, setParents] = useState({
     father: {
       id: "1",
@@ -208,6 +213,7 @@ export default function Modal({
         region: "",
         province: "",
         city: "",
+        barangay: "",
       },
       mobile: "",
     },
@@ -245,9 +251,12 @@ export default function Modal({
     if (hasFather) {
       setParents(auth.parents);
     } else {
-      setParents({ ...parents, mother: auth.parents?.mother });
+      setParents((prevParents) => ({
+        ...prevParents,
+        mother: auth.parents?.mother,
+      }));
     }
-  }, [auth.parents]);
+  }, [auth.parents, hasFather]);
 
   useEffect(() => {
     if (link.success) {
@@ -269,10 +278,12 @@ export default function Modal({
               },
             })
           );
-          return true;
         }
+        return null;
       });
+
       const attachments = {
+        // para malaman kung anong credentials ba ang kaniyang inupload
         nso: nsoImage ? "nso" : "",
         sf10A: sf10AImage ? "sf10A" : "",
         sf10B: sf10BImage ? "sf10B" : "",
@@ -281,18 +292,22 @@ export default function Modal({
       };
 
       const createSiblings = yourSiblings.map((data) => {
+        // para makuha lahat ng mga inadd niya na siblings na hindi naka registered
         if (data._id === undefined) {
           return data;
         }
       });
 
-      const oldSiblings = yourSiblings
+      const oldSiblings = yourSiblings // para malaman kung nag delete ba siya sa mga existing niya na siblings
         .map((siblings) => siblings._id)
         .filter((id) => auth.siblings.includes(id));
 
-      const newSiblings = yourSiblings
+      const newSiblings = yourSiblings // para makuha yung mga inadd niya na sibling na naka registered na
         .map((sibling) => sibling._id)
         .filter((siblingId) => !auth.siblings.includes(siblingId));
+
+      const currentFullname = { ...auth.yourGuardian?.fullName };
+      const transferFullname = { ...guardian.fullName };
 
       dispatch(
         SAVE({
@@ -308,11 +323,19 @@ export default function Modal({
               specifications: schoolInfo.specifications,
               status: "pending",
             },
-            guardians: guardian,
+            guardians: {
+              information: guardian,
+              // para malaman kung nag palit ba siya nang guardian
+              hasChange:
+                nameFormatter(currentFullname) ===
+                nameFormatter(transferFullname)
+                  ? false
+                  : true,
+            },
             currentSiblings: [...oldSiblings, ...newSiblings],
             createSiblings,
             father: {
-              isCreate: hasFather ? false : true,
+              isCreate: hasFather ? false : true, // para malaman kung nag palit ba siya ng father
               information: { ...parents.father },
             },
           },
@@ -335,6 +358,16 @@ export default function Modal({
     sf10AImage,
     sf10BImage,
     token,
+    auth.email,
+    auth.siblings,
+    auth.yourGuardian?.fullName,
+    hasFather,
+    onDuty._id,
+    profileImage,
+    schoolInfo.levelId,
+    schoolInfo.specifications,
+    schoolInfo.units,
+    yourSiblings,
   ]);
 
   const handleActiveContent = (activeItem) => {
@@ -345,6 +378,8 @@ export default function Modal({
             guardian={guardian}
             setGuardian={setGuardian}
             setActiveItem={setActiveItem}
+            hasFather={hasFather}
+            parents={parents}
             link={link}
             setLink={setLink}
             hasGuardian={hasGuardian}

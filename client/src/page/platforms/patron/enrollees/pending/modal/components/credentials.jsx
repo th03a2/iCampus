@@ -8,6 +8,7 @@ import {
   MDBCardBody,
   MDBCardTitle,
   MDBCard,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import { ENDPOINT } from "../../../../../../../components/utilities";
 import {
@@ -119,12 +120,6 @@ export default function Credentials({
     });
   };
 
-  const handleModal = (image, name) => {
-    setVisibility(true);
-    setName(name);
-    setImage(image);
-  };
-
   const handleDeny = async () => {
     const { value: textareaValue } = await Swal.fire({
       title: "Reason",
@@ -157,29 +152,86 @@ export default function Credentials({
     }
   };
 
+  const [selectedOption, setSelectedOption] = useState(false);
+
+  const handleOnchange = (event) => {
+    const value = event.target.value;
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    const key = selectedOption.getAttribute("data-key");
+    const imageUrl = selectedOption.getAttribute("data-imageurl");
+
+    if (value) {
+      setSelectedOption({
+        isUpload: true,
+        value,
+        key,
+        imageUrl,
+      });
+    } else {
+      setSelectedOption({
+        isUpload: false,
+        value,
+        key,
+        imageUrl,
+      });
+    }
+  };
+
   return (
     <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
-        <MDBRow className="mt-3">
-          {Object.entries(information.attachments).map(([key, value]) => {
-            const imageUrl = `${ENDPOINT}/public/enrollment/batch/${onDuty._id}/${information.student?.email}/${key}.png`;
-            return (
-              <MDBCol md="4" key={key}>
-                <MDBCard className="mb-3">
-                  <MDBCardImage
-                    src={value && imageUrl}
-                    className="mx-auto rounded img-max img-fluid mb-1  cursor-pointer"
-                    onClick={() => handleModal(imageUrl, key)}
-                  />
-                  <MDBCardBody>
-                    <MDBCardTitle className="text-center">
-                      <strong>{value ? key : `No upload ${key}`}</strong>
-                    </MDBCardTitle>
-                  </MDBCardBody>
-                </MDBCard>
+        <MDBRow>
+          <div className="d-flex justify-content-center">
+            <MDBCol md={6}>
+              <MDBInputGroup textBefore="Credentials">
+                <select className="form-control" onChange={handleOnchange}>
+                  <option value={""}>Click me</option>
+                  {Object.entries(information.attachments).map(
+                    ([key, value]) => {
+                      const imageUrl = `${ENDPOINT}/public/enrollment/batch/${onDuty._id}/${information.student?.email}/${key}.png`;
+                      return (
+                        <option
+                          value={value}
+                          data-imageurl={imageUrl}
+                          key={key}
+                          data-key={key}
+                        >
+                          {key.toLocaleUpperCase()}
+                        </option>
+                      );
+                    }
+                  )}
+                </select>
+              </MDBInputGroup>
+            </MDBCol>
+          </div>
+        </MDBRow>
+        <MDBRow className="mt-4">
+          {selectedOption &&
+            (selectedOption.isUpload ? (
+              <MDBCol md="12">
+                <MDBCardImage
+                  src={selectedOption.imageUrl}
+                  style={{ width: "1300px", height: "400px" }}
+                />
+
+                <h4 className="text-center mt-3">
+                  <strong>{selectedOption?.key.toLocaleUpperCase()}</strong>
+                </h4>
               </MDBCol>
-            );
-          })}
+            ) : (
+              <>
+                {selectedOption.key && (
+                  <MDBCard className="mb-3">
+                    <MDBCardBody>
+                      <MDBCardTitle className="text-center">
+                        <strong>{`No upload ${selectedOption.key.toLocaleUpperCase()}`}</strong>
+                      </MDBCardTitle>
+                    </MDBCardBody>
+                  </MDBCard>
+                )}
+              </>
+            ))}
         </MDBRow>
         <div
           style={{
