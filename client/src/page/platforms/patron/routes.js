@@ -20,6 +20,7 @@ import Batch from "./batch";
 import Enrollment from "./enrollment";
 import Pending from "./enrollees/pending";
 import Access from "./access";
+import Approved from "./enrollees/approved";
 
 const routes = {
   name: "patron",
@@ -75,6 +76,10 @@ const routes = {
         {
           path: "pending",
           element: <Pending />,
+        },
+        {
+          path: "approved",
+          element: <Approved />,
         },
       ],
     },

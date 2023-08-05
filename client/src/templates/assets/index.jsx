@@ -20,4 +20,3 @@ export { TBLbatch } from "./batch";
 export { TBLenrollment } from "./enrollment";
 export { TBLpending } from "./enrollees/pending";
 export { ModalSearchUsers } from "./users/looks";
-export { ViewCredentials } from "./credentials";

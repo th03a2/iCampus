@@ -25,10 +25,10 @@ export default function Modal({ visibility, setVisibility, schoolInfo }) {
   return (
     <>
       <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
-        <MDBModalDialog size="xl">
+        <MDBModalDialog size="lg">
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Information</MDBModalTitle>
+              <MDBModalTitle>{schoolInfo.name}</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -37,7 +37,7 @@ export default function Modal({ visibility, setVisibility, schoolInfo }) {
             </MDBModalHeader>
             <MDBModalBody>
               <MDBRow>
-                <MDBCol md={4}>
+                <MDBCol md={6}>
                   <MDBInput
                     type="text"
                     value={schoolInfo.name}
@@ -45,20 +45,12 @@ export default function Modal({ visibility, setVisibility, schoolInfo }) {
                     label="Name"
                   />
                 </MDBCol>
-                <MDBCol md={4}>
+                <MDBCol md={6}>
                   <MDBInput
                     type="text"
                     value={schoolInfo.acronym}
                     readOnly
                     label="Accronym"
-                  />
-                </MDBCol>
-                <MDBCol md={4}>
-                  <MDBInput
-                    type="text"
-                    value={schoolInfo.schoolId}
-                    readOnly
-                    label="School Id"
                   />
                 </MDBCol>
               </MDBRow>
@@ -69,6 +61,14 @@ export default function Modal({ visibility, setVisibility, schoolInfo }) {
                     label="Address"
                     value={addressFormatter(schoolInfo.address)}
                   ></MDBInput>
+                </MDBCol>
+                <MDBCol md={6}>
+                  <MDBInput
+                    type="text"
+                    value={schoolInfo.schoolId}
+                    readOnly
+                    label="School Id"
+                  />
                 </MDBCol>
               </MDBRow>
             </MDBModalBody>

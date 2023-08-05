@@ -5,7 +5,7 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLpending } from "../../../../../templates";
-import Modal from "./modal";
+import Modal from "../pending/modal";
 
 const path = [
   {
@@ -13,7 +13,7 @@ const path = [
   },
 ];
 
-export default function Pending() {
+export default function Approved() {
   const { token, maxPage, theme } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
@@ -27,7 +27,7 @@ export default function Pending() {
     dispatch(
       BROWSE({
         entity: "assets/enrollment",
-        data: { status: "pending" },
+        data: { status: "approved" },
         token,
       })
     );
@@ -79,6 +79,7 @@ export default function Pending() {
             visibility={visibility}
             setVisibility={setVisibility}
             information={information}
+            status="approved"
           />
         )}
       </MDBContainer>

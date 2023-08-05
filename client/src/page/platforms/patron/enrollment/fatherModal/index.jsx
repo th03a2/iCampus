@@ -184,6 +184,27 @@ export default function FatherModal({
       }
     }
   }, [address]);
+
+  const handleNotHere = () => {
+    Swal.fire({
+      title:
+        "Do you want  to register the information you provided in our database?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, registered it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setFatherSubmitted(true);
+        Swal.fire(
+          "Registered!",
+          "Your sibling has been registered.",
+          "success"
+        );
+      }
+    });
+  };
   return (
     <>
       <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
@@ -425,57 +446,69 @@ export default function FatherModal({
               {datas.length > 0 && (
                 <MDBRow>
                   <MDBCol>
-                    <MDBTable
-                      align="middle"
-                      hover
-                      responsive
-                      color={theme.color}
-                      className="table table-hover"
+                    <h5>
+                      <strong>Is your sibling there?</strong>{" "}
+                      <MDBBtn onClick={handleNotHere} size="sm" color="danger">
+                        Not here
+                      </MDBBtn>
+                    </h5>
+
+                    <div
+                      className="table-container"
+                      style={{ maxHeight: "300px", overflowY: "auto" }}
                     >
-                      <MDBTableHead>
-                        <tr>
-                          <th>#</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Gender</th>
-                          <th scope="col">Age</th>
-                          <th scope="col">Date of Birth</th>
-                          <th>Action</th>
-                        </tr>
-                      </MDBTableHead>
-                      <MDBTableBody>
-                        {datas.length > 0 &&
-                          datas.map((data, index) => (
-                            <tr key={index}>
-                              <td>{1 + index}</td>
-                              <td>
-                                {nameFormatter(data?.fullName).toUpperCase()}
-                              </td>
-                              <td>
-                                {data?.isMale ? (
-                                  <MDBIcon
-                                    fas
-                                    icon="female"
-                                    size="2x"
-                                    color="warning"
-                                  />
-                                ) : (
-                                  <MDBIcon fas icon="female" />
-                                )}
-                              </td>
-                              <td>{getAge(data.dob)}</td>
-                              <td>{data?.dob}</td>
-                              <td>
-                                <MDBBtn
-                                  type="button"
-                                  onClick={() => handlePick(data._id)}
-                                >
-                                  Pick
-                                </MDBBtn>
-                              </td>
-                            </tr>
-                          ))}
-                      </MDBTableBody>
-                    </MDBTable>
+                      <MDBTable
+                        align="middle"
+                        hover
+                        responsive
+                        color={theme.color}
+                        className="table table-hover"
+                      >
+                        <MDBTableHead>
+                          <tr>
+                            <th>#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Date of Birth</th>
+                            <th>Action</th>
+                          </tr>
+                        </MDBTableHead>
+                        <MDBTableBody>
+                          {datas.length > 0 &&
+                            datas.map((data, index) => (
+                              <tr key={index}>
+                                <td>{1 + index}</td>
+                                <td>
+                                  {nameFormatter(data?.fullName).toUpperCase()}
+                                </td>
+                                <td>
+                                  {data?.isMale ? (
+                                    <MDBIcon
+                                      fas
+                                      icon="female"
+                                      size="2x"
+                                      color="warning"
+                                    />
+                                  ) : (
+                                    <MDBIcon fas icon="female" />
+                                  )}
+                                </td>
+                                <td>{getAge(data.dob)}</td>
+                                <td>{data?.dob}</td>
+                                <td>
+                                  <MDBBtn
+                                    type="button"
+                                    onClick={() => handlePick(data._id)}
+                                  >
+                                    Pick
+                                  </MDBBtn>
+                                </td>
+                              </tr>
+                            ))}
+                        </MDBTableBody>
+                      </MDBTable>
+                    </div>
                   </MDBCol>
                 </MDBRow>
               )}

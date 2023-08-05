@@ -17,20 +17,17 @@ import {
 } from "../../../../../../../redux/slices/assets/enrollment";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "../../credentialModal";
 export default function Credentials({
   information,
   setActiveItem,
   link,
   setLink,
+  status,
 }) {
   const { handleSections } = useSelector(({ enrollment }) => enrollment),
     { auth } = useSelector(({ auth }) => auth),
     { token, onDuty } = useSelector(({ auth }) => auth),
-    [options, setOptions] = useState([]),
-    [image, setImage] = useState(null);
-  const [visibility, setVisibility] = useState(false);
-  const [name, setName] = useState("");
+    [options, setOptions] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (onDuty._id && handleSections.length === 0) {
@@ -251,29 +248,23 @@ export default function Credentials({
           >
             Previous
           </MDBBtn>
-          <div>
-            <MDBBtn type="button" onClick={handleApproved} color="primary">
-              Approved
-            </MDBBtn>
-            <MDBBtn
-              type="button"
-              color="danger"
-              onClick={handleDeny}
-              className="mx-2"
-            >
-              Deny
-            </MDBBtn>
-          </div>
+          {status !== "approved" && (
+            <div>
+              <MDBBtn type="button" onClick={handleApproved} color="primary">
+                Approved
+              </MDBBtn>
+              <MDBBtn
+                type="button"
+                color="danger"
+                onClick={handleDeny}
+                className="mx-2"
+              >
+                Deny
+              </MDBBtn>
+            </div>
+          )}
         </div>
       </form>
-      {visibility && (
-        <Modal
-          visibility={visibility}
-          setVisibility={setVisibility}
-          image={image}
-          name={name}
-        />
-      )}
     </MDBContainer>
   );
 }

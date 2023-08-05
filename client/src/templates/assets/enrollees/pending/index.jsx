@@ -28,9 +28,7 @@ export function TBLpending({ enrollees, page, setInformation, setVisibility }) {
         <tr>
           <th>#</th>
           <th scope="col">Name </th>
-          <th scope="col">Grade Level </th>
           <th scope="col">Semester </th>
-          <th scope="col">Status </th>
           <th scope="col">Action </th>
         </tr>
       </MDBTableHead>
@@ -40,9 +38,8 @@ export function TBLpending({ enrollees, page, setInformation, setVisibility }) {
             <tr key={`temperature-${index}`}>
               <td>{1 + index}</td>
               <td>{nameFormatter(enrollee.student?.fullName)}</td>
-              <td>{enrollee.level?.name}</td>
-              <td>{enrollee.batch?.semester}</td>
-              <td>{enrollee.status}</td>
+              <td>{enrollee.batch?.semester + " semester"}</td>
+
               <td>
                 <MDBBtn size="sm" onClick={() => handleInformation(enrollee)}>
                   <MDBIcon far icon="eye" />

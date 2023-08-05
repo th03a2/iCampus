@@ -101,7 +101,9 @@ export default function Siblings({
             </MDBCol>
           </MDBRow>
         ) : (
-          <MDBTypography>No siblings</MDBTypography>
+          <MDBTypography className="text-center">
+            <strong>No siblings</strong>
+          </MDBTypography>
         )}
         <div
           style={{

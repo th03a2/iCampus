@@ -122,141 +122,7 @@ exports.save = async (req, res) => {
     throw error; // Re-throw the error to be caught by the caller
   }
 };
-// exports.save = (req, res) => {
-//   const { enrollee, guardians, currentSiblings, createSiblings, father } =
-//     req.body;
 
-//   const { information, hasChange } = guardians;
-
-//   Entity.create(enrollee)
-//     .then(async (item) => {
-//       if (hasChange) {
-//         // para malaman kung nag palit ba siya ng guardian
-//         if (information.id?.length > 5) {
-//           //pag naka registered na ang kaniyang guardian
-//           User.findOneAndUpdate(
-//             { _id: enrollee.student },
-//             {
-//               guardian: {
-//                 id: information.id,
-//                 relationship: information.relationship,
-//               },
-//             }
-//           ).catch((err) => res.status(400).json(err));
-//         } else {
-//           console.log("create");
-//           // pag hindi pa naka registered ang kaniyang guardian
-//           const { _id, ..._information } = information;
-//           User.create({
-//             ..._information,
-//             password: "password",
-//             email: _information.mobile,
-//           })
-//             .then((datas) => {
-//               User.findOneAndUpdate(
-//                 { _id: enrollee.student },
-//                 {
-//                   guardian: {
-//                     id: datas._id,
-//                     relationship: _information.relationship,
-//                   },
-//                 }
-//               ).catch((err) => res.status(400).json(err));
-//             })
-//             .catch((err) => res.status(400).json(err));
-//         }
-//       }
-
-//       const validCreateSiblings = createSiblings.filter(
-//         (data) => data !== null
-//       );
-//       if (validCreateSiblings.length > 0) {
-//         // kung may bago ba siyang inadd na siblings na hindi naka registered
-//         const promises = validCreateSiblings.map((data) =>
-//           User.create({
-//             ...data,
-//             email: `${data.fullName?.fname}${data.fullName?.mname}${data.fullName?.lname}`,
-//             password: "password",
-//           }).then((siblings) => siblings._id)
-//         );
-//         const validCurrentSiblings = currentSiblings.filter(
-//           (sibling) => sibling !== null
-//         );
-//         Promise.all(promises)
-//           .then((siblingsId) => {
-//             const updateSiblings = [...siblingsId, ...validCurrentSiblings];
-//             return User.findOneAndUpdate(
-//               { _id: enrollee.student },
-//               {
-//                 siblings: updateSiblings,
-//               }
-//             );
-//           })
-//           .catch((error) => {
-//             console.error(error);
-//           });
-//       } else {
-//         //kapag ang inadd niya na siblings ay naka registered na
-//         User.findOneAndUpdate(
-//           { _id: enrollee.student },
-//           {
-//             siblings: currentSiblings,
-//           }
-//         ).catch((error) => {
-//           console.error(error);
-//         });
-//       }
-//       const { isCreate } = father;
-//       const { id } = father.information;
-//       if (isCreate && father.information.mobile) {
-//         if (id.length < 2) {
-//           User.create({
-//             ...father.information,
-//             email: `${father.information.fullName?.fname}${father.information.fullName?.mname}${father.information.fullName?.lname}`,
-//             password: "password",
-//           })
-//             .then((father) => {
-//               User.findOneAndUpdate(
-//                 { _id: enrollee.student },
-//                 {
-//                   fatherId: father._id,
-//                 }
-//               ).catch((error) => {
-//                 console.error(error);
-//               });
-//             })
-//             .catch((error) => {
-//               console.error(error);
-//             });
-//         } else {
-//           User.findOneAndUpdate(
-//             { _id: enrollee.student },
-//             {
-//               fatherId: father.information.id,
-//             }
-//           ).catch((error) => {
-//             console.error(error);
-//           });
-//         }
-//       }
-
-//       User.find({ _id: enrollee.student })
-//         .then((students) => {
-//           Entity.findByIdAndUpdate(
-//             { _id: item._id },
-//             { siblings: students[0].siblings }
-//           ).catch((error) => {
-//             console.error(error);
-//           });
-//         })
-//         .catch((error) => {
-//           console.error(error);
-//         });
-
-//       res.json({ status: "Successfully enrolled" });
-//     })
-//     .catch((error) => res.status(400).json({ error: error.message }));
-// };
 const getSiblings = async (fk) =>
   User.find({ _id: fk })
     .then((datas) => datas)
@@ -279,7 +145,7 @@ const getParents = async (fk) =>
     });
 
 exports.browse = (req, res) => {
-  Entity.find()
+  Entity.find({ status: req.query.status })
     .populate("batch")
     .populate("student")
     .then(async (batchs) => {

@@ -23,7 +23,12 @@ import Credentials from "./components/credentials";
 import Personnel from "./components/personnel";
 import { toast } from "react-toastify";
 
-export default function Modal({ visibility, setVisibility, information }) {
+export default function Modal({
+  visibility,
+  setVisibility,
+  information,
+  status,
+}) {
   const { theme, auth } = useSelector(({ auth }) => auth);
 
   const [activeItem, setActiveItem] = useState("basic"),
@@ -130,6 +135,7 @@ export default function Modal({ visibility, setVisibility, information }) {
             link={link}
             setLink={setLink}
             information={information}
+            status={status}
           />
         );
 

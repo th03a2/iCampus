@@ -99,7 +99,7 @@ export default function SiblingsModal({
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, added it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const newArray = [...yourSiblings];
@@ -108,6 +108,28 @@ export default function SiblingsModal({
         Swal.fire("Added!", "Your siblings has been added.", "success");
       } else {
         setVisibility(false);
+      }
+    });
+  };
+
+  const handleNotHere = () => {
+    Swal.fire({
+      title:
+        "Do you want  to register the information you provided in our database?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, registered it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newArray = [...yourSiblings];
+        newArray.push(siblings);
+        Swal.fire(
+          "Registered!",
+          "Your sibling has been registered.",
+          "success"
+        );
       }
     });
   };
@@ -228,6 +250,13 @@ export default function SiblingsModal({
               {datas.length > 0 && (
                 <MDBRow className="mt-2">
                   <MDBCol>
+                    <h5>
+                      <strong>Is your sibling there?</strong>{" "}
+                      <MDBBtn onClick={handleNotHere} size="sm" color="danger">
+                        Not here
+                      </MDBBtn>
+                    </h5>
+
                     <div
                       className="table-container"
                       style={{ maxHeight: "300px", overflowY: "auto" }}
