@@ -15,7 +15,6 @@ const path = [
 export function Employees() {
   const { token, onDuty, maxPage } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ personnels }) => personnels),
-    // [visibility, setVisibility] = useState(false),
     [personnels, setPersonels] = useState([]),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
@@ -49,11 +48,7 @@ export function Employees() {
         <MDBRow className="mb-3">
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLemployees
-          personnels={personnels}
-          page={page}
-          // handleStatus={handleStatus}
-        />
+        <TBLemployees personnels={personnels} page={page} />
       </MDBContainer>
     </>
   );

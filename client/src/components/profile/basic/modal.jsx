@@ -128,7 +128,6 @@ export default function BasicForm({ visibility, setVisibility }) {
     } else {
       _patron = value;
     }
-    console.log(_patron);
     setPatron({
       ...patron,
       [name]: _patron,

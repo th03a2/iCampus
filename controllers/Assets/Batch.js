@@ -1,29 +1,11 @@
 // entity/save
-const Entity = require("../../models/Assets/Batch");
+const Entity = require("../../models/Assets/Batch"),
+  Companies = require("../../models/Assets/Companies");
 
-const getRooms = async (pk) =>
-  await Merchandise.find({
-    purchase: pk,
-  }).populate("product");
-
-exports.request = (req, res) => {
-  Entity.find({ status: req.query.status })
-    .byBranchId(req.query.branch)
-    .populate("userId")
-    .then(async (items) => {
-      let purchases = items.filter((item) => !item.deletedAt);
-      for (let index = 0; index < purchases.length; index++) {
-        let purchase = purchases[index];
-        const merchandises = await getMerchandise(purchase._id);
-        purchases[index] = {
-          ...purchase._doc,
-          merchandises: [...merchandises],
-        };
-      }
-      res.json(purchases);
-    })
-    .catch((error) => res.status(400).json({ error: error.message }));
-};
+const getCompanies = async (pk) =>
+  await Companies.find({
+    _id: pk,
+  });
 
 exports.browse = (req, res) => {
   Entity.find()
@@ -33,8 +15,21 @@ exports.browse = (req, res) => {
 
 exports.enrollment = (req, res) => {
   Entity.find({ status: "start" })
-    .populate("school_id")
-    .then((items) => res.json(items.filter((item) => !item.deletedAt)))
+    .populate("schoolId")
+    .then(async (items) => {
+      let enrollments = items.filter((item) => !item.deletedAt);
+      for (const index in enrollments) {
+        let enrollment = enrollments[index];
+
+        const companies = await getCompanies(enrollment.schoolId?.companyId);
+        enrollments[index] = {
+          ...enrollment._doc,
+          companies,
+        };
+      }
+
+      res.json(enrollments);
+    })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 

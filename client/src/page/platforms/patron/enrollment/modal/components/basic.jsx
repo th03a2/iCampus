@@ -2,161 +2,232 @@ import React, { useEffect, useState } from "react";
 import {
   MDBCol,
   MDBContainer,
-  MDBInput,
   MDBRow,
   MDBBtn,
+  MDBTable,
+  MDBTableBody,
+  MDBTableHead,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
-import { validateContactNumber } from "../../../../../../components/utilities";
-import { useDispatch, useSelector } from "react-redux";
-import { nameFormatter } from "../../../../../../components/utilities";
-import { BROWSE } from "../../../../../../redux/slices/query";
+import degree from "../../../../../../fakeDb/json/levels";
+import field from "../../../../../../fakeDb/json/subjects";
 
 export default function BasicInformation({
-  setForm,
-  form,
+  schoolInfo,
+  setSchoolInfo,
   setActiveItem,
   link,
   setLink,
+  levels,
+  setLevels,
+  category,
+  setCategory,
 }) {
-  const { auth, token } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ query }) => query),
-    [levels, setLevels] = useState([]),
-    dispatch = useDispatch();
+  const [topic, setTopic] = useState([]),
+    [isStrand, setIsStrand] = useState(false),
+    [strands, setStrands] = useState([]),
+    [isShow, setIsShow] = useState(false);
+  const categories = ["shs", "jhs", "elementary", "prep"];
+  useEffect(() => {
+    if (category) {
+      const findLevel = degree.filter((data) => data.category === category);
+      setLevels(findLevel);
+    }
+  }, [category]);
 
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        entity: "assets/levels",
-        data: "",
-        token,
-      })
-    );
-  }, [catalogs]);
+    if (schoolInfo.levelId) {
+      const filterLevel = levels.find((data) => data.id === schoolInfo.levelId);
+      const { subjects, strand } = filterLevel || [];
+      if (subjects) {
+        const filterSubjects = subjects.map((id) =>
+          field.find((data) => data.id === id)
+        );
+        setTopic([...filterSubjects] || []);
+        setIsStrand(false);
+        setIsShow(true);
+      } else {
+        setStrands(strand || []);
+        setIsStrand(true);
+        setIsShow(false);
+        setTopic([]);
+      }
+    } else {
+      setTopic([]);
+      setIsStrand(false);
+      setIsShow(false);
+    }
+  }, [schoolInfo.levelId, levels]);
 
   useEffect(() => {
-    setLevels(catalogs);
-  }, [catalogs]);
+    if (schoolInfo.specifications) {
+      const filterStrand = strands.find(
+        (strand) => strand.specifications === schoolInfo.specifications
+      );
+      const filterSubjects = filterStrand?.subject.map((id) =>
+        field.find((data) => data.id === id)
+      );
+
+      if (filterSubjects) {
+        setTopic(filterSubjects);
+        setIsShow(true);
+      }
+    } else {
+      setTopic([]);
+      setIsShow(false);
+    }
+  }, [schoolInfo.specifications]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const tabs = { ...link };
 
-    tabs.guardian = true;
+    tabs.personnel = true;
 
     setLink(tabs);
-    setActiveItem("guardian");
+    setActiveItem("personnel");
   };
 
-  const addressFormatter = (address) => {
-    if (typeof address === "object") {
-      const { province, city, barangay, street } = address;
-
-      return `${barangay},${street},${city},${province}`;
-    }
-  };
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="First name"
-              value={nameFormatter(auth.fullName)}
-              readOnly
-              autoFocus
-            />
+            <MDBInputGroup textBefore="Category">
+              <select
+                className="form-control"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value={""}></option>
+                {categories.map((data, index) => (
+                  <option value={data} key={index}>
+                    {data}
+                  </option>
+                ))}
+              </select>
+            </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Gender"
-              value={auth.isMale ? "Male" : "Female"}
-              readOnly
-            />
+            <MDBInputGroup textBefore="Student Status">
+              <select
+                className="form-control"
+                value={schoolInfo?.units}
+                onChange={(e) => {
+                  setSchoolInfo({
+                    ...schoolInfo,
+                    units: e.target.value,
+                  });
+                }}
+                required
+              >
+                <option value={""}></option>
+                <option value={"freshman"}>Freshman</option>
+                <option value={"sophomore"}>Sophomore</option>
+                <option value={"junior"}>junior</option>
+                <option value={"senior"}>Senior</option>
+                <option value={"transferrees"}>Transferrees</option>
+                <option value={"returning"}>Returning</option>
+              </select>
+            </MDBInputGroup>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow className="mt-3">
+          <MDBCol md={6}>
+            <MDBInputGroup textBefore="Grade Level">
+              <select
+                className="form-control"
+                required
+                value={schoolInfo.levelId}
+                onChange={(e) =>
+                  setSchoolInfo({
+                    ...schoolInfo,
+                    levelId: Number(e.target.value),
+                  })
+                }
+              >
+                <option value={""}> </option>
+
+                {levels.length > 0 &&
+                  levels.map((level, index) => (
+                    <option value={level.id} key={index}>
+                      {level.description}
+                    </option>
+                  ))}
+              </select>
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={6}>
+            {isStrand && (
+              <select
+                className="form-control"
+                value={schoolInfo.specifications}
+                required
+                onChange={(e) =>
+                  setSchoolInfo({
+                    ...schoolInfo,
+                    specifications: e.target.value,
+                  })
+                }
+              >
+                <option value={""}>Strand</option>
+                {strands.length > 0 &&
+                  strands.map((strand) => (
+                    <option value={strand.specifications}>
+                      {strand.specifications}
+                    </option>
+                  ))}
+              </select>
+            )}
           </MDBCol>
         </MDBRow>
 
-        <MDBRow className="my-3">
-          <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Date Of Birth"
-              value={auth.dob}
-              readOnly
-            />
-          </MDBCol>
-          <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Place Of Birth"
-              value={addressFormatter(auth.address)}
-              readOnly
-            />
-          </MDBCol>
-        </MDBRow>
-
-        <MDBRow className="my-3">
-          <MDBCol md={6}>
-            <select
-              className="form-control"
-              value={form?.units}
-              onChange={(e) => {
-                setForm({
-                  ...form,
-                  units: e.target.value,
-                });
-              }}
-              required
-            >
-              <option value={""}>Unit</option>
-              <option value={"old"}>Old</option>
-              <option value={"transferee"}>Transferee</option>
-              <option value={"returnee"}>Returnee</option>
-            </select>
-          </MDBCol>
-          <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Mobile (+63) "
-              value={form.phone}
-              required
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  phone: e.target.value,
-                })
-              }
-              onKeyDown={validateContactNumber}
-              maxLength={10}
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow>
-          <MDBCol md={6}>
-            <select
-              className="form-control"
-              required
-              value={form.level}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  level: e.target.value,
-                })
-              }
-            >
-              <option value={""}> Grade Levels</option>
-
-              {catalogs.map((data) => (
-                <option value={data._id}> {data.lvl}</option>
-              ))}
-            </select>
-          </MDBCol>
-        </MDBRow>
-
-        <div className="text-end">
-          <MDBBtn type="submit">Next</MDBBtn>
+        {isShow && (
+          <MDBContainer>
+            <h5 className="mt-4 text-center">
+              <strong>Subjects</strong>
+            </h5>
+            <MDBRow className="d-flex justify-content-center">
+              <MDBCol md={6}>
+                <div
+                  className="table-container"
+                  style={{ maxHeight: "300px", overflowY: "auto" }}
+                >
+                  <MDBTable>
+                    <MDBTableHead>
+                      <tr>
+                        <th>#</th>
+                        <th scope="col">Name</th>
+                      </tr>
+                    </MDBTableHead>
+                    <MDBTableBody>
+                      {topic.length > 0 &&
+                        topic.map((data, index) => (
+                          <tr key={index}>
+                            <td>{1 + index}</td>
+                            <td>{data.name}</td>
+                          </tr>
+                        ))}
+                    </MDBTableBody>
+                  </MDBTable>
+                </div>
+              </MDBCol>
+            </MDBRow>
+          </MDBContainer>
+        )}
+        <div
+          style={{
+            textAlign: "right",
+            position: "fixed",
+            bottom: "27px",
+            right: "120px",
+          }}
+          className="fixed-bottom"
+        >
+          <MDBBtn type="submit" className="mb-2">
+            Next
+          </MDBBtn>
         </div>
       </form>
     </MDBContainer>

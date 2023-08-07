@@ -11,11 +11,11 @@ exports.browse = (req, res) =>
       select: "-createdAt -updatedAt -approved -__v",
     })
     .sort({ createdAt: -1 })
-    .then(users =>
+    .then((users) =>
       Personnel.find({ isDefault: true })
         .select("-createdAt -updatedAt -__v")
-        .then(roles => {
-          const available = users.filter(user => !user.deletedAt);
+        .then((roles) => {
+          const available = users.filter((user) => !user.deletedAt);
 
           var newArr = [];
 
@@ -26,7 +26,7 @@ exports.browse = (req, res) =>
               roleId: 1,
             };
 
-            roles.find(role => {
+            roles.find((role) => {
               if (role?.user.equals(user._id)) {
                 _role = role;
               }
@@ -39,10 +39,34 @@ exports.browse = (req, res) =>
 
           res.json(newArr);
         })
-        .catch(error => res.status(400).json({ error: error.message }))
+        .catch((error) => res.status(400).json({ error: error.message }))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
-// patients
+    .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.search = (req, res) => {
+  User.find({
+    // dob: req.query.dob,
+    // Remarks: its a case sensitive
+    "fullName.fname": { $regex: req.query.fname },
+    "fullName.mname": { $regex: req.query.mname },
+    "fullName.lname": { $regex: req.query.lname },
+    // "fullName.suffix": req.query.suffix,
+  })
+    // .select("-password -createdAt -updatedAt -__v -address")
+    .then((datas) =>
+      res.json(
+        datas
+          .filter((data) => !data.deletedAt)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      )
+    )
+
+    .catch((error) => {
+      // Catch any error that occurred during User.find
+      res.status(500).json({ error: "Failed to fetch user data." });
+    });
+};
+
 exports.parents = (req, res) =>
   User.find({
     ismale: req.query.gender,
@@ -55,14 +79,14 @@ exports.parents = (req, res) =>
   })
     // not included in the query string
     .select("-password -createdAt -updatedAt -__v -address")
-    .then(datas =>
+    .then((datas) =>
       res.json(
         datas
-          .filter(data => !data.deletedAt)
+          .filter((data) => !data.deletedAt)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       )
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 // users/physicians
 exports.physicians = (req, res) =>
   // User.find({ fullName: { $elemMatch: { title: "Dr." } } })
@@ -75,11 +99,11 @@ exports.physicians = (req, res) =>
       select: "-createdAt -updatedAt -approved -__v",
     })
     .sort({ createdAt: -1 })
-    .then(users =>
+    .then((users) =>
       Personnel.find({ isDefault: true })
         .select("-createdAt -updatedAt -__v")
-        .then(roles => {
-          const available = users.filter(user => !user.deletedAt);
+        .then((roles) => {
+          const available = users.filter((user) => !user.deletedAt);
 
           var newArr = [];
 
@@ -90,7 +114,7 @@ exports.physicians = (req, res) =>
               roleId: 1,
             };
 
-            roles.find(role => {
+            roles.find((role) => {
               if (role?.user.equals(user._id)) {
                 _role = role;
               }
@@ -103,9 +127,9 @@ exports.physicians = (req, res) =>
 
           res.json(newArr);
         })
-        .catch(error => res.status(400).json({ error: error.message }))
+        .catch((error) => res.status(400).json({ error: error.message }))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 exports.affiliated = (req, res) =>
   User.find({ "fullName.title": "Dr." })
     .select("-password -createdAt -updatedAt -__v -address")
@@ -114,11 +138,11 @@ exports.affiliated = (req, res) =>
       select: "-createdAt -updatedAt -approved -__v",
     })
     .sort({ createdAt: -1 })
-    .then(users =>
+    .then((users) =>
       Personnel.find({ isDefault: true })
         .select("-createdAt -updatedAt -__v")
-        .then(roles => {
-          const available = users.filter(user => !user.deletedAt);
+        .then((roles) => {
+          const available = users.filter((user) => !user.deletedAt);
 
           var newArr = [];
 
@@ -129,7 +153,7 @@ exports.affiliated = (req, res) =>
               roleId: 1,
             };
 
-            roles.find(role => {
+            roles.find((role) => {
               if (role?.user.equals(user._id)) {
                 _role = role;
               }
@@ -142,9 +166,9 @@ exports.affiliated = (req, res) =>
 
           res.json(newArr);
         })
-        .catch(error => res.status(400).json({ error: error.message }))
+        .catch((error) => res.status(400).json({ error: error.message }))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 // entity/archive
 exports.archive = (req, res) =>
   User.find()
@@ -156,8 +180,8 @@ exports.archive = (req, res) =>
     //   select: "-createdAt -updatedAt -approved -__v",
     // })
     .sort({ createdAt: -1 })
-    .then(items => res.json(items.filter(item => item.deletedAt)))
-    .catch(error => res.status(400).json({ error: error.message }));
+    .then((items) => res.json(items.filter((item) => item.deletedAt)))
+    .catch((error) => res.status(400).json({ error: error.message }));
 
 // entity/:id/find
 exports.find = (req, res) =>
@@ -167,8 +191,8 @@ exports.find = (req, res) =>
     //   path: "fullName.mname fullName.lname",
     //   select: "-createdAt -updatedAt -approved -__v",
     // })
-    .then(user => res.json(user.deletedAt ? "No user found" : user))
-    .catch(error => res.status(400).json({ error: error.message }));
+    .then((user) => res.json(user.deletedAt ? "No user found" : user))
+    .catch((error) => res.status(400).json({ error: error.message }));
 
 // entity/:id/update
 exports.update = (req, res) => {
@@ -176,8 +200,8 @@ exports.update = (req, res) => {
     new: true,
   })
     .select("-password")
-    .then(item => res.json(item))
-    .catch(error => res.status(400).json({ error: error.message }));
+    .then((item) => res.json(item))
+    .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 // entity/:id/restore
@@ -199,7 +223,7 @@ exports.restore = (req, res) => {
         user: res.locals.callerId,
       }).then(() => res.json(req.query.id))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 // entity/:id/destroy
@@ -215,4 +239,4 @@ exports.destroy = (req, res) =>
         user: res.locals.callerId,
       }).then(() => res.json(req.query.id))
     )
-    .catch(error => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: error.message }));

@@ -14,22 +14,25 @@ const path = [
 ];
 
 export default function Enrollment() {
-  const { token, maxPage, theme } = useSelector(({ auth }) => auth),
+  const { token, maxPage, theme, onDuty } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ enrollment }) => enrollment),
     [visibility, setVisibility] = useState(false),
     [schools, setSchools] = useState([]),
-    [schoolId, setSchoolId] = useState({}),
+    [schoolInformation, setSchoolInformation] = useState({}),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        token,
-      })
-    );
-  }, [dispatch, token]);
+    if (onDuty._id) {
+      dispatch(
+        BROWSE({
+          branch: onDuty._id,
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
     setSchools(catalogs);
@@ -69,14 +72,14 @@ export default function Enrollment() {
         <TBLenrollment
           schools={schools}
           page={page}
-          setSchoolId={setSchoolId}
+          setSchoolInformation={setSchoolInformation}
           setVisibility={setVisibility}
         />
         {visibility && (
           <Modal
             visibility={visibility}
             setVisibility={setVisibility}
-            schoolId={schoolId}
+            schoolInformation={schoolInformation}
           />
         )}
       </MDBContainer>

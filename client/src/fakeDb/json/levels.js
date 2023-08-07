@@ -197,7 +197,7 @@ const levels = [
       },
       {
         specifications: "ABM",
-        subject: [4, 6, 7, 8],
+        subject: [12, 13, 14, 15, 16, 17, 18, 19, 20],
       },
       {
         specifications: "AGRI",
@@ -227,7 +227,7 @@ const levels = [
       },
       {
         specifications: "ABM",
-        subject: [4, 6, 7, 8],
+        subject: [21, 22, 23, 24, 25, 26, 27, 28],
       },
       {
         specifications: "AGRI",
@@ -235,7 +235,7 @@ const levels = [
       },
       {
         specifications: "HUMS",
-        subject: [5, 6, 7, 8],
+        subject: [4, 6, 7, 8],
       },
     ],
   },

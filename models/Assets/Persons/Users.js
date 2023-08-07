@@ -98,6 +98,8 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 8,
     },
+    motherId: { type: String },
+    fatherId: { type: String, default: "" },
     mmn: {
       // mothers maiden name
       type: String,
@@ -117,6 +119,18 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
       default: "",
+    },
+    siblings: {
+      type: Array,
+      default: [],
+    },
+    guardian: {
+      id: {
+        type: String,
+      },
+      relationship: {
+        type: String,
+      },
     },
     deletedAt: {
       type: String,

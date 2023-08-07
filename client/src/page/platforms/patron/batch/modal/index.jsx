@@ -14,7 +14,7 @@ import {
   MDBCol,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
-// import { Statement } from "../../../../../../fakeDb";
+import levels from "../../../../../fakeDb/json/levels";
 import { SAVE, UPDATE } from "../../../../../redux/slices/query";
 
 export default function Modal({
@@ -27,7 +27,7 @@ export default function Modal({
   const { theme, token, onDuty } = useSelector(({ auth }) => auth);
   const [form, setForm] = useState({
     semester: "",
-    stages: "",
+    levelId: 0,
     SY: "",
     e_start: "",
     e_end: "",
@@ -65,7 +65,7 @@ export default function Modal({
       dispatch(
         SAVE({
           entity: "assets/batch",
-          data: { ...form, status: "pending", school_id: onDuty._id },
+          data: { ...form, status: "pending", schoolId: onDuty._id },
           token,
         })
       );
@@ -78,7 +78,7 @@ export default function Modal({
     setIsUpdate(false);
     setForm({
       semester: "",
-      stages: "",
+      levelId: 0,
       SY: "",
       e_start: "",
       e_end: "",
@@ -108,6 +108,16 @@ export default function Modal({
               <MDBRow>
                 <MDBCol md={6}>
                   <MDBInput
+                    type="text"
+                    label="School Year"
+                    name="SY"
+                    value={form.SY}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBCol>
+                <MDBCol md={6}>
+                  <MDBInput
                     type="number"
                     label="Semester"
                     name="semester"
@@ -116,28 +126,8 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="Stages"
-                    name="stages"
-                    value={form.stages}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
               </MDBRow>
               <MDBRow className="mt-4">
-                <MDBCol md={6}>
-                  <MDBInput
-                    type="text"
-                    label="SY"
-                    name="SY"
-                    value={form.SY}
-                    onChange={handleChange}
-                    required
-                  />
-                </MDBCol>
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
@@ -148,8 +138,6 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
-              </MDBRow>
-              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
@@ -160,6 +148,8 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
+              </MDBRow>
+              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"
@@ -170,8 +160,6 @@ export default function Modal({
                     required
                   />
                 </MDBCol>
-              </MDBRow>
-              <MDBRow className="mt-4">
                 <MDBCol md={6}>
                   <MDBInput
                     type="date"

@@ -20,6 +20,7 @@ export {
   TBLenrollment,
   TBLenrollees,
   TBLschedulers,
+  TBLpending,
 } from "./assets";
 
 export { TBLmenu } from "./assets/menus";

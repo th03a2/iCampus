@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBBtn,
@@ -8,7 +8,10 @@ import {
   MDBInput,
   MDBCardImage,
 } from "mdb-react-ui-kit";
-import image from "../../../../../../assets/images/default.jpg";
+import defaultImage from "../../../../../../assets/images/default.jpg";
+import { ViewCredentials } from "../../../../../../templates";
+import Modal from "../../credentialModal";
+import { toast } from "react-toastify";
 export default function Credentials({
   handleNsoChange,
   form,
@@ -16,12 +19,19 @@ export default function Credentials({
   setActiveItem,
   link,
   setLink,
-  nso,
-  handleSf10Change,
+  handleSf10AChange,
+  handleSf10BChange,
+  handleProfileChange,
   handleGoodmoralChange,
   goodmoral,
-  sf10,
+  sf10A,
+  sf10B,
+  nso,
+  profile,
 }) {
+  const [visibility, setVisibility] = useState(false);
+  const [image, setImage] = useState(null);
+  const [name, setName] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -35,15 +45,26 @@ export default function Credentials({
     setLink(tabs);
   };
 
+  const handleView = (image, name, isUpload) => {
+    if (isUpload) {
+      setImage(image);
+      setName(name);
+      setVisibility(true);
+    } else {
+      toast.warn(" Upload image first!");
+    }
+  };
+
   return (
-    <MDBContainer className="mt-4">
+    <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={4}>
             <div className="d-flex justify-content-center">
               <MDBCardImage
-                src={nso ? nso : image}
-                className="mx-auto img-max img-fluid  d-flex justify-content-center"
+                onClick={() => handleView(nso, "NSO", nso ? true : false)}
+                src={nso ? nso : defaultImage}
+                className="mx-auto img-max img-fluid  d-flex justify-content-center cursor-pointer"
                 style={{ height: "900px" }}
               />
             </div>
@@ -52,7 +73,7 @@ export default function Credentials({
                 htmlFor="upload-image"
                 className="mt-2 btn btn-info btn-sm"
               >
-                UPLOAD BIRTH CERTIFICATE OR NSO
+                UPLOAD NSO
               </label>
               <input
                 type="file"
@@ -66,19 +87,22 @@ export default function Credentials({
           <MDBCol md={4}>
             <div className="d-flex justify-content-center">
               <MDBCardImage
-                src={sf10 ? sf10 : image}
-                className="mx-auto img-max img-fluid  d-flex justify-content-center"
+                onClick={() =>
+                  handleView(sf10A, "SF10 FRONT", sf10A ? true : false)
+                }
+                src={sf10A ? sf10A : defaultImage}
+                className="mx-auto img-max img-fluid  d-flex justify-content-center cursor-pointer"
                 style={{ height: "900px" }}
               />
             </div>
             <div className="d-flex justify-content-center">
               <label htmlFor="upload-sf10" className="mt-2 btn btn-info btn-sm">
-                UPLOAD SF10 OR SF9
+                UPLOAD SF10 A
               </label>
               <input
                 type="file"
                 id="upload-sf10"
-                onChange={handleSf10Change}
+                onChange={handleSf10AChange}
                 className="d-none"
                 accept="image/*"
               />
@@ -87,8 +111,40 @@ export default function Credentials({
           <MDBCol md={4}>
             <div className="d-flex justify-content-center">
               <MDBCardImage
-                src={goodmoral ? goodmoral : image}
-                className="mx-auto img-max img-fluid  d-flex justify-content-center"
+                onClick={() =>
+                  handleView(sf10B, "SF10B BACK", sf10B ? true : false)
+                }
+                src={sf10B ? sf10B : defaultImage}
+                className="mx-auto img-max img-fluid  d-flex justify-content-center cursor-pointer"
+                style={{ height: "900px" }}
+              />
+            </div>
+            <div className="d-flex justify-content-center">
+              <label
+                htmlFor="upload-sf10B"
+                className="mt-2 btn btn-info btn-sm"
+              >
+                UPLOAD SF10 B
+              </label>
+              <input
+                type="file"
+                id="upload-sf10B"
+                onChange={handleSf10BChange}
+                className="d-none"
+                accept="image/*"
+              />
+            </div>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow className="mt-3">
+          <MDBCol md={4}>
+            <div className="d-flex justify-content-center">
+              <MDBCardImage
+                onClick={() =>
+                  handleView(goodmoral, "Good Moral", goodmoral ? true : false)
+                }
+                src={goodmoral ? goodmoral : defaultImage}
+                className="mx-auto img-max img-fluid  d-flex justify-content-center cursor-pointer"
                 style={{ height: "900px" }}
               />
             </div>
@@ -108,22 +164,66 @@ export default function Credentials({
               />
             </div>
           </MDBCol>
+          <MDBCol md={4}>
+            <div className="d-flex justify-content-center">
+              <MDBCardImage
+                onClick={() =>
+                  handleView(profile, "2X2 PICTURE", profile ? true : false)
+                }
+                src={profile ? profile : defaultImage}
+                className="mx-auto img-max img-fluid  d-flex justify-content-center cursor-pointer"
+                style={{ height: "900px" }}
+              />
+            </div>
+            <div className="d-flex justify-content-center">
+              <label
+                htmlFor="upload-profile"
+                className="mt-2 btn btn-info btn-sm"
+              >
+                2X2 PICTURE
+              </label>
+              <input
+                type="file"
+                id="upload-profile"
+                onChange={handleProfileChange}
+                className="d-none"
+                accept="image/*"
+              />
+            </div>
+          </MDBCol>
         </MDBRow>
 
-        <div className="d-flex justify-content-between mt-4">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "35px",
+            left: "120px",
+            right: "120px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("siblings")}
             type="button"
-            color="light"
+            color="warning"
             className="shadow-0"
           >
             Previous
           </MDBBtn>
-          <MDBBtn type="submit" color="warning">
-            Submit
-          </MDBBtn>
+          <MDBBtn type="submit">Submit</MDBBtn>
         </div>
       </form>
+      {visibility ? (
+        <Modal
+          setVisibility={setVisibility}
+          visibility={visibility}
+          image={image}
+          name={name}
+        />
+      ) : (
+        ""
+      )}
     </MDBContainer>
   );
 }
