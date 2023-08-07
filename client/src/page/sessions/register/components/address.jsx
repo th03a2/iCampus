@@ -9,7 +9,7 @@ import {
 } from "mdb-react-ui-kit";
 
 export default function Address({ setActiveItem, setForm, form }) {
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const tabs = { ...form.tabs };
@@ -20,7 +20,7 @@ export default function Address({ setActiveItem, setForm, form }) {
       ...form,
       tabs,
     });
-    setActiveItem("credentials");
+    setActiveItem("parents");
   };
 
   return (
@@ -32,7 +32,7 @@ export default function Address({ setActiveItem, setForm, form }) {
               type="text"
               label="Region"
               value={form.address?.region}
-              onChange={(e) => {
+              onChange={e => {
                 const address = { ...form.address };
                 address.region = e.target.value;
 
@@ -50,7 +50,7 @@ export default function Address({ setActiveItem, setForm, form }) {
               type="text"
               label="Province"
               value={form.address?.province}
-              onChange={(e) => {
+              onChange={e => {
                 const address = { ...form.address };
                 address.province = e.target.value;
 
@@ -70,7 +70,7 @@ export default function Address({ setActiveItem, setForm, form }) {
               type="text"
               label="City/Municipality"
               value={form.address?.city}
-              onChange={(e) => {
+              onChange={e => {
                 const address = { ...form.address };
                 address.city = e.target.value;
 
@@ -87,7 +87,7 @@ export default function Address({ setActiveItem, setForm, form }) {
               type="text"
               label="Barangay"
               value={form.address?.barangay}
-              onChange={(e) => {
+              onChange={e => {
                 const address = { ...form.address };
                 address.barangay = e.target.value;
 
@@ -106,7 +106,7 @@ export default function Address({ setActiveItem, setForm, form }) {
             <MDBTextArea
               label="Street (Optional)"
               value={form.address?.street}
-              onChange={(e) => {
+              onChange={e => {
                 const address = { ...form.address };
                 address.street = e.target.value;
 

@@ -434,3 +434,227 @@ export const harvestTask = deals =>
 
     return collections;
   }, {});
+export const timeSelectors = [
+  {
+    index: 0,
+    time: "07:00 AM",
+  },
+  {
+    index: 1,
+    time: "07:15 AM",
+  },
+  {
+    index: 2,
+    time: "07:30 AM",
+  },
+  {
+    index: 3,
+    time: "07:45 AM",
+  },
+  {
+    index: 4,
+    time: "08:00 AM",
+  },
+  {
+    index: 5,
+    time: "08:15 AM",
+  },
+  {
+    index: 6,
+    time: "08:30 AM",
+  },
+  {
+    index: 7,
+    time: "08:45 AM",
+  },
+  {
+    index: 8,
+    time: "09:00 AM",
+  },
+  {
+    index: 9,
+    time: "09:15 AM",
+  },
+  {
+    index: 10,
+    time: "09:30 AM",
+  },
+  {
+    index: 11,
+    time: "09:45 AM",
+  },
+  {
+    index: 12,
+    time: "10:00 AM",
+  },
+  {
+    index: 13,
+    time: "10:15 AM",
+  },
+  {
+    index: 14,
+    time: "10:30 AM",
+  },
+  {
+    index: 15,
+    time: "10:45 AM",
+  },
+  {
+    index: 16,
+    time: "11:00 PM",
+  },
+  {
+    index: 17,
+    time: "11:15 PM",
+  },
+  {
+    index: 18,
+    time: "11:30 PM",
+  },
+  {
+    index: 19,
+    time: "11:45 PM",
+  },
+  {
+    index: 20,
+    time: "12:00 PM",
+  },
+  {
+    index: 21,
+    time: "12:15 PM",
+  },
+  {
+    index: 22,
+    time: "12:30 PM",
+  },
+  {
+    index: 23,
+    time: "12:45 PM",
+  },
+  {
+    index: 24,
+    time: "01:00 PM",
+  },
+  {
+    index: 25,
+    time: "01:15 PM",
+  },
+  {
+    index: 26,
+    time: "01:30 PM",
+  },
+  {
+    index: 27,
+    time: "01:45 PM",
+  },
+  {
+    index: 28,
+    time: "02:00 PM",
+  },
+  {
+    index: 29,
+    time: "02:15 PM",
+  },
+  {
+    index: 30,
+    time: "02:30 PM",
+  },
+  {
+    index: 31,
+    time: "02:45 PM",
+  },
+  {
+    index: 32,
+    time: "03:00 PM",
+  },
+  {
+    index: 33,
+    time: "03:15 PM",
+  },
+  {
+    index: 34,
+    time: "03:30 PM",
+  },
+  {
+    index: 35,
+    time: "03:45 PM",
+  },
+  {
+    index: 36,
+    time: "04:00 PM",
+  },
+  {
+    index: 37,
+    time: "04:15 PM",
+  },
+  {
+    index: 38,
+    time: "04:30 PM",
+  },
+  {
+    index: 39,
+    time: "04:45 PM",
+  },
+  {
+    index: 40,
+    time: "05:00 PM",
+  },
+  {
+    index: 41,
+    time: "05:15 PM",
+  },
+  {
+    index: 42,
+    time: "05:30 PM",
+  },
+  {
+    index: 43,
+    time: "05:45 PM",
+  },
+  {
+    index: 444,
+    time: "06:00 PM",
+  },
+  {
+    index: 45,
+    time: "06:15 PM",
+  },
+  {
+    index: 46,
+    time: "06:30 PM",
+  },
+  {
+    index: 47,
+    time: "06:45 PM",
+  },
+];
+export const weekSelectors = [
+  {
+    index: 1,
+    name: "Monday",
+  },
+  {
+    index: 2,
+    name: "Tuesday",
+  },
+  {
+    index: 3,
+    name: "Wednesday",
+  },
+  {
+    index: 4,
+    name: "Thursday",
+  },
+  {
+    index: 5,
+    name: "Friday",
+  },
+  {
+    index: 6,
+    name: "Saturday",
+  },
+  {
+    index: 7,
+    name: "Sunday",
+  },
+];

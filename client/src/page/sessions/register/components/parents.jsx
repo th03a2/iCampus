@@ -29,7 +29,7 @@ export default function Parents({ setForm, form, setActiveItem }) {
       ...form,
       tabs,
     });
-    setActiveItem("address");
+    setActiveItem("credentials");
   };
 
   const handleParents = (user, isMale) => {

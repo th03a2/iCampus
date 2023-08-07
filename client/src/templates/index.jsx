@@ -19,6 +19,7 @@ export {
   TBLbatch,
   TBLenrollment,
   TBLenrollees,
+  TBLschedulers,
 } from "./assets";
 
 export { TBLmenu } from "./assets/menus";

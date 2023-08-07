@@ -9,7 +9,7 @@ import {
 import { validateContactNumber } from "../../../../components/utilities";
 
 export default function BasicInformation({ setForm, form, setActiveItem }) {
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const tabs = { ...form.tabs };
@@ -20,7 +20,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
       ...form,
       tabs,
     });
-    setActiveItem("parents");
+    setActiveItem("address");
   };
 
   return (
@@ -32,7 +32,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
               type="text"
               label="First name"
               value={form.fullName?.fname}
-              onChange={(e) => {
+              onChange={e => {
                 const fullName = { ...form.fullName };
                 fullName.fname = String(e.target.value).toUpperCase();
 
@@ -50,7 +50,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
               type="text"
               label="Last name"
               value={form.fullName?.lname}
-              onChange={(e) => {
+              onChange={e => {
                 const fullName = { ...form.fullName };
                 fullName.lname = String(e.target.value).toUpperCase();
 
@@ -70,7 +70,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
               type="text"
               label="Middle name (Optional)"
               value={form.fullName?.mname}
-              onChange={(e) => {
+              onChange={e => {
                 const fullName = { ...form.fullName };
                 fullName.mname = String(e.target.value).toUpperCase();
 
@@ -85,7 +85,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
             <select
               class="form-select"
               value={form.fullName?.suffix}
-              onChange={(e) => {
+              onChange={e => {
                 const fullName = { ...form.fullName };
                 fullName.suffix = String(e.target.value).toUpperCase();
 
@@ -113,7 +113,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
               type="text"
               label="Mothers Maiden Name"
               value={form?.mmn}
-              onChange={(e) => {
+              onChange={e => {
                 setForm({
                   ...form,
                   mmn: e.target.value,
@@ -125,7 +125,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
             <select
               class="form-select"
               value={form?.isMale}
-              onChange={(e) => {
+              onChange={e => {
                 setForm({
                   ...form,
                   isMale: e.target.value,
@@ -147,7 +147,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
               type="date"
               label="Date of Birth"
               value={form.dob}
-              onChange={(e) =>
+              onChange={e =>
                 setForm({
                   ...form,
                   dob: e.target.value,
@@ -161,7 +161,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
               type="text"
               label="Mobile (+63) (Optional)"
               value={form.mobile}
-              onChange={(e) =>
+              onChange={e =>
                 setForm({
                   ...form,
                   mobile: e.target.value,

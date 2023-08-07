@@ -24,12 +24,12 @@ const tabs = [
     key: "basic",
   },
   {
-    title: "Parents",
-    key: "parents",
-  },
-  {
     title: "Address",
     key: "address",
+  },
+  {
+    title: "Parents",
+    key: "parents",
   },
   {
     title: "Credentials",

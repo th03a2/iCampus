@@ -12,6 +12,7 @@ import CeoRoutes from "./ceo/routes";
 import PatronRoutes from "./patron/routes";
 import PharmacyRoutes from "./pharmacy/routes";
 import ProcurementRoutes from "./procurement/routes";
+import PrincipalRoutes from "./principal/routes";
 import RadiologyRoutes from "./radiology/routes";
 import SocialRoutes from "./social/routes";
 import TherapistRoutes from "./therapist/routes";
@@ -33,6 +34,7 @@ const RootRoutes = [
   HrRoutes,
   LaboratoryRoutes,
   ManagerRoutes,
+  PrincipalRoutes,
   CeoRoutes,
   PatronRoutes,
   PharmacyRoutes,
