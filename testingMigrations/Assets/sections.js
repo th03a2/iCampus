@@ -1,6 +1,6 @@
 const sections = [
   {
-    // _id:: 1,
+    _id: "638dbb343d534df590afca11",
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 3,
     name: "ROBLOX",
@@ -15,6 +15,8 @@ const sections = [
   },
   {
     // _id:: 2,
+    _id: "638dbb343d534df590afca12",
+
     batchId: "64c2519211d7bf196b503d9a",
     specialization_id: 2,
     specification: "SPS",
@@ -30,6 +32,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca13",
+
     batchId: "64c2519211d7bf196b503d9a",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -46,6 +50,8 @@ const sections = [
 
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca14",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -61,6 +67,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca15",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -76,6 +84,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca16",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -91,6 +101,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca17",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -106,6 +118,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca18",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -121,6 +135,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca19",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id
@@ -136,6 +152,8 @@ const sections = [
   },
   {
     // _id:: 3,
+    _id: "638dbb343d534df590afca20",
+
     batchId: "64c2a2b55d8087987ab0eb39",
     specialization_id: 1,
     adviser: "636d37e0187c30ab0f611cf3", //user id

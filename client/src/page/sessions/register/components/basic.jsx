@@ -21,7 +21,7 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
       ...form,
       tabs,
     });
-    setActiveItem("parents");
+    setActiveItem("address");
   };
 
   return (

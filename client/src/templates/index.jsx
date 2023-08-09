@@ -18,6 +18,8 @@ export {
   TBLarticles,
   TBLbatch,
   TBLenrollment,
+  TBLenrollees,
+  TBLschedulers,
   TBLpending,
 } from "./assets";
 

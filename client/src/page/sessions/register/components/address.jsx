@@ -94,7 +94,7 @@ export default function Address({ setActiveItem, setForm, form }) {
       ...form,
       tabs,
     });
-    setActiveItem("credentials");
+    setActiveItem("parents");
   };
   console.log(form);
 

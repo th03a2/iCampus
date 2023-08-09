@@ -27,6 +27,7 @@ import maintenance from "./slices/responsibilities/maintenance";
 import purchase from "./slices/procurments/purchase";
 import enrollment from "./slices/assets/enrollment";
 import sections from "./slices/assets/sections";
+import schedulers from "./slices/assets/schedulers";
 import levels from "./slices/assets/levels";
 export const store = configureStore({
   reducer: {
@@ -59,5 +60,6 @@ export const store = configureStore({
     enrollment,
     sections,
     levels,
+    schedulers,
   },
 });

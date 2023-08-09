@@ -3,6 +3,7 @@ import { browse, find, save, destroy, update } from "../../sqlbuilder";
 
 const initialState = {
     catalogs: [],
+    list: [],
     handleSections: [],
     handleSubjects: [],
     handleSections: [],
@@ -20,7 +21,7 @@ export const BROWSE = createAsyncThunk(
   `${entity}/browse`,
   async ({ token }, thunkAPI) => {
     try {
-      return await browse(`assets/Sections/browse`, "", token);
+      return await browse(`assets/sections/browse`, "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -56,7 +57,7 @@ export const GETSECTIONS = createAsyncThunk(
   `${entity}/getsections`,
   async ({ token }, thunkAPI) => {
     try {
-      return await browse(`assets/Sections/browse`, "", token);
+      return await browse(`assets/aections/browse`, "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -74,11 +75,7 @@ export const LIST = createAsyncThunk(
   `${entity}/list`,
   async (item, thunkAPI) => {
     try {
-      return await browse(
-        `${entity}/browse`,
-        { key: "", branch: item.branch },
-        item.token
-      );
+      return await browse(`${entity}/browse`, item.data, item.token);
     } catch (error) {
       const message =
         (error.response &&
@@ -167,17 +164,17 @@ export const entitySlice = createSlice({
   name: entity,
   initialState,
   reducers: {
-    REVERSE: (state) => {
+    REVERSE: state => {
       state.didSave = false;
       state.didUpdate = false;
       state.didTweak = false;
     },
-    RESET: (state) => initialState,
+    RESET: state => initialState,
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       //GETSECTIONS
-      .addCase(GETSECTIONS.pending, (state) => {
+      .addCase(GETSECTIONS.pending, state => {
         state.isLoading = true;
       })
       .addCase(GETSECTIONS.fulfilled, (state, action) => {
@@ -190,7 +187,7 @@ export const entitySlice = createSlice({
         state.message = action.payload;
       })
       //GETSUBJECTS
-      .addCase(GETBATCH.pending, (state) => {
+      .addCase(GETBATCH.pending, state => {
         state.isLoading = true;
       })
       .addCase(GETBATCH.fulfilled, (state, action) => {
@@ -203,7 +200,7 @@ export const entitySlice = createSlice({
         state.message = action.payload;
       })
       // BROWSE
-      .addCase(BROWSE.pending, (state) => {
+      .addCase(BROWSE.pending, state => {
         state.isLoading = true;
       })
       .addCase(BROWSE.fulfilled, (state, action) => {
@@ -216,12 +213,13 @@ export const entitySlice = createSlice({
         state.message = action.payload;
       })
       // LIST
-      .addCase(LIST.pending, (state) => {
+      .addCase(LIST.pending, state => {
         state.isLoading = true;
       })
       .addCase(LIST.fulfilled, (state, action) => {
         state.isLoading = false;
         state.catalogs = action.payload;
+        state.list = action.payload;
       })
       .addCase(LIST.rejected, (state, action) => {
         state.isLoading = false;
@@ -229,7 +227,7 @@ export const entitySlice = createSlice({
         state.message = action.payload;
       })
       // FIND
-      .addCase(FIND.pending, (state) => {
+      .addCase(FIND.pending, state => {
         state.isLoading = true;
       })
       .addCase(FIND.fulfilled, (state, action) => {
@@ -244,7 +242,7 @@ export const entitySlice = createSlice({
       })
 
       // SAVE
-      .addCase(SAVE.pending, (state) => {
+      .addCase(SAVE.pending, state => {
         state.isLoading = true;
       })
       .addCase(SAVE.fulfilled, (state, action) => {
@@ -259,14 +257,14 @@ export const entitySlice = createSlice({
       })
 
       // UPDATE
-      .addCase(UPDATE.pending, (state) => {
+      .addCase(UPDATE.pending, state => {
         state.isLoading = true;
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
         state.isLoading = false;
         state.didUpdate = true;
         const index = state.catalogs.findIndex(
-          (e) => e._id === action.payload._id
+          e => e._id === action.payload._id
         );
         state.catalogs[index] = action.payload;
       })
@@ -277,12 +275,12 @@ export const entitySlice = createSlice({
       })
 
       // DESTROY
-      .addCase(DESTROY.pending, (state) => {
+      .addCase(DESTROY.pending, state => {
         state.isLoading = true;
       })
       .addCase(DESTROY.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.catalogs = state.catalogs.filter((e) => e._id !== action.payload);
+        state.catalogs = state.catalogs.filter(e => e._id !== action.payload);
       })
       .addCase(DESTROY.rejected, (state, action) => {
         state.isLoading = false;
