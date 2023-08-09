@@ -99,7 +99,7 @@ const userSchema = new mongoose.Schema(
       minlength: 8,
     },
     motherId: { type: String },
-    fatherId: { type: String, default: "" },
+    fatherId: { type: String },
     mmn: {
       // mothers maiden name
       type: String,

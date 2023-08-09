@@ -45,7 +45,7 @@ export default function Modal({
     [sf10BImage, setSf10BImage] = useState(null),
     [goodmoralImage, setGoodmoralImage] = useState(null),
     [form, setForm] = useState({
-      phone: "",
+      mobile: "",
       attachments: {
         sf10A: "",
         sf10B: "",
@@ -60,20 +60,13 @@ export default function Modal({
       specifications: "",
     });
   const [yourSiblings, setYourSiblings] = useState([]);
-
+  const [changeNumber, setChangeNumber] = useState(false);
+  const [changeAddress, setChangeAddress] = useState(false);
   const [levels, setLevels] = useState([]);
   const [category, setCategory] = useState("");
   const [hasGuardian, setHasGuardian] = useState(false);
   const [noSubmitted, setNoSubmitted] = useState(true);
   const [fatherSubmitted, setFatherSubmitted] = useState(false);
-
-  useEffect(() => {
-    if (auth.yourSiblings.length > 0) {
-      setYourSiblings(auth.yourSiblings);
-    } else {
-      setYourSiblings([]);
-    }
-  }, [auth.yourSiblings]);
 
   const convertNsoToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -187,19 +180,6 @@ export default function Modal({
     relationship: "",
   });
 
-  useEffect(() => {
-    const hasNoAttributes = Object.keys(auth.guardian).length === 0;
-    if (hasNoAttributes) {
-      setHasGuardian(false);
-    } else {
-      setHasGuardian(true);
-      setGuardian((prevGuardian) => ({
-        ...prevGuardian,
-        ...auth.yourGuardian,
-      }));
-    }
-  }, [auth.guardian, auth.yourGuardian, setGuardian, setHasGuardian]);
-
   const [parents, setParents] = useState({
     father: {
       id: "1",
@@ -246,7 +226,30 @@ export default function Modal({
       key: "credentials",
     },
   ];
+
+  useEffect(() => {
+    if (auth.yourSiblings.length > 0) {
+      setYourSiblings(auth.yourSiblings);
+    } else {
+      setYourSiblings([]);
+    }
+  }, [auth.yourSiblings]);
+
+  useEffect(() => {
+    const hasNoAttributes = Object.keys(auth.guardian).length === 0;
+    if (hasNoAttributes) {
+      setHasGuardian(false);
+    } else {
+      setHasGuardian(true);
+      setGuardian((prevGuardian) => ({
+        ...prevGuardian,
+        ...auth.yourGuardian,
+      }));
+    }
+  }, [auth.guardian, auth.yourGuardian, setGuardian, setHasGuardian]);
+
   let hasFather = Object.keys(auth.parents?.father).length > 0;
+
   useEffect(() => {
     if (hasFather) {
       setParents(auth.parents);
@@ -444,6 +447,9 @@ export default function Modal({
             setActiveItem={setActiveItem}
             link={link}
             setLink={setLink}
+            changeNumber={changeNumber}
+            setChangeNumber={setChangeNumber}
+            changeAddress={setChangeAddress}
           />
         );
 

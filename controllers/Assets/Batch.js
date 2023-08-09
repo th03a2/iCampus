@@ -14,7 +14,7 @@ exports.browse = (req, res) => {
 };
 
 exports.enrollment = (req, res) => {
-  Entity.find({ status: "start" })
+  Entity.find({ status: "active" })
     .populate("schoolId")
     .then(async (items) => {
       let enrollments = items.filter((item) => !item.deletedAt);

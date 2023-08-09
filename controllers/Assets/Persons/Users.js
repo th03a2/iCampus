@@ -72,7 +72,7 @@ exports.parents = (req, res) =>
     ismale: req.query.gender,
     // dob: req.query.dob,
     // Remarks: its a case sensitive
-    "fullName.fname": { $regex: req.query.name },
+    "fullName.fname": { $regex: req.query.fname },
     "fullName.mname": { $regex: req.query.mname },
     "fullName.lname": { $regex: req.query.lname },
     // "fullName.suffix": req.query.suffix,
@@ -87,6 +87,50 @@ exports.parents = (req, res) =>
       )
     )
     .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.register = async (req, res) => {
+  // register student
+  try {
+    const { mother, father, ...student } = req.body;
+
+    const hasFather = Object.keys(father).length !== 0; // para ma check kung nag lagay ba siya ng father
+    var regFather;
+    var regMother;
+
+    if (hasFather) {
+      if (father._id === undefined) {
+        regFather = await User.create({
+          ...father,
+          email: father.mobile,
+          password: "password",
+        });
+      }
+    }
+    if (mother._id === undefined) {
+      regMother = await User.create({
+        ...mother,
+        email: mother.mobile,
+        password: "password",
+      });
+    }
+
+    const regStudent = await User.create(student);
+
+    await User.findByIdAndUpdate(regStudent._id, {
+      motherId: mother._id === undefined ? regMother._id : mother._id,
+      fatherId: hasFather
+        ? father._id === undefined
+          ? regFather._id
+          : father._id
+        : "",
+    });
+
+    res.json({ status: "successfully" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // users/physicians
 exports.physicians = (req, res) =>
   // User.find({ fullName: { $elemMatch: { title: "Dr." } } })

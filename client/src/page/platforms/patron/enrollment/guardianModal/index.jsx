@@ -221,7 +221,7 @@ export default function GuardianModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={guardian.fullName?.fname}
+                        value={guardian.fullName?.fname.toUpperCase()}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
@@ -240,7 +240,7 @@ export default function GuardianModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={guardian.fullName?.mname}
+                        value={guardian.fullName?.mname.toUpperCase()}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
@@ -259,7 +259,7 @@ export default function GuardianModal({
                         type="text"
                         className="form-control"
                         required
-                        value={guardian.fullName.lname}
+                        value={guardian.fullName.lname.toUpperCase()}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
@@ -278,7 +278,7 @@ export default function GuardianModal({
                     <MDBInputGroup textBefore="Suffix(Optional)">
                       <select
                         className="form-control"
-                        value={guardian.fullName?.suffix}
+                        value={guardian.fullName?.suffix.toUpperCase()}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,

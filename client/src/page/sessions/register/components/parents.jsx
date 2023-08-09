@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   MDBCol,
   MDBContainer,
   MDBInput,
-  MDBRow,
   MDBBtn,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import { ModalSearchUsers } from "../../../../templates/assets";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { properNameFormatter } from "../../../../components/utilities";
 
 export default function Parents({ setForm, form, setActiveItem }) {
-  const { catalogs, isSuccess } = useSelector(({ users }) => users),
+  const { catalogs } = useSelector(({ users }) => users),
     [look, setLook] = useState(false),
-    [gender, setGender] = useState(true),
-    [father, setFather] = useState({}),
-    [mother, setMother] = useState({}),
-    dispatch = useDispatch();
+    [gender, setGender] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,9 +31,10 @@ export default function Parents({ setForm, form, setActiveItem }) {
 
   const handleParents = (user, isMale) => {
     if (isMale) {
-      setFather(user);
+      // setFather(user);
+      setForm((prev) => ({ ...prev, father: user }));
     } else {
-      setMother(user);
+      setForm((prev) => ({ ...prev, mother: user }));
     }
   };
 
@@ -49,30 +47,47 @@ export default function Parents({ setForm, form, setActiveItem }) {
     <MDBContainer className="mt-4">
       <form onSubmit={handleSubmit}>
         <MDBCol md={12} className="mb-5 mb-md-0 ">
-          <MDBInput
-            type="text"
-            label="Father"
-            name="father"
-            value={
-              father?.fullName ? properNameFormatter(father?.fullName) : ""
-            }
-            onClick={() => handleSearch(true)}
-          />
+          <MDBInputGroup textBefore="Father">
+            <input
+              type="text"
+              className="form-control"
+              name="father"
+              value={
+                form.father?.fullName
+                  ? properNameFormatter(form.father?.fullName)
+                  : ""
+              }
+              onClick={() => handleSearch(true)}
+            />
+          </MDBInputGroup>
         </MDBCol>
 
         <MDBCol md={12} className="mt-4 mb-5">
-          <MDBInput
-            type="text"
-            label="Mother"
-            name="mother"
-            value={
-              mother?.fullName ? properNameFormatter(mother?.fullName) : ""
-            }
-            onClick={() => handleSearch(false)}
-          />
+          <MDBInputGroup textBefore="Mother">
+            <input
+              type="text"
+              className="form-control"
+              name="mother"
+              value={
+                form.mother?.fullName
+                  ? properNameFormatter(form.mother?.fullName)
+                  : ""
+              }
+              required
+              onClick={() => handleSearch(false)}
+            />
+          </MDBInputGroup>
         </MDBCol>
-
-        <div className="d-flex justify-content-between">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "23px",
+            left: "10px",
+            right: "25px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("basic")}
             type="button"
@@ -81,7 +96,7 @@ export default function Parents({ setForm, form, setActiveItem }) {
           >
             Previous
           </MDBBtn>
-          <MDBBtn type="submit">Next</MDBBtn>
+          <MDBBtn type="submit">Submit</MDBBtn>
         </div>
       </form>
       {look && (

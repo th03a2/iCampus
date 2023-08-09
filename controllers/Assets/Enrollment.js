@@ -181,7 +181,6 @@ exports.browse = (req, res) => {
       } else {
         res.json([]);
       }
-      // res.json(items.filter((item) => !item.deletedAt));
     })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
@@ -208,7 +207,7 @@ exports.enrolleeDesicion = (req, res) => {
     { status: status, assessedBy, issues: status === "deny" ? issues : [] }
   )
     .then((item) => {
-      if (status === "approved") {
+      if (status === status) {
         Sections.findOneAndUpdate(
           { _id: section.id },
           { studenArr: section.newSection }

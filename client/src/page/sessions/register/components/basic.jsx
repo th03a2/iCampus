@@ -5,6 +5,7 @@ import {
   MDBInput,
   MDBRow,
   MDBBtn,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import { validateContactNumber } from "../../../../components/utilities";
 
@@ -28,152 +29,165 @@ export default function BasicInformation({ setForm, form, setActiveItem }) {
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="First name"
-              value={form.fullName?.fname}
-              onChange={(e) => {
-                const fullName = { ...form.fullName };
-                fullName.fname = String(e.target.value).toUpperCase();
+            <MDBInputGroup textBefore="First Name">
+              <input
+                type="text"
+                className="form-control"
+                value={form.fullName?.fname}
+                onChange={(e) => {
+                  const fullName = { ...form.fullName };
+                  fullName.fname = String(e.target.value).toUpperCase();
 
-                setForm({
-                  ...form,
-                  fullName,
-                });
-              }}
-              required
-              autoFocus
-            />
+                  setForm({
+                    ...form,
+                    fullName,
+                  });
+                }}
+                required
+                autoFocus
+              />
+            </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Last name"
-              value={form.fullName?.lname}
-              onChange={(e) => {
-                const fullName = { ...form.fullName };
-                fullName.lname = String(e.target.value).toUpperCase();
+            <MDBInputGroup textBefore="Last Name">
+              <input
+                type="text"
+                className="form-control"
+                value={form.fullName?.lname}
+                onChange={(e) => {
+                  const fullName = { ...form.fullName };
+                  fullName.lname = String(e.target.value).toUpperCase();
 
-                setForm({
-                  ...form,
-                  fullName,
-                });
-              }}
-              required
-            />
+                  setForm({
+                    ...form,
+                    fullName,
+                  });
+                }}
+                required
+              />
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className="my-3">
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Middle name (Optional)"
-              value={form.fullName?.mname}
-              onChange={(e) => {
-                const fullName = { ...form.fullName };
-                fullName.mname = String(e.target.value).toUpperCase();
+            <MDBInputGroup textBefore="Middle name (Optional)">
+              <input
+                type="text"
+                className="form-control"
+                value={form.fullName?.mname}
+                onChange={(e) => {
+                  const fullName = { ...form.fullName };
+                  fullName.mname = String(e.target.value).toUpperCase();
 
-                setForm({
-                  ...form,
-                  fullName,
-                });
-              }}
-            />
+                  setForm({
+                    ...form,
+                    fullName,
+                  });
+                }}
+              />
+            </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <select
-              class="form-select"
-              value={form.fullName?.suffix}
-              onChange={(e) => {
-                const fullName = { ...form.fullName };
-                fullName.suffix = String(e.target.value).toUpperCase();
+            <MDBInputGroup textBefore="Suffix (Optional)">
+              {" "}
+              <select
+                class="form-select"
+                value={form.fullName?.suffix}
+                onChange={(e) => {
+                  const fullName = { ...form.fullName };
+                  fullName.suffix = String(e.target.value).toUpperCase();
 
-                setForm({
-                  ...form,
-                  fullName,
-                });
-              }}
-            >
-              <option selected value="">
-                Suffix (Optional)
-              </option>
-              <option value="JR">JR</option>
-              <option value="SR">SR</option>
-              <option value="III">III</option>
-              <option value="IV">IV</option>
-              <option value="V">V</option>
-            </select>
+                  setForm({
+                    ...form,
+                    fullName,
+                  });
+                }}
+              >
+                <option selected value=""></option>
+                <option value="JR">JR</option>
+                <option value="SR">SR</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+              </select>
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className="my-3">
           <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Mothers Maiden Name"
-              value={form?.mmn}
-              onChange={(e) => {
-                setForm({
-                  ...form,
-                  mmn: e.target.value,
-                });
-              }}
-            />
+            <MDBInputGroup textBefore="Mothers Maiden Name">
+              <input
+                type="text"
+                className="form-control"
+                value={form?.mmn}
+                onChange={(e) => {
+                  setForm({
+                    ...form,
+                    mmn: e.target.value,
+                  });
+                }}
+              />
+            </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <select
-              class="form-select"
-              value={form?.isMale}
-              onChange={(e) => {
-                setForm({
-                  ...form,
-                  isMale: e.target.value,
-                });
-              }}
-            >
-              <option selected value="">
-                Gender
-              </option>
-              <option value={true}>Male</option>
-              <option value={false}>Female</option>
-            </select>
+            <MDBInputGroup textBefore="Gender">
+              <select
+                class="form-select"
+                value={form?.isMale}
+                onChange={(e) => {
+                  setForm({
+                    ...form,
+                    isMale: e.target.value,
+                  });
+                }}
+              >
+                <option selected value=""></option>
+                <option value={true}>Male</option>
+                <option value={false}>Female</option>
+              </select>
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className="my-3">
-          <MDBCol md={6}>
-            <MDBInput
-              type="date"
-              label="Date of Birth"
-              value={form.dob}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  dob: e.target.value,
-                })
-              }
-              required
-            />
+          <MDBCol md={5}>
+            <MDBInputGroup textBefore="Date of Birth">
+              <input
+                type="date"
+                className="form-control"
+                value={form.dob}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    dob: e.target.value,
+                  })
+                }
+                required
+              />
+            </MDBInputGroup>
           </MDBCol>
-          <MDBCol md={6}>
-            <MDBInput
-              type="text"
-              label="Mobile (+63) (Optional)"
-              value={form.mobile}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  mobile: e.target.value,
-                })
-              }
-              onKeyDown={validateContactNumber}
-              maxLength={10}
-            />
+          <MDBCol md={7}>
+            <MDBInputGroup textBefore="Mobile (+63) (Optional)">
+              <input
+                type="text"
+                className="form-control"
+                value={form.mobile}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    mobile: e.target.value,
+                  })
+                }
+                onKeyDown={validateContactNumber}
+                maxLength={10}
+              />
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
-        <div className="text-end">
+        <div className="text-end" style={{ marginTop: "100px" }}>
           <MDBBtn type="submit">Next</MDBBtn>
         </div>
       </form>

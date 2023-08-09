@@ -9,6 +9,7 @@ const router = require("express").Router(),
     physicians,
     parents,
     search,
+    register,
   } = require("../../../controllers/Assets/Persons/Users"),
   { protect } = require("../../../middleware");
 
@@ -17,6 +18,7 @@ router
   .get("/physicians/browse", physicians) // patrons with title Dr.
   .get("/search", search)
   .get("/parents", parents)
+  .post("/register", register)
   .get("/archive", protect, archive)
   .get("/find", protect, find)
   .put("/update", update)

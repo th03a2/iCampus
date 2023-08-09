@@ -157,13 +157,13 @@ export default function SiblingsModal({
                         type="text"
                         className="form-control"
                         required
-                        value={siblings.fullName.fname}
+                        value={siblings.fullName.fname.toUpperCase()}
                         onChange={(e) =>
                           setSiblings({
                             ...siblings,
                             fullName: {
                               ...siblings.fullName,
-                              fname: e.target.value.toLowerCase(),
+                              fname: e.target.value,
                             },
                           })
                         }
@@ -175,13 +175,13 @@ export default function SiblingsModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={siblings.fullName.mname}
+                        value={siblings.fullName.mname.toUpperCase()}
                         onChange={(e) =>
                           setSiblings({
                             ...siblings,
                             fullName: {
                               ...siblings.fullName,
-                              mname: e.target.value.toLowerCase(),
+                              mname: e.target.value,
                             },
                           })
                         }
@@ -196,13 +196,13 @@ export default function SiblingsModal({
                         type="text"
                         className="form-control"
                         required
-                        value={siblings.fullName.lname}
+                        value={siblings.fullName.lname.toUpperCase()}
                         onChange={(e) =>
                           setSiblings({
                             ...siblings,
                             fullName: {
                               ...siblings.fullName,
-                              lname: e.target.value.toLowerCase(),
+                              lname: e.target.value,
                             },
                           })
                         }

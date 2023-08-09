@@ -23,15 +23,14 @@ export default function Enrollment() {
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
 
+  console.log(catalogs);
+
   useEffect(() => {
-    if (onDuty._id) {
-      dispatch(
-        BROWSE({
-          branch: onDuty._id,
-          token,
-        })
-      );
-    }
+    dispatch(
+      BROWSE({
+        token,
+      })
+    );
   }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {

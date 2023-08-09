@@ -226,7 +226,7 @@ export default function FatherModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={parents.father.fullName?.fname}
+                        value={parents.father.fullName?.fname.toUpperCase()}
                         onChange={(e) =>
                           setParents({
                             ...parents,
@@ -248,7 +248,7 @@ export default function FatherModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={parents.father.fullName?.mname}
+                        value={parents.father.fullName?.mname.toUpperCase()}
                         onChange={(e) =>
                           setParents({
                             ...parents,
@@ -270,7 +270,7 @@ export default function FatherModal({
                         type="text"
                         className="form-control"
                         required
-                        value={parents.father.fullName.lname}
+                        value={parents.father.fullName.lname.toUpperCase()}
                         onChange={(e) =>
                           setParents({
                             ...parents,
@@ -292,7 +292,7 @@ export default function FatherModal({
                     <MDBInputGroup textBefore="Suffix(Optional)">
                       <select
                         className="form-control"
-                        value={parents.father.fullName?.suffix}
+                        value={parents.father.fullName?.suffix.toUpperCase()}
                         onChange={(e) =>
                           setParents({
                             ...parents,

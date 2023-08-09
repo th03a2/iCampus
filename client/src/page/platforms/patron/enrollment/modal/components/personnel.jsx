@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBCol,
   MDBContainer,
@@ -17,6 +17,10 @@ export default function Personnel({
   setActiveItem,
   link,
   setLink,
+  changeNumber,
+  setChangeNumber,
+  changeAddress,
+  setChangeAddress,
 }) {
   const { auth } = useSelector(({ auth }) => auth);
 
@@ -97,15 +101,16 @@ export default function Personnel({
           <MDBCol md={6}>
             <MDBInputGroup textBefore="Mobile (+63)">
               <input
-                value={form.phone}
+                value={changeNumber ? form.mobile : auth.mobile}
                 className="form-control"
                 required
-                onChange={(e) =>
+                onChange={(e) => {
+                  setChangeNumber(true);
                   setForm({
                     ...form,
-                    phone: e.target.value,
-                  })
-                }
+                    mobile: e.target.value,
+                  });
+                }}
                 onKeyDown={validateContactNumber}
                 maxLength={10}
               />

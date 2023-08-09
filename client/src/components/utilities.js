@@ -18,7 +18,7 @@ export const adminRoom = "636d37e0187c30ab0f611ce0";
 
 export const register = (data) =>
   axios
-    .post("assets/persons/auth/save", data)
+    .post(`assets/persons/users/register`, data)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err.response.data.error);

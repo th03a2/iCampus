@@ -6,6 +6,7 @@ import {
   MDBRow,
   MDBBtn,
   MDBIcon,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import { toast } from "react-toastify";
 
@@ -13,7 +14,7 @@ export default function Credentials({ form, setForm, setActiveItem }) {
   const [password, setPassword] = useState(true),
     [confirmPassword, setConfirmPassword] = useState(true);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (form.password === form.confirmPassword) {
@@ -36,123 +37,42 @@ export default function Credentials({ form, setForm, setActiveItem }) {
       <form onSubmit={handleSubmit}>
         <MDBRow>
           <MDBCol>
-            <MDBInput
-              type="text"
-              label="Email"
-              value={form.bop.region}
-              onChange={e =>
-                setForm({
-                  ...form,
-                  email: e.target.value,
-                })
-              }
-              required
-              autoFocus
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow>
-          <MDBCol>
-            <MDBInput
-              type="email"
-              label="Email"
-              value={form.bop.province}
-              onChange={e =>
-                setForm({
-                  ...form,
-                  email: e.target.value,
-                })
-              }
-              required
-              autoFocus
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow>
-          <MDBCol>
-            <MDBInput
-              type="email"
-              label="Email"
-              value={form.bop.municipality}
-              onChange={e =>
-                setForm({
-                  ...form,
-                  email: e.target.value,
-                })
-              }
-              required
-              autoFocus
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow>
-          <MDBCol>
-            <MDBInput
-              type="email"
-              label="Email"
-              value={form.bop.brangay}
-              onChange={e =>
-                setForm({
-                  ...form,
-                  email: e.target.value,
-                })
-              }
-              required
-              autoFocus
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow>
-          <MDBCol>
-            <MDBInput
-              type="email"
-              label="Email"
-              value={form.bop.street}
-              onChange={e =>
-                setForm({
-                  ...form,
-                  email: e.target.value,
-                })
-              }
-              required
-              autoFocus
-            />
-          </MDBCol>
-        </MDBRow>
-        <MDBRow>
-          <MDBCol>
-            <MDBInput
-              type="email"
-              label="Email"
-              value={form.email}
-              onChange={e =>
-                setForm({
-                  ...form,
-                  email: e.target.value,
-                })
-              }
-              required
-              autoFocus
-            />
+            <MDBInputGroup textBefore="Email">
+              <input
+                type="email"
+                className="form-control"
+                value={form.email}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    email: e.target.value,
+                  })
+                }
+                required
+                autoFocus
+              />
+            </MDBInputGroup>
           </MDBCol>
         </MDBRow>
 
         <MDBRow className="my-3">
           <MDBCol>
             <div className="position-relative">
-              <MDBInput
-                type={password ? "password" : "text"}
-                label="Password"
-                value={form.password}
-                onChange={e =>
-                  setForm({
-                    ...form,
-                    password: e.target.value,
-                  })
-                }
-                minLength={8}
-                required
-              />
+              <MDBInputGroup textBefore="Password">
+                <input
+                  type={password ? "password" : "text"}
+                  className="form-control"
+                  value={form.password}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      password: e.target.value,
+                    })
+                  }
+                  minLength={8}
+                  required
+                />
+              </MDBInputGroup>
               <MDBIcon
                 icon={password ? "eye" : "eye-slash"}
                 className="custom-register-eye cursor-pointer"
@@ -165,19 +85,21 @@ export default function Credentials({ form, setForm, setActiveItem }) {
         <MDBRow className="my-3">
           <MDBCol>
             <div className="position-relative">
-              <MDBInput
-                type={confirmPassword ? "password" : "text"}
-                label="Confirm Password"
-                value={form.confirmPassword}
-                onChange={e =>
-                  setForm({
-                    ...form,
-                    confirmPassword: e.target.value,
-                  })
-                }
-                minLength={8}
-                required
-              />
+              <MDBInputGroup textBefore="Confirm Password">
+                <input
+                  type={confirmPassword ? "password" : "text"}
+                  className="form-control"
+                  value={form.confirmPassword}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  minLength={8}
+                  required
+                />
+              </MDBInputGroup>
               <MDBIcon
                 icon={confirmPassword ? "eye" : "eye-slash"}
                 className="custom-register-eye cursor-pointer"
@@ -187,7 +109,16 @@ export default function Credentials({ form, setForm, setActiveItem }) {
           </MDBCol>
         </MDBRow>
 
-        <div className="d-flex justify-content-between">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "23px",
+            left: "10px",
+            right: "25px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("address")}
             type="button"
@@ -196,7 +127,7 @@ export default function Credentials({ form, setForm, setActiveItem }) {
           >
             Previous
           </MDBBtn>
-          <MDBBtn type="submit">Next</MDBBtn>
+          <MDBBtn type="submit">Submit</MDBBtn>
         </div>
       </form>
     </MDBContainer>

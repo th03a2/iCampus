@@ -9,11 +9,10 @@ import Registers from "../../../../widgets/progress/daily";
 
 const Manager = () => {
   const { theme, onDuty } = useSelector(({ auth }) => auth);
-  console.log("onDuty", onDuty);
   // auth, onDuty
   return (
     <>
-      <BreadCrumb title="Manager" />
+      <BreadCrumb title="Principal" />
 
       <MDBContainer fluid className="py-5">
         <MDBRow>

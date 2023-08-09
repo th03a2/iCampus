@@ -15,7 +15,7 @@ import Address from "./components/address";
 import Parents from "./components/parents";
 import Agreement from "./components/agreement";
 import { toast } from "react-toastify";
-import { register, validateContactNumber } from "../../../components/utilities";
+import { register } from "../../../components/utilities";
 import { useNavigate } from "react-router-dom";
 
 const tabs = [
@@ -51,7 +51,6 @@ export default function Registration() {
         suffix: "",
       },
       address: {
-        street: "",
         barangay: "",
         region: "",
         city: "",
@@ -61,8 +60,8 @@ export default function Registration() {
       mobile: "",
       email: "",
       password: "",
-      mother: "",
-      father: "",
+      mother: {},
+      father: {},
       confirmPassword: "",
       agreed: false,
       tabs: {
@@ -80,13 +79,13 @@ export default function Registration() {
       console.log(form);
       if (form.password === form.confirmPassword) {
         register(form)
-          .then(res => {
+          .then((res) => {
             if (res) {
               navigate("/login");
               toast.success(`Welcome aboard ${form.fullName.fname}!`);
             }
           })
-          .catch(err => toast.error(err.message));
+          .catch((err) => toast.error(err.message));
       } else {
         toast.warn("Passwords does not match!");
       }
@@ -94,7 +93,7 @@ export default function Registration() {
     }
   }, [form]);
 
-  const handleActiveContent = activeItem => {
+  const handleActiveContent = (activeItem) => {
     switch (activeItem) {
       case "address":
         return (
@@ -137,6 +136,7 @@ export default function Registration() {
         );
     }
   };
+  console.log(form.father);
 
   return (
     <MDBContainer
@@ -148,7 +148,7 @@ export default function Registration() {
         md={6}
         size={10}
         className="mx-auto"
-        style={{ minHeight: "400px", height: "400px" }}
+        style={{ minHeight: "400px", height: "450px" }}
       >
         <MDBCard className="h-100">
           <MDBCardBody>

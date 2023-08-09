@@ -34,7 +34,16 @@ export default function Agreement({ form, setForm, setActiveItem }) {
           />
         </div>
 
-        <div className="d-flex justify-content-between">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            position: "absolute",
+            bottom: "23px",
+            left: "10px",
+            right: "25px",
+          }}
+        >
           <MDBBtn
             onClick={() => setActiveItem("credentials")}
             type="button"
@@ -47,6 +56,20 @@ export default function Agreement({ form, setForm, setActiveItem }) {
             finish
           </MDBBtn>
         </div>
+
+        {/* <div className="d-flex justify-content-between mt-4">
+          <MDBBtn
+            onClick={() => setActiveItem("credentials")}
+            type="button"
+            color="light"
+            className="shadow-0"
+          >
+            Previous
+          </MDBBtn>
+          <MDBBtn type="submit" color="success">
+            finish
+          </MDBBtn>
+        </div> */}
       </form>
     </MDBContainer>
   );
