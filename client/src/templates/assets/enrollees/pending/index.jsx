@@ -6,15 +6,22 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   paginationHandler,
   nameFormatter,
 } from "../../../../components/utilities";
-export function TBLpending({ enrollees, page, setInformation, setVisibility }) {
+export function TBLpending({
+  enrollees,
+  page,
+  setInformation,
+  setVisibility,
+  status,
+}) {
   const { theme, maxPage } = useSelector(({ auth }) => auth);
 
   const handleInformation = (information) => {
+    console.log(information);
     setVisibility(true);
     setInformation(information);
   };
@@ -29,6 +36,7 @@ export function TBLpending({ enrollees, page, setInformation, setVisibility }) {
           <th>#</th>
           <th scope="col">Name </th>
           <th scope="col">Semester </th>
+          {status === "approved" && <th scope="col">Section </th>}
           <th scope="col">Action </th>
         </tr>
       </MDBTableHead>
@@ -39,6 +47,7 @@ export function TBLpending({ enrollees, page, setInformation, setVisibility }) {
               <td>{1 + index}</td>
               <td>{nameFormatter(enrollee.student?.fullName)}</td>
               <td>{enrollee.batch?.semester + " semester"}</td>
+              {status === "approved" && <td>{enrollee.section?.name}</td>}
 
               <td>
                 <MDBBtn size="sm" onClick={() => handleInformation(enrollee)}>

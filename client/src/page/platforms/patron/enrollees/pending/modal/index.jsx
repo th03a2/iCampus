@@ -14,7 +14,7 @@ import {
   MDBIcon,
   MDBContainer,
 } from "mdb-react-ui-kit";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Basic from "./components/basic";
 import Parents from "./components/parents";
 import Guardian from "./components/guardian";

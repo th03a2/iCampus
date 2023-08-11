@@ -2,16 +2,16 @@ const router = require("express").Router(),
   {
     browse,
     destroy,
-    approved,
     save,
     enrolleeDesicion,
+    sections,
   } = require("../../controllers/Assets/Enrollment"),
   { protect } = require("../../middleware");
 
 router
   .get("/browse", browse)
+  .get("/sections", sections)
   .delete("/destroy", protect, destroy)
-  .put("/approved", protect, approved)
   .put("/update", protect, enrolleeDesicion)
   .post("/save", save);
 

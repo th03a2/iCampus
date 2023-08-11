@@ -41,7 +41,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="Full Name">
               <input
                 className="form-control"
-                value={nameFormatter(information.guardian?.fullName)}
+                value={nameFormatter(information.parents?.guardian?.fullName)}
                 readOnly
               />
             </MDBInputGroup>
@@ -50,7 +50,9 @@ export default function Guardian({
             <MDBInputGroup textBefore="Gender">
               <input
                 className="form-control"
-                value={information.guardian?.isMale ? "Male" : "Female"}
+                value={
+                  information.parents?.guardian?.isMale ? "Male" : "Female"
+                }
                 readOnly
               />
             </MDBInputGroup>
@@ -59,7 +61,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="Age">
               <input
                 className="form-control"
-                value={getAge(information.guardian?.dob)}
+                value={getAge(information.parents?.guardian?.dob)}
                 readOnly
               />
             </MDBInputGroup>
@@ -71,10 +73,9 @@ export default function Guardian({
             <MDBInputGroup textBefore="Date of Birth">
               <input
                 className="form-control"
-                value={new Date(information.guardian?.dob).toLocaleDateString(
-                  undefined,
-                  options
-                )}
+                value={new Date(
+                  information.parents?.guardian?.dob
+                ).toLocaleDateString(undefined, options)}
                 readOnly
               />
             </MDBInputGroup>
@@ -83,7 +84,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="Mobile">
               <input
                 className="form-control"
-                value={information.guardian?.mobile}
+                value={information.parents?.guardian?.mobile}
                 readOnly
               />
             </MDBInputGroup>
@@ -104,7 +105,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="Region">
               <input
                 className="form-control"
-                value={information.guardian?.address?.region}
+                value={information.parents?.guardian?.address?.region}
                 readOnly
               />
             </MDBInputGroup>
@@ -113,7 +114,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="Province">
               <input
                 className="form-control"
-                value={information.guardian?.address?.province}
+                value={information.parents?.guardian?.address?.province}
                 readOnly
               />
             </MDBInputGroup>
@@ -122,7 +123,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="City">
               <input
                 className="form-control"
-                value={information.guardian?.address?.city}
+                value={information.parents?.guardian?.address?.city}
                 readOnly
               />
             </MDBInputGroup>
@@ -134,7 +135,7 @@ export default function Guardian({
             <MDBInputGroup textBefore="Barangay">
               <input
                 className="form-control"
-                value={information.guardian?.address?.barangay}
+                value={information.parents?.guardian?.address?.barangay}
                 readOnly
               />
             </MDBInputGroup>

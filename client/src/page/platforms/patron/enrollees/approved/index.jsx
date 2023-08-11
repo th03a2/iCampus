@@ -9,7 +9,7 @@ import Modal from "../pending/modal";
 
 const path = [
   {
-    path: "Enrollees",
+    path: "Enrolled",
   },
 ];
 
@@ -50,7 +50,7 @@ export default function Approved() {
   return (
     <>
       <BreadCrumb
-        title="Enrollees"
+        title="Enrolled"
         button={false}
         handler={setVisibility}
         visibility={visibility}
@@ -73,6 +73,7 @@ export default function Approved() {
           page={page}
           setInformation={setInformation}
           setVisibility={setVisibility}
+          status="approved"
         />
         {visibility && (
           <Modal

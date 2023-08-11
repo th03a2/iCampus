@@ -57,9 +57,9 @@ export const GETSUBJECTS = createAsyncThunk(
 
 export const GETSECTIONS = createAsyncThunk(
   `${entity}/getsections`,
-  async ({ token }, thunkAPI) => {
+  async ({ token, levelId }, thunkAPI) => {
     try {
-      return await browse(`assets/Sections/browse`, "", token);
+      return await browse(`assets/enrollment/sections`, { levelId }, token);
     } catch (error) {
       const message =
         (error.response &&

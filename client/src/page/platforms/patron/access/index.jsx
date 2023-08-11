@@ -32,8 +32,6 @@ export default function Access() {
     );
   }, [dispatch, token]);
 
-  console.log(fullName);
-
   useEffect(() => {
     setPetitions(catalogs);
   }, [catalogs]);

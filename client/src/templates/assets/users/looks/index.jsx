@@ -86,6 +86,8 @@ export function ModalSearchUsers({
             `Your  ${gender ? "father" : "mother"}  has been registered.`,
             "success"
           );
+        } else {
+          setIsNotRegister(false);
         }
       });
     }

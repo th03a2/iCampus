@@ -27,7 +27,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
   return (
     <MDBContainer className="mt-4" style={{ height: "580px" }}>
       <form onSubmit={handleSubmit}>
-        {information.father.fullName.fname?.length > 0 && (
+        {information.parents?.father?.fullName?.fname?.length > 0 && (
           <>
             <h5 className="text-center">
               <strong>Father</strong>
@@ -37,7 +37,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Full Name">
                   <input
                     className="form-control"
-                    value={nameFormatter(information.father?.fullName)}
+                    value={nameFormatter(information.parents?.father?.fullName)}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -46,7 +46,9 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Gender">
                   <input
                     className="form-control"
-                    value={information.father?.isMale ? "Male" : "Female"}
+                    value={
+                      information.parents?.father?.isMale ? "Male" : "Female"
+                    }
                     readOnly
                   />
                 </MDBInputGroup>
@@ -55,7 +57,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Age">
                   <input
                     className="form-control"
-                    value={getAge(information.father?.dob)}
+                    value={getAge(information.parents?.father?.dob)}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -66,10 +68,9 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Date of Birth">
                   <input
                     className="form-control"
-                    value={new Date(information.father?.dob).toLocaleDateString(
-                      undefined,
-                      options
-                    )}
+                    value={new Date(
+                      information.parents?.father?.dob
+                    ).toLocaleDateString(undefined, options)}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -78,7 +79,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Mobile">
                   <input
                     className="form-control"
-                    value={information.father?.mobile}
+                    value={information.parents?.father?.mobile}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -99,7 +100,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Region">
                   <input
                     className="form-control"
-                    value={information.father?.address?.region}
+                    value={information.parents?.father?.address?.region}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -108,7 +109,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Province">
                   <input
                     className="form-control"
-                    value={information.father?.address?.province}
+                    value={information.parents?.father?.address?.province}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -117,7 +118,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="City">
                   <input
                     className="form-control"
-                    value={information.father?.address?.city}
+                    value={information.parents?.father?.address?.city}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -129,7 +130,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
                 <MDBInputGroup textBefore="Barangay">
                   <input
                     className="form-control"
-                    value={information.father?.address?.barangay}
+                    value={information.parents?.father?.address?.barangay}
                     readOnly
                   />
                 </MDBInputGroup>
@@ -145,7 +146,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Full Name">
               <input
                 className="form-control"
-                value={nameFormatter(information.mother?.fullName)}
+                value={nameFormatter(information.parents?.mother?.fullName)}
                 readOnly
               />
             </MDBInputGroup>
@@ -154,7 +155,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Gender">
               <input
                 className="form-control"
-                value={information.mother?.isMale ? "Male" : "Female"}
+                value={information.parents?.mother?.isMale ? "Male" : "Female"}
                 readOnly
               />
             </MDBInputGroup>
@@ -163,7 +164,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Age">
               <input
                 className="form-control"
-                value={getAge(information.mother?.dob)}
+                value={getAge(information.parents?.mother?.dob)}
                 readOnly
               />
             </MDBInputGroup>
@@ -175,10 +176,9 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Date of Birth">
               <input
                 className="form-control"
-                value={new Date(information.mother?.dob).toLocaleDateString(
-                  undefined,
-                  options
-                )}
+                value={new Date(
+                  information.parents?.mother?.dob
+                ).toLocaleDateString(undefined, options)}
                 readOnly
               />
             </MDBInputGroup>
@@ -187,7 +187,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Mobile">
               <input
                 className="form-control"
-                value={information.mother?.mobile}
+                value={information.parents?.mother?.mobile}
                 readOnly
               />
             </MDBInputGroup>
@@ -208,7 +208,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Region">
               <input
                 className="form-control"
-                value={information.mother?.address?.region}
+                value={information.parents?.mother?.address?.region}
                 readOnly
               />
             </MDBInputGroup>
@@ -217,7 +217,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Province">
               <input
                 className="form-control"
-                value={information.mother?.address?.province}
+                value={information.parents?.mother?.address?.province}
                 readOnly
               />
             </MDBInputGroup>
@@ -226,7 +226,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="City">
               <input
                 className="form-control"
-                value={information.mother?.address?.city}
+                value={information.parents?.mother?.address?.city}
                 readOnly
               />
             </MDBInputGroup>
@@ -238,7 +238,7 @@ export default function Parents({ setActiveItem, link, setLink, information }) {
             <MDBInputGroup textBefore="Barangay">
               <input
                 className="form-control"
-                value={information.mother?.address?.barangay}
+                value={information.parents?.mother?.address?.barangay}
                 readOnly
               />
             </MDBInputGroup>

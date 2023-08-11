@@ -305,7 +305,7 @@ export default function Modal({
         .map((siblings) => siblings._id)
         .filter((id) => auth.siblings.includes(id));
 
-      const newSiblings = yourSiblings // para makuha yung mga inadd niya na sibling na naka registered na
+      const newSiblings = yourSiblings // para makuha yung mniya na ga inadd sibling na naka registered na
         .map((sibling) => sibling._id)
         .filter((siblingId) => !auth.siblings.includes(siblingId));
 

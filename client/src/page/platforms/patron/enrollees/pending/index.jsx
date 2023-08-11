@@ -9,7 +9,7 @@ import Modal from "./modal";
 
 const path = [
   {
-    path: "Enrollees",
+    path: "Pending",
   },
 ];
 
@@ -22,7 +22,6 @@ export default function Pending() {
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
-  console.log(information);
   useEffect(() => {
     dispatch(
       BROWSE({
@@ -50,7 +49,7 @@ export default function Pending() {
   return (
     <>
       <BreadCrumb
-        title="Enrollees"
+        title="Pending"
         button={false}
         handler={setVisibility}
         visibility={visibility}

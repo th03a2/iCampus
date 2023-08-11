@@ -95,7 +95,7 @@ exports.save = async (req, res) => {
           }
         );
       } else {
-        // ito ay para kapag ang pinili kapag ang pinili niya ay naka registered na
+        //  kapag ang pinili niya na father ay naka registered na
         await User.findOneAndUpdate(
           { _id: enrollee.student },
           {
@@ -144,45 +144,78 @@ const getParents = async (fk) =>
       console.log(error);
     });
 
-exports.browse = (req, res) => {
-  Entity.find({ status: req.query.status })
-    .populate("batch")
-    .populate("student")
-    .then(async (batchs) => {
-      const batchFilter = batchs.filter((item) => !item.deletedAt);
-      if (batchFilter.length > 0 && batchFilter[0].student) {
-        let siblings =
-          batchFilter[0].siblings?.length > 0
-            ? await Promise.all(
-                batchFilter[0].siblings?.map(async (sibling) => {
-                  var _siblings = await getSiblings(sibling);
-                  return _siblings;
-                })
-              )
-            : [];
+exports.browse = async (req, res) => {
+  try {
+    const enrollees = await Entity.find({ status: req.query.status })
+      .populate("batch")
+      .populate("student");
 
-        let guardian = await getGuardian(batchFilter[0].student?.guardian?.id);
-        let mother = await getParents(batchFilter[0].student?.motherId);
-        let father =
-          batchFilter[0].student?.fatherId &&
-          (await getParents(batchFilter[0].student?.fatherId));
-
-        for (const index in batchFilter) {
-          const newArray = batchFilter[index];
-          batchFilter[index] = {
-            ...newArray._doc,
-            guardian,
-            father: father ? father : {},
-            mother,
-            siblings: siblings?.flat(),
-          };
+    if (enrollees.length === 0) {
+      res.json([]);
+    } else {
+      const siblingsPromises = enrollees.map((enrollee) => {
+        if (enrollee.siblings?.length > 0) {
+          return Promise.all(
+            enrollee.siblings.map(async (sibling) => await getSiblings(sibling))
+          );
+        } else {
+          return [];
         }
-        res.json(batchFilter);
-      } else {
-        res.json([]);
+      });
+
+      const siblings = await Promise.all(siblingsPromises);
+
+      const parentsPromise = enrollees.map(async (enrollee) => {
+        const guardian = await getGuardian(enrollee.student?.guardian?.id);
+        const father = await getParents(enrollee.student.fatherId);
+        const mother = await getParents(enrollee.student.motherId);
+
+        return {
+          guardian,
+          father: father ? father : {},
+          mother,
+        };
+      });
+
+      const parents = await Promise.all(parentsPromise);
+
+      const sections = await Sections.find();
+      const sectionsFilter = sections.filter(
+        (section) => !section.deletedAt && section.studenArr.length > 0
+      );
+
+      const enrolleeSection = enrollees.flatMap(
+        (
+          enrollee // para makuha lahat ng section na nakapag enrolled na
+        ) =>
+          sectionsFilter.filter((section) =>
+            section.studenArr.includes(enrollee.student._id.toString())
+          )
+      );
+      console.log(enrolleeSection.length);
+      for (const index in enrollees) {
+        const newArray = enrollees[index];
+        enrollees[index] = {
+          ...newArray._doc,
+          parents: parents[index],
+          siblings: siblings[index]?.flat(),
+          section: req.query.status === "approved" && enrolleeSection[index],
+        };
       }
-    })
-    .catch((error) => res.status(400).json({ error: error.message }));
+      res.json(enrollees);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.sections = async (req, res) => {
+  try {
+    const sections = await Sections.find({ levelId: req.query.levelId });
+    res.json(sections);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.list = (req, res) => {
@@ -218,13 +251,6 @@ exports.enrolleeDesicion = (req, res) => {
     })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
-// entity/update?id
-exports.approved = (req, res) =>
-  Entity.findByIdAndUpdate(req.query.id, req.body, {
-    status: "active",
-  })
-    .then((item) => res.json(item))
-    .catch((error) => res.status(400).json({ error: error.message }));
 
 exports.destroy = (req, res) => {
   Entity.findByIdAndUpdate(req.query.id, {

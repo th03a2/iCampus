@@ -30,10 +30,11 @@ export default function Credentials({
     [options, setOptions] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (onDuty._id && handleSections.length === 0) {
+    if (handleSections.length === 0) {
       dispatch(
         GETSECTIONS({
           token,
+          levelId: information.levelId,
         })
       );
     }
