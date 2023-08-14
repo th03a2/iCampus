@@ -1,7 +1,8 @@
 // entity/save
 const Entity = require("../../models/Assets/Enrollments"),
   User = require("../../models/Assets/Persons/Users"),
-  Sections = require("../../models/Assets/Sections");
+  Sections = require("../../models/Assets/Sections"),
+  Branches = require("../../models/Assets/Branches");
 
 exports.save = async (req, res) => {
   try {
@@ -144,12 +145,21 @@ const getParents = async (fk) =>
       console.log(error);
     });
 
+const getBraches = async (fk) =>
+  Branches.find({ _id: fk })
+    .then((datas) => datas[0])
+    .catch((error) => console.log(error));
+
 exports.browse = async (req, res) => {
   try {
-    const enrollees = await Entity.find({ status: req.query.status })
-      .populate("batch")
-      .populate("student");
-
+    var enrollees;
+    if (req.query.status === "dashboard") {
+      enrollees = await Entity.find().populate("batch").populate("student");
+    } else {
+      enrollees = await Entity.find({ status: req.query.status })
+        .populate("batch")
+        .populate("student");
+    }
     if (enrollees.length === 0) {
       res.json([]);
     } else {
@@ -184,22 +194,23 @@ exports.browse = async (req, res) => {
         (section) => !section.deletedAt && section.studenArr.length > 0
       );
 
-      const enrolleeSection = enrollees.flatMap(
-        (
-          enrollee // para makuha lahat ng section na nakapag enrolled na
-        ) =>
-          sectionsFilter.filter((section) =>
-            section.studenArr.includes(enrollee.student._id.toString())
-          )
-      );
-      console.log(enrolleeSection.length);
+      var enrolled = enrollees.map((enrollee) => {
+        const isEnrolled = sectionsFilter.find((section) =>
+          section.studenArr?.includes(enrollee.student?._id.toString())
+        );
+        if (!isEnrolled) return null;
+        return isEnrolled;
+      });
+      enrolled = enrolled.filter(Boolean);
       for (const index in enrollees) {
         const newArray = enrollees[index];
+        const branch = await getBraches(newArray.batch.schoolId);
         enrollees[index] = {
           ...newArray._doc,
           parents: parents[index],
           siblings: siblings[index]?.flat(),
-          section: req.query.status === "approved" && enrolleeSection[index],
+          section: req.query.status === "approved" && enrolled[index],
+          branch,
         };
       }
       res.json(enrollees);

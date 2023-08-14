@@ -23,8 +23,6 @@ export default function Enrollment() {
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
 
-  console.log(catalogs);
-
   useEffect(() => {
     dispatch(
       BROWSE({
@@ -34,7 +32,25 @@ export default function Enrollment() {
   }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
-    setSchools(catalogs);
+    var container = [];
+    catalogs.map((template) => {
+      // para kapag mag kakamuka sila ng companieId isa nalang
+      //ang ilalabas na companie tapos pag sasamasamahin nalang yung category nila
+      const index = container.findIndex(
+        (catalog) => catalog.schoolId.companyId === template.schoolId.companyId
+      );
+
+      if (index > -1) {
+        const categories = [...container[index].categories];
+        categories.push({ ...template.schoolId, batchId: template._id });
+        container[index] = { ...container[index], categories };
+      } else {
+        const _categories = { ...template.schoolId, batchId: template._id };
+        container.push({ ...template, categories: [_categories] });
+      }
+      return true;
+    });
+    setSchools(container);
   }, [catalogs]);
 
   useEffect(() => {

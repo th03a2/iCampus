@@ -21,7 +21,9 @@ export default function BasicInformation({
   levels,
   setLevels,
   category,
+  schoolInformation,
   setCategory,
+  setBatchId,
 }) {
   const [topic, setTopic] = useState([]),
     [isStrand, setIsStrand] = useState(false),
@@ -98,12 +100,25 @@ export default function BasicInformation({
               <select
                 className="form-control"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setBatchId(
+                    // para makuha kung anong batchId ba yung napili
+                    e.target.options[e.target.selectedIndex].getAttribute(
+                      "data-id"
+                    )
+                  );
+                  setCategory(selectedValue);
+                }}
               >
                 <option value={""}></option>
-                {categories.map((data, index) => (
-                  <option value={data} key={index}>
-                    {data}
+                {schoolInformation.categories.map((data, index) => (
+                  <option
+                    value={data.category}
+                    data-id={data.batchId}
+                    key={index}
+                  >
+                    {data.category}
                   </option>
                 ))}
               </select>

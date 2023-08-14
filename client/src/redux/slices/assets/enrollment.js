@@ -5,6 +5,7 @@ const initialState = {
     catalogs: [],
     handleSubjects: [],
     handleSections: [],
+    schools: [],
     record: {},
     isLoading: false,
     didSave: false,
@@ -73,13 +74,13 @@ export const GETSECTIONS = createAsyncThunk(
   }
 );
 
-export const LIST = createAsyncThunk(
-  `${entity}/list`,
+export const SCHOOL = createAsyncThunk(
+  `${entity}/school`,
   async (item, thunkAPI) => {
     try {
       return await browse(
-        `${entity}/browse`,
-        { key: "", branch: item.branch },
+        `${entity}/enrollment`,
+        { key: item.key, branch: item.branch },
         item.token
       );
     } catch (error) {
@@ -94,6 +95,7 @@ export const LIST = createAsyncThunk(
     }
   }
 );
+
 export const FIND = createAsyncThunk(
   `${entity}/find`,
   async (item, thunkAPI) => {
@@ -224,14 +226,14 @@ export const entitySlice = createSlice({
         state.message = action.payload;
       })
       // LIST
-      .addCase(LIST.pending, (state) => {
+      .addCase(SCHOOL.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(LIST.fulfilled, (state, action) => {
+      .addCase(SCHOOL.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.catalogs = action.payload;
+        state.schools = action.payload;
       })
-      .addCase(LIST.rejected, (state, action) => {
+      .addCase(SCHOOL.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
