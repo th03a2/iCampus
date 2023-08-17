@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { browse, find, save, destroy, update } from "../../sqlbuilder";
-
+import io from "socket.io-client";
+// Railway update
+const socket = io("http://localhost:5000");
 const initialState = {
     catalogs: [],
     handleSubjects: [],
@@ -279,6 +281,8 @@ export const entitySlice = createSlice({
           (e) => e._id === action.payload._id
         );
         state.catalogs[index] = action.payload;
+
+        socket.emit("enrollment_desicion", action.payload);
       })
       .addCase(UPDATE.rejected, (state, action) => {
         state.isLoading = false;

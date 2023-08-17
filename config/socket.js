@@ -15,6 +15,10 @@ const socket = (io) => {
     socket.on("recived_cart", (data) => {
       socket.broadcast.emit("send_cart", data);
     });
+
+    socket.on("enrollment_desicion", (data) => {
+      socket.broadcast.emit("send", data);
+    });
   });
 };
 

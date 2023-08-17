@@ -243,7 +243,7 @@ exports.find = (req, res) =>
 
 //
 
-exports.enrolleeDesicion = (req, res) => {
+exports.enrolleeDesicion = async (req, res) => {
   const { status, section, assessedBy, issues } = req.body;
 
   Entity.findByIdAndUpdate(
@@ -257,10 +257,23 @@ exports.enrolleeDesicion = (req, res) => {
           { studenArr: section.newSection }
         ).catch((error) => res.status(400).json({ error: error.message }));
       }
-
-      res.json({ status: "Successfully" });
+      res.json({ status: "successfully" });
     })
     .catch((error) => res.status(400).json({ error: error.message }));
+
+  // const sections = await Sections.find();
+  // const sectionsFilter = sections.filter(
+  //   (section) => !section.deletedAt && section.studenArr.length > 0
+  // );
+
+  // const enrolleeSection = sectionsFilter.find((field) =>
+  //   field.studenArr.includes(section.id)
+  // );
+
+  // // const enrolleeSectionFilter = enrolleeSection.filter(Boolean);
+  // console.log(enrolleeSection);
+  // const enrollees = await Entity.find({ _id: req.query.id });
+  // res.json(enrollees);
 };
 
 exports.destroy = (req, res) => {
