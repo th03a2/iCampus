@@ -33,24 +33,13 @@ const TopNavigation = ({ toggle }) => {
     [role, setRole] = useState({});
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   socket.on("send_cart", data => {
-  //     if (!!data) {
-  //       if (data === "medtech" || data === "manager" || data === "medtech") {
-  //         setHasPendingPurchase(false);
-  //       } else {
-  //         if (data.length !== 0) {
-  //           setHasPendingPurchase(true);
-  //           setQuantity(data.length);
-  //         } else {
-  //           setHasPendingPurchase(false);
-  //         }
-  //       }
-  //     } else {
-  //       setHasPendingPurchase(false);
-  //     }
-  //   });
-  // }, [auth._id]);
+  useEffect(() => {
+    socket.on("sendToEnrollees", (data) => {
+      if (data.id === auth._id) {
+        setHasPendingPurchase(true);
+      }
+    });
+  }, [auth._id]);
 
   useEffect(() => {
     if (!!cart) {
@@ -125,7 +114,7 @@ const TopNavigation = ({ toggle }) => {
                   onClick={() => navigate(`/snapshot/cart`)}
                   className="btn btn-sm "
                 >
-                  <MDBIcon icon="shopping-cart" />
+                  <MDBIcon fas icon="bell" />
                   <span className="cart-quantity">{quantity}</span>
                 </MDBBtn>
               )}

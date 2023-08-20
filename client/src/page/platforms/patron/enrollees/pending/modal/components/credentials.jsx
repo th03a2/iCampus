@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
 import {
   MDBContainer,
   MDBBtn,
@@ -17,6 +18,7 @@ import {
 } from "../../../../../../../redux/slices/assets/enrollment";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
+const socket = io("http://localhost:5000");
 export default function Credentials({
   information,
   setActiveItem,
@@ -38,7 +40,7 @@ export default function Credentials({
         })
       );
     }
-  }, [handleSections, onDuty._id]);
+  }, [handleSections, onDuty._id, dispatch]);
 
   useEffect(() => {
     setOptions(handleSections);
@@ -51,6 +53,46 @@ export default function Credentials({
     tabs.success = true;
 
     setLink(tabs);
+  };
+
+  const setLocalStorage = (status, section, issues) => {
+    const fakeDb = JSON.parse(localStorage.getItem("messages")) || [];
+    const existing = fakeDb
+      ? fakeDb.findIndex((data) => data.id === information.student._id)
+      : -1;
+    if (existing > -1) {
+      const { message } = fakeDb[existing];
+      const newArray = [...message];
+
+      newArray.push({
+        status,
+        section: section.name ? section.name : "",
+        date: new Date().toLocaleDateString(),
+        issues,
+      });
+
+      fakeDb[existing].message = newArray;
+    } else {
+      const enrolleeMessage = {
+        id: information.student._id,
+        message: [
+          {
+            status,
+            section: section ? section.name : "",
+            date: new Date().toLocaleDateString(),
+            issues,
+          },
+        ],
+      };
+
+      fakeDb.push(enrolleeMessage);
+    }
+    localStorage.setItem("messages", JSON.stringify(fakeDb));
+
+    socket.emit(
+      "enrollment_desicion",
+      existing > 0 ? fakeDb[existing].message : fakeDb.message
+    );
   };
 
   const handleApproved = () => {
@@ -68,7 +110,6 @@ export default function Credentials({
       showCancelButton: true,
       confirmButtonText: "Save Section",
       denyButtonText: `Resection Later`,
-      // cancelButtonText: "",
 
       inputValidator: (value) => {
         if (!value) {
@@ -87,7 +128,6 @@ export default function Credentials({
           UPDATE({
             item: {
               id: information._id,
-
               data: {
                 status: "approved",
                 assessedBy: auth._id,
@@ -98,6 +138,9 @@ export default function Credentials({
             },
           })
         );
+        const section = options.find((data) => data._id === result.value);
+
+        setLocalStorage("approved", section, "");
 
         // You can perform any action you want based on the selected option here
       } else if (result.isDenied) {
@@ -114,6 +157,7 @@ export default function Credentials({
             },
           })
         );
+        setLocalStorage("onprogress", " ", "");
       }
     });
   };
@@ -130,6 +174,11 @@ export default function Credentials({
     });
 
     if (textareaValue) {
+      const issues = {
+        title: textareaValue,
+        issueDate: new Date().toLocaleDateString(),
+      };
+
       dispatch(
         UPDATE({
           item: {
@@ -138,15 +187,13 @@ export default function Credentials({
               assessedBy: auth._id,
               status: "deny",
               section: { id: "", newSection: "" },
-              issues: {
-                title: textareaValue,
-                issueDate: new Date().toLocaleDateString(),
-              },
+              issues,
             },
             token,
           },
         })
       );
+      setLocalStorage("deny", " ", issues);
     }
   };
 

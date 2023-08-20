@@ -17,6 +17,7 @@ import BreadCrumb from "../../../../components/breadcrumb";
 import { BROWSE } from "../../../../redux/slices/query";
 import { SCHOOL } from "../../../../redux/slices/assets/enrollment";
 import levels from "../../../../fakeDb/json/levels";
+import "./index.css";
 import Modal from "./modal";
 
 export default function Unset() {
@@ -27,7 +28,6 @@ export default function Unset() {
     [populations, setPopulation] = useState([]),
     [students, setStudents] = useState([]),
     [batchs, setBatchs] = useState([]),
-    [studentsApproved, setStudentsApproved] = useState([]),
     [totalEnrolleesFemale, setTotalEnrolleesFemale] = useState([]),
     [totalEnrolleesMale, setTotalEnrolleesMale] = useState([]),
     [totalEnrolleePending, setTotalEnrolleePending] = useState([]),
@@ -69,21 +69,22 @@ export default function Unset() {
     const studentFilter = populations.filter(
       (population) => population.status === "approved"
     );
+    setTotalEnrollees(studentFilter);
+
+    const pending = catalogs.filter((data) => data.status === "pending");
+    setTotalEnrolleePending(pending ? pending : []);
+
+    const deny = catalogs.filter((data) => data.status === "deny");
+    setTotalEnrolleeDeny(deny ? deny : []);
 
     if (studentFilter.length > 0) {
-      const pending = catalogs.filter((data) => data.status === "pending");
-      const deny = catalogs.filter((data) => data.status === "deny");
       const female = studentFilter.filter(
         (data) => data.student.isMale === false
       );
       const male = studentFilter.filter((data) => data.student.isMale === true);
-
       setTotalEnrolleesFemale(female.length > 0 ? female : []);
       setTotalEnrolleesMale(male.length > 0 ? male : []);
-      setTotalEnrollees(studentFilter);
-      setTotalEnrolleeDeny(deny ? deny : []);
-      setTotalEnrolleePending(pending ? pending : []);
-      const newArray = studentFilter.reduce((result, student) => {
+      const newArray = populations.reduce((result, student) => {
         const section = levels.find(({ id }) => id === student.levelId);
         if (!result[section?.description]) {
           result[section.description] = [student];
@@ -92,7 +93,6 @@ export default function Unset() {
         }
         return result;
       }, []);
-      setStudentsApproved(newArray);
 
       setStudents(newArray);
     }
@@ -113,14 +113,14 @@ export default function Unset() {
       <Modal visibility={modal} setVisibility={toggle} />
       <MDBContainer className="py-5 mt-4">
         <h3 className="text-center">
-          <strong>{batchs[0]?.companies[0]?.name}</strong>
+          <strong>
+            {batchs[0]?.companies[0]?.name}
+            {" #" + batchs[0]?.companies[0]?.schoolId}
+          </strong>
         </h3>
         <h5 className="text-center">
           <strong> {addressFormatter(batchs[0]?.companies[0]?.address)}</strong>
-          <strong>
-            {" "}
-            {addressFormatter(batchs[0]?.companies[0]?.schoolId)}
-          </strong>
+          <strong>{addressFormatter(batchs[0]?.companies[0]?.schoolId)}</strong>
         </h5>
         <MDBRow className="d-flex justify-content-center mt-3">
           <MDBCol md={6}>
@@ -130,10 +130,10 @@ export default function Unset() {
                 className="mt-1"
               >
                 <h6 className="bg-warning">
-                  {"Pending: " + totalEnrolleePending.length}
+                  <strong> {"Pending: " + totalEnrolleePending.length}</strong>{" "}
                 </h6>
                 <h6 className="bg-danger">
-                  {"Deny: " + totalEnrolleeDeny.length}
+                  <strong> {"Deny: " + totalEnrolleeDeny.length}</strong>
                 </h6>
               </div>
               <MDBCardBody>
@@ -159,16 +159,21 @@ export default function Unset() {
             </MDBCard>
           </MDBCol>
         </MDBRow>
-        <MDBRow className="mt-5">
+        <MDBRow className="mt-4 d-flex justify-content-center">
           {Object.entries(students).map(([key, value]) => {
+            console.log(value);
             const female = value.filter(
-              (data) => data.student.isMale === false
+              (data) =>
+                data.student.isMale === false && data.status === "approved"
             );
-            const male = value.filter((data) => data.student.isMale === true);
-            const pending = catalogs.filter(
-              (data) => data.status === "pending"
+            const male = value.filter(
+              (data) =>
+                data.student.isMale === true &&
+                data.student.status === "approved"
             );
-            const deny = catalogs.filter((data) => data.status === "deny");
+            const pending = value.filter((data) => data.status === "pending");
+            const deny = value.filter((data) => data.status === "deny");
+            const approved = value.filter((data) => data.status === "approved");
             return (
               <MDBCol md={3}>
                 <MDBCard className="mt-2">
@@ -177,9 +182,11 @@ export default function Unset() {
                     className="mt-1"
                   >
                     <h6 className="bg-warning">
-                      {"Pending: " + pending.length}
+                      <strong> {"Pending: " + pending.length}</strong>
                     </h6>
-                    <h6 className="bg-danger">{"Deny: " + deny.length}</h6>
+                    <h6 className="bg-danger">
+                      <strong>{"Deny: " + deny.length}</strong>
+                    </h6>
                   </div>
                   <MDBCardBody className="text-center">
                     <div
@@ -192,9 +199,18 @@ export default function Unset() {
                         <MDBIcon fas icon="female" color="warning" />
                         <strong>{" " + female.length}</strong>
                       </h3>
-                      <h1 className="text-end display-5">
-                        <strong>{value.length}</strong>
-                      </h1>
+                      <div>
+                        <h1
+                          className="text-end display-5"
+                          style={{ paddingRight: "30px" }}
+                        >
+                          <strong>{approved.length}</strong>
+                        </h1>
+                        <h6>
+                          <strong>Populations</strong>
+                        </h6>
+                      </div>
+
                       <h3 className="text-center mt-3">
                         <MDBIcon fas icon="male" color="warning" />
                         <strong>{" " + male.length}</strong>

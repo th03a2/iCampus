@@ -125,4 +125,21 @@ export default [
       },
     ],
   },
+  {
+    name: "Apply",
+    icon: "restroom",
+    path: "apply",
+    children: [
+      {
+        name: "Pending",
+        icon: "thumbs-down",
+        path: "pending",
+      },
+      {
+        name: "Approved",
+        icon: "thumbs-up",
+        path: "approved",
+      },
+    ],
+  },
 ];

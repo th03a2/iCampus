@@ -17,7 +17,7 @@ const socket = (io) => {
     });
 
     socket.on("enrollment_desicion", (data) => {
-      socket.broadcast.emit("send", data);
+      socket.broadcast.emit("sendToEnrollees", data);
     });
   });
 };

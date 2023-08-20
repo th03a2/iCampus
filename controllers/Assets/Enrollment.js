@@ -244,36 +244,24 @@ exports.find = (req, res) =>
 //
 
 exports.enrolleeDesicion = async (req, res) => {
-  const { status, section, assessedBy, issues } = req.body;
+  try {
+    const { status, section, assessedBy, issues } = req.body;
 
-  Entity.findByIdAndUpdate(
-    { _id: req.query.id },
-    { status: status, assessedBy, issues: status === "deny" ? issues : [] }
-  )
-    .then((item) => {
-      if (status === status) {
-        Sections.findOneAndUpdate(
-          { _id: section.id },
-          { studenArr: section.newSection }
-        ).catch((error) => res.status(400).json({ error: error.message }));
-      }
-      res.json({ status: "successfully" });
-    })
-    .catch((error) => res.status(400).json({ error: error.message }));
+    await Entity.findByIdAndUpdate(
+      { _id: req.query.id },
+      { status: status, assessedBy, issues: status === "deny" ? issues : [] }
+    );
 
-  // const sections = await Sections.find();
-  // const sectionsFilter = sections.filter(
-  //   (section) => !section.deletedAt && section.studenArr.length > 0
-  // );
-
-  // const enrolleeSection = sectionsFilter.find((field) =>
-  //   field.studenArr.includes(section.id)
-  // );
-
-  // // const enrolleeSectionFilter = enrolleeSection.filter(Boolean);
-  // console.log(enrolleeSection);
-  // const enrollees = await Entity.find({ _id: req.query.id });
-  // res.json(enrollees);
+    if (status === "approved" || status === "onprogress") {
+      await Sections.findOneAndUpdate(
+        { _id: section.id },
+        { studenArr: section.newSection }
+      );
+    }
+    res.json({ status: "successfully" });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.destroy = (req, res) => {
