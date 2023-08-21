@@ -1,37 +1,15 @@
 // entity/save
-const Entity = require("../../models/Assets/Batch"),
-  Companies = require("../../models/Assets/Companies");
-
-const getCompanies = async (pk) =>
-  await Companies.find({
-    _id: pk,
-  });
+const Entity = require("../../models/Assets/Employees"),
+  Companie = require("../../models/Assets/Companies"),
+  Branches = require("../../models/Assets/Branches");
 
 exports.browse = (req, res) => {
-  Entity.find()
-    .byBranch(req.query.branchId)
+  const { branchId, status } = req.query;
+  Entity.find({ status })
+    .byBranch(branchId)
+    .populate("user")
+    .populate("branchId")
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
-    .catch((error) => res.status(400).json({ error: error.message }));
-};
-
-exports.enrollment = (req, res) => {
-  Entity.find({ status: "active" })
-    .byBranch(req.query.branch)
-    .populate("schoolId")
-    .then(async (items) => {
-      let enrollments = items.filter((item) => !item.deletedAt);
-      for (const index in enrollments) {
-        let enrollment = enrollments[index];
-
-        const companies = await getCompanies(enrollment.schoolId?.companyId);
-        enrollments[index] = {
-          ...enrollment._doc,
-          companies,
-        };
-      }
-
-      res.json(enrollments);
-    })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 
@@ -64,6 +42,19 @@ exports.destroy = (req, res) => {
   Entity.findByIdAndUpdate(req.query.id, {
     deletedAt: new Date().toLocaleString(),
   })
-    .then(() => res.json(req.params.id))
+    .then(() => res.json(req.query.id))
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+
+exports.school = (req, res) => {
+  Branches.find()
+    .populate("companyId")
+    .then((items) => res.json(items.filter((item) => !item.deletedAt)))
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+
+exports.search = (req, res) => {
+  Companie.find({ schoolId: req.query.schoolId })
+    .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 };

@@ -24,12 +24,13 @@ export default function BasicInformation({
   schoolInformation,
   setCategory,
   setBatchId,
+  setBranchId,
 }) {
   const [topic, setTopic] = useState([]),
     [isStrand, setIsStrand] = useState(false),
     [strands, setStrands] = useState([]),
     [isShow, setIsShow] = useState(false);
-  const categories = ["shs", "jhs", "elementary", "prep"];
+
   useEffect(() => {
     if (category) {
       const findLevel = degree.filter((data) => data.category === category);
@@ -108,6 +109,11 @@ export default function BasicInformation({
                       "data-id"
                     )
                   );
+                  setBranchId(
+                    e.target.options[e.target.selectedIndex].getAttribute(
+                      "data-branchId"
+                    )
+                  );
                   setCategory(selectedValue);
                 }}
               >
@@ -116,6 +122,7 @@ export default function BasicInformation({
                   <option
                     value={data.category}
                     data-id={data.batchId}
+                    data-branchId={data?._id}
                     key={index}
                   >
                     {data.category}

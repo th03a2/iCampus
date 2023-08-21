@@ -7,6 +7,7 @@ const modelSchema = new mongoose.Schema(
       ref: "batchs",
       // required: true,
     },
+    branchId: { type: mongoose.Schema.Types.ObjectId, ref: "Branches" },
     student: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
@@ -71,7 +72,9 @@ const modelSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+modelSchema.query.byBranch = function (branchId) {
+  return this.where({ branchId });
+};
 const Entity = mongoose.model("enrollments", modelSchema);
 
 module.exports = Entity;

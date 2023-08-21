@@ -61,6 +61,7 @@ export default function Modal({
     });
   const [yourSiblings, setYourSiblings] = useState([]);
   const [batchId, setBatchId] = useState("");
+  const [branchId, setBranchId] = useState("");
   const [changeNumber, setChangeNumber] = useState(false);
   const [changeAddress, setChangeAddress] = useState(false);
   const [levels, setLevels] = useState([]);
@@ -320,6 +321,7 @@ export default function Modal({
             enrollee: {
               ...form,
               batch: batchId,
+              branchId,
               student: auth._id,
               attachments,
               categorization: schoolInfo.units,
@@ -468,6 +470,7 @@ export default function Modal({
             category={category}
             schoolInformation={schoolInformation}
             setBatchId={setBatchId}
+            setBranchId={setBranchId}
           />
         );
     }

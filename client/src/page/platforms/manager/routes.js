@@ -15,6 +15,7 @@ import Logos from "./settings/logos";
 import Process from "./po/process";
 import Sourcing from "./settings/sourcing";
 import DTR from "./dtr";
+import Batch from "./batch";
 
 const routes = {
   name: "principal", // Administrator Officer
@@ -106,6 +107,10 @@ const routes = {
           element: <Sourcing />,
         },
       ],
+    },
+    {
+      path: "batch",
+      element: <Batch />,
     },
   ],
 };

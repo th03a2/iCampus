@@ -13,7 +13,7 @@ const path = [
 ];
 
 export default function Batch() {
-  const { token, maxPage, theme } = useSelector(({ auth }) => auth),
+  const { token, maxPage, theme, onDuty } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
     [batch, setBatch] = useState([]),
@@ -24,14 +24,16 @@ export default function Batch() {
     dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        entity: "assets/batch",
-        data: "",
-        token,
-      })
-    );
-  }, [dispatch, token]);
+    if (onDuty._id) {
+      dispatch(
+        BROWSE({
+          entity: "assets/batch",
+          data: onDuty._id,
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
     setBatch(catalogs);

@@ -30,8 +30,8 @@ const modelSchema = new mongoose.Schema(
 modelSchema.query.byCompanyId = function (companyId) {
   return this.where({ companyId });
 };
-modelSchema.query.byCompanies = function (companies) {
-  return this.where({ companyId: { $in: companies } });
+modelSchema.query.byBranch = function (schoolId) {
+  return this.where({ schoolId });
 };
 
 const Entity = mongoose.model("batchs", modelSchema);

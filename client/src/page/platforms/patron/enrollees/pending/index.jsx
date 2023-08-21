@@ -14,7 +14,7 @@ const path = [
 ];
 
 export default function Pending() {
-  const { token, maxPage, theme } = useSelector(({ auth }) => auth),
+  const { token, maxPage, theme, onDuty } = useSelector(({ auth }) => auth),
     { catalogs } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
     [enrollees, setEnrollees] = useState([]),
@@ -26,7 +26,7 @@ export default function Pending() {
     dispatch(
       BROWSE({
         entity: "assets/enrollment",
-        data: { status: "pending" },
+        data: { status: "pending", branchId: onDuty._id },
         token,
       })
     );

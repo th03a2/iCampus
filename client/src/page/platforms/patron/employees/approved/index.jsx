@@ -3,54 +3,55 @@ import { useSelector, useDispatch } from "react-redux";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
 import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
-import { BROWSE } from "../../../../../redux/slices/query";
-import { TBLpending } from "../../../../../templates";
-import Modal from "../pending/modal";
+import { BROWSE } from "../../../../../redux/slices/assets/employees";
+import { TBLpendingEmployees } from "../../../../../templates";
+// import Modal from "./modal";
 
 const path = [
   {
-    path: "Enrolled",
+    path: "Approved",
   },
 ];
 
-export default function Approved() {
+export default function ApprovedEmployee() {
   const { token, maxPage, theme, onDuty } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ query }) => query),
+    { catalogs } = useSelector(({ employees }) => employees),
     [visibility, setVisibility] = useState(false),
-    [enrollees, setEnrollees] = useState([]),
+    [employees, setEmployees] = useState([]),
     [information, setInformation] = useState({}),
     [page, setPage] = useState(1),
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
-  console.log(information);
-  useEffect(() => {
-    dispatch(
-      BROWSE({
-        entity: "assets/enrollment",
-        data: { status: "approved", branchId: onDuty._id },
-        token,
-      })
-    );
-  }, [dispatch, token]);
 
   useEffect(() => {
-    setEnrollees(catalogs);
+    if (onDuty._id) {
+      dispatch(
+        BROWSE({
+          data: { status: "approved", branchId: onDuty._id },
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
+
+  useEffect(() => {
+    setEmployees(catalogs);
   }, [catalogs]);
 
   useEffect(() => {
-    if (enrollees.length > 0) {
-      let totalPages = Math.floor(enrollees.length / maxPage);
-      if (enrollees.length % maxPage > 0) totalPages += 1;
+    if (employees.length > 0) {
+      let totalPages = Math.floor(employees.length / maxPage);
+      if (employees.length % maxPage > 0) totalPages += 1;
       setTotalPages(totalPages);
 
       page > totalPages && setPage(totalPages);
     }
-  }, [enrollees, page, maxPage]);
+  }, [employees, page, maxPage]);
 
   return (
     <>
       <BreadCrumb
-        title="Enrolled"
+        title="Approved"
         button={false}
         handler={setVisibility}
         visibility={visibility}
@@ -62,27 +63,26 @@ export default function Approved() {
             <MDBInput
               // onChange={e => handleSearch(e.target.value)}
               type="search"
-              label="Search by Grade level"
+              label="Search by fullname "
               contrast={theme.dark}
             />
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLpending
-          enrollees={enrollees}
+        <TBLpendingEmployees
+          employees={employees}
           page={page}
           setInformation={setInformation}
           setVisibility={setVisibility}
           status="approved"
         />
-        {visibility && (
+        {/* {visibility && (
           <Modal
             visibility={visibility}
             setVisibility={setVisibility}
             information={information}
-            status="approved"
           />
-        )}
+        )} */}
       </MDBContainer>
     </>
   );

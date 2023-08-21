@@ -28,12 +28,14 @@ export default function Body({ topic }) {
           (data) => data.specifications === topic.specification
         );
 
-        const subjects = [...findStrand.subject];
-        const findSubjects = subjects.map((subject) =>
-          field.find((data) => data.id === subject)
-        );
+        if (findStrand) {
+          const subjects = [...findStrand.subject];
+          const findSubjects = subjects.map((subject) =>
+            field.find((data) => data.id === subject)
+          );
 
-        setSubjects(findSubjects);
+          setSubjects(findSubjects);
+        }
       }
     } else {
       setSubjects([]);

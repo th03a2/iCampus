@@ -149,6 +149,16 @@ const Login = () => {
               </span>
               .
             </MDBTypography>
+            <MDBTypography className="mb-0">
+              Register as employee?&nbsp;
+              <span
+                onClick={() => navigate("/register")}
+                className="cursor-pointer text-primary hover-line"
+              >
+                Create an account
+              </span>
+              .
+            </MDBTypography>
           </MDBCardBody>
         </MDBCard>
       </MDBCol>

@@ -21,6 +21,9 @@ import Enrollment from "./enrollment";
 import Pending from "./enrollees/pending";
 import Access from "./access";
 import Approved from "./enrollees/approved";
+import Employ from "./employ";
+import PendingEmployee from "./employees/pending";
+import ApprovedEmployee from "./employees/approved";
 
 const routes = {
   name: "patron",
@@ -129,6 +132,23 @@ const routes = {
         {
           path: "articles",
           element: <Articles />,
+        },
+      ],
+    },
+    {
+      path: "employ",
+      element: <Employ />,
+    },
+    {
+      path: "employees",
+      grandsons: [
+        {
+          path: "pending",
+          element: <PendingEmployee />,
+        },
+        {
+          path: "approved",
+          element: <ApprovedEmployee />,
         },
       ],
     },

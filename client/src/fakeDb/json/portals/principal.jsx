@@ -136,4 +136,9 @@ export default [
     icon: "calendar",
     path: "schedulers",
   },
+  {
+    name: "Batch",
+    icon: "calendar",
+    path: "batch",
+  },
 ];

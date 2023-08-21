@@ -3,25 +3,38 @@ import { browse, find, save, destroy, update } from "../../sqlbuilder";
 
 const initialState = {
     catalogs: [],
-    list: [],
-    handleSections: [],
-    handleSubjects: [],
-    handleSections: [],
+    schools: [],
     record: {},
+    didSubmit: false,
     isLoading: false,
-    didSave: false,
-    didUpdate: false,
-    didTweak: false,
     isError: false,
     message: "",
   },
-  entity = "assets/Sections";
+  entity = "assets/employees";
 
 export const BROWSE = createAsyncThunk(
   `${entity}/browse`,
+  async ({ data, token }, thunkAPI) => {
+    try {
+      return await browse("assets/employees/browse", data, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const GETSCHOOLS = createAsyncThunk(
+  `${entity}/school`,
   async ({ token }, thunkAPI) => {
     try {
-      return await browse(`assets/sections/browse`, "", token);
+      return await browse("assets/employees/school", "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -35,11 +48,11 @@ export const BROWSE = createAsyncThunk(
   }
 );
 
-export const GETBATCH = createAsyncThunk(
-  `${entity}/getbatch`,
-  async ({ token, data }, thunkAPI) => {
+export const SEARCH = createAsyncThunk(
+  `${entity}/machines`,
+  async (token, thunkAPI) => {
     try {
-      return await browse(`assets/batch/browse`, data, token);
+      return await browse(`${entity}/search`, "", token);
     } catch (error) {
       const message =
         (error.response &&
@@ -53,41 +66,6 @@ export const GETBATCH = createAsyncThunk(
   }
 );
 
-export const GETSECTIONS = createAsyncThunk(
-  `${entity}/getsections`,
-  async ({ token }, thunkAPI) => {
-    try {
-      return await browse(`assets/aections/browse`, "", token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const LIST = createAsyncThunk(
-  `${entity}/list`,
-  async (item, thunkAPI) => {
-    try {
-      return await browse(`${entity}/browse`, item.data, item.token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
 export const FIND = createAsyncThunk(
   `${entity}/find`,
   async (item, thunkAPI) => {
@@ -110,7 +88,7 @@ export const SAVE = createAsyncThunk(
   `${entity}/save`,
   async (item, thunkAPI) => {
     try {
-      return await save(entity, item.form, item.token);
+      return await save(`${entity}`, item.form, item.token);
     } catch (error) {
       const message =
         (error.response &&
@@ -127,6 +105,7 @@ export const SAVE = createAsyncThunk(
 export const UPDATE = createAsyncThunk(
   `${entity}/update`,
   async (item, thunkAPI) => {
+    console.log(item);
     try {
       return await update(entity, item.data, item.id, item.token);
     } catch (error) {
@@ -164,80 +143,55 @@ export const entitySlice = createSlice({
   name: entity,
   initialState,
   reducers: {
-    REVERSE: (state) => {
-      state.didSave = false;
-      state.didUpdate = false;
-      state.didTweak = false;
+    REVERT: (state) => {
+      state.didSubmit = false;
+    },
+    INJECT: (state, data) => {
+      state.catalogs.push(data.payload);
     },
     RESET: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      //GETSECTIONS
-      .addCase(GETSECTIONS.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(GETSECTIONS.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.handleSections = action.payload;
-      })
-      .addCase(GETSECTIONS.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      //GETSUBJECTS
-      .addCase(GETBATCH.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(GETBATCH.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.catalogs = action.payload;
-      })
-      .addCase(GETBATCH.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
       // BROWSE
       .addCase(BROWSE.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(BROWSE.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.handleSections = action.payload;
+        state.catalogs = action.payload;
       })
       .addCase(BROWSE.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      // LIST
-      .addCase(LIST.pending, (state) => {
+      //school
+
+      .addCase(GETSCHOOLS.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(LIST.fulfilled, (state, action) => {
+      .addCase(GETSCHOOLS.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.catalogs = action.payload;
-        state.list = action.payload;
+        state.schools = action.payload;
       })
-      .addCase(LIST.rejected, (state, action) => {
+      .addCase(GETSCHOOLS.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
+
       // FIND
       .addCase(FIND.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(FIND.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.record = action.payload;
+        state.catalogs = action.payload;
       })
       .addCase(FIND.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.didTweak = true;
         state.message = action.payload;
       })
 
@@ -247,8 +201,8 @@ export const entitySlice = createSlice({
       })
       .addCase(SAVE.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.didSave = true;
-        state.catalogs.push(action.payload);
+        state.record = action.payload;
+        state.didSubmit = true;
       })
       .addCase(SAVE.rejected, (state, action) => {
         state.isLoading = false;
@@ -262,7 +216,6 @@ export const entitySlice = createSlice({
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.didUpdate = true;
         const index = state.catalogs.findIndex(
           (e) => e._id === action.payload._id
         );
@@ -290,5 +243,5 @@ export const entitySlice = createSlice({
   },
 });
 
-export const { RESET, REVERSE } = entitySlice.actions;
+export const { RESET, INJECT, REVERT } = entitySlice.actions;
 export default entitySlice.reducer;

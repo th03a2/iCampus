@@ -11,7 +11,6 @@ import {
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import "./index.css";
-import Company from "../../../../fakeDb/company";
 // import { nameFormatter } from "../../../../components/utilities";
 import BreadCrumb from "../../../../components/breadcrumb";
 import { BROWSE } from "../../../../redux/slices/query";
@@ -23,7 +22,7 @@ import Modal from "./modal";
 export default function Unset() {
   const { schools } = useSelector(({ enrollment }) => enrollment);
   const { catalogs } = useSelector(({ query }) => query),
-    { token, auth } = useSelector(({ auth }) => auth),
+    { token, auth, onDuty } = useSelector(({ auth }) => auth),
     [modal, setModal] = useState(false),
     [populations, setPopulation] = useState([]),
     [students, setStudents] = useState([]),
@@ -40,17 +39,18 @@ export default function Unset() {
       dispatch(
         BROWSE({
           entity: "assets/enrollment",
-          data: { status: "dashboard" },
+          data: { status: "dashboard", branchId: onDuty._id },
           token,
         })
       );
     }
-  }, [auth._id, token, dispatch]);
+  }, [auth._id, token, dispatch, onDuty._id]);
 
   useEffect(() => {
     if (auth._id) {
       dispatch(
         SCHOOL({
+          branch: onDuty._id,
           token,
         })
       );

@@ -154,11 +154,15 @@ exports.browse = async (req, res) => {
   try {
     var enrollees;
     if (req.query.status === "dashboard") {
-      enrollees = await Entity.find().populate("batch").populate("student");
+      enrollees = await Entity.find()
+        .populate("batch")
+        .populate("student")
+        .byBranch(req.query.branchId);
     } else {
       enrollees = await Entity.find({ status: req.query.status })
         .populate("batch")
-        .populate("student");
+        .populate("student")
+        .byBranch(req.query.branchId);
     }
     if (enrollees.length === 0) {
       res.json([]);

@@ -128,7 +128,12 @@ export default [
   {
     name: "Apply",
     icon: "restroom",
-    path: "apply",
+    path: "employ",
+  },
+  {
+    name: "Employees",
+    icon: "restroom",
+    path: "employees",
     children: [
       {
         name: "Pending",

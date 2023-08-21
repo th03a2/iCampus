@@ -13,6 +13,7 @@ const Banks = require("./Banks");
 const Articles = require("./Articles");
 const Batch = require("./Batch");
 const Enrollment = require("./Enrollment");
+const Employees = require("./Employees.js");
 const assets = {
   root: "assets",
   branches: [
@@ -76,6 +77,10 @@ const assets = {
     {
       root: "enrollment",
       routes: Enrollment,
+    },
+    {
+      root: "employees",
+      routes: Employees,
     },
   ],
 };

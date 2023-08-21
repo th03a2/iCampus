@@ -14,7 +14,7 @@ const path = [
 ];
 
 export default function Sections() {
-  const { token, maxPage, theme } = useSelector(({ auth }) => auth),
+  const { token, maxPage, onDuty } = useSelector(({ auth }) => auth),
     { catalogs, handleSections } = useSelector(({ sections }) => sections),
     [visibility, setVisibility] = useState(false),
     [sections, setSections] = useState([]),
@@ -27,12 +27,15 @@ export default function Sections() {
     dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      GETBATCH({
-        token,
-      })
-    );
-  }, [dispatch, token]);
+    if (onDuty._id) {
+      dispatch(
+        GETBATCH({
+          data: { branchId: onDuty._id },
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
     dispatch(

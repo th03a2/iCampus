@@ -21,3 +21,5 @@ export { TBLenrollment } from "./enrollment";
 export { TBLpending } from "./enrollees/pending";
 export { ModalSearchUsers } from "./users/looks";
 export { TBLschedulers } from "./schedulers";
+export { TBLpendingEmployees } from "./employees/pending";
+export { TBLBatchApproval } from "./principal/batch";
