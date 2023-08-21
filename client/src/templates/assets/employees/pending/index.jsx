@@ -112,7 +112,7 @@ export function TBLpendingEmployees({ employees, page, status }) {
               <td>{nameFormatter(employee.user?.fullName)}</td>
               <td>{addressFormatter(employee.user?.address)}</td>
               <td>
-                {employee.user?.gender ? (
+                {employee.user?.isMale ? (
                   <MDBIcon fas icon="male" color="warning" size="2x" />
                 ) : (
                   <MDBIcon fas icon="female" color="warning" size="2x" />

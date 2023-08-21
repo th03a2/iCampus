@@ -78,11 +78,11 @@ export default function Personnel({
             </MDBInputGroup>
           </MDBCol>
           <MDBCol md={6}>
-            <MDBInputGroup textBefore="Place of Birth">
+            <MDBInputGroup textBefore="Address">
               <input
                 type="text"
                 className="form-control"
-                value={addressFormatter(information.student?.bop)}
+                value={addressFormatter(information.student?.address)}
                 readOnly
               />
             </MDBInputGroup>

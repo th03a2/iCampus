@@ -146,7 +146,11 @@ export default function Modal({ visibility, setVisibility }) {
               </MDBModalBody>
 
               <MDBModalFooter>
-                <MDBBtn color="secondary" onClick={() => setVisibility(false)}>
+                <MDBBtn
+                  type="button"
+                  color="secondary"
+                  onClick={() => setVisibility(false)}
+                >
                   Close
                 </MDBBtn>
                 <MDBBtn type="submit">Submit</MDBBtn>

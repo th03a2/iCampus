@@ -119,16 +119,16 @@ export default function Unset() {
       <BreadCrumb title="Dasboard" />
       <Modal visibility={modal} setVisibility={toggle} />
       <MDBContainer className="py-5 mt-4">
-        <h3 className="text-center">
+        <h1 className="text-center">
           <strong>
             {batchs[0]?.companies[0]?.name}
             {" #" + batchs[0]?.companies[0]?.schoolId}
           </strong>
-        </h3>
-        <h5 className="text-center">
+        </h1>
+        <h2 className="text-center">
           <strong> {addressFormatter(batchs[0]?.companies[0]?.address)}</strong>
           <strong>{addressFormatter(batchs[0]?.companies[0]?.schoolId)}</strong>
-        </h5>
+        </h2>
         <MDBRow className="d-flex justify-content-center mt-3">
           <MDBCol md={6}>
             <MDBCard>
