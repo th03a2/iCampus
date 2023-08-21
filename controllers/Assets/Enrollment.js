@@ -181,7 +181,9 @@ exports.browse = async (req, res) => {
 
       const parentsPromise = enrollees.map(async (enrollee) => {
         const guardian = await getGuardian(enrollee.student?.guardian?.id);
-        const father = await getParents(enrollee.student.fatherId);
+        const father =
+          enrollee.student?.fatherId &&
+          (await getParents(enrollee.student?.fatherId));
         const mother = await getParents(enrollee.student.motherId);
 
         return {

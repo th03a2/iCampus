@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdb-react-ui-kit";
-import Pager from "../../../../../components/pager";
-import BreadCrumb from "../../../../../components/breadcrumb";
-// import { BROWSE } from "../../../../../redux/slices/query";
-import { GETBATCH, BROWSE } from "../../../../../redux/slices/assets/sections";
-import { TBLsections } from "../../../../../templates";
+import Pager from "../../../../components/pager";
+import BreadCrumb from "../../../../components/breadcrumb";
+// import { BROWSE } from "../../../../redux/slices/query";
+import { GETBATCH, BROWSE } from "../../../../redux/slices/assets/sections";
+import { TBLsections } from "../../../../templates";
 import Modal from "./modal";
 const path = [
   {
@@ -126,6 +126,7 @@ export default function Sections() {
             isUpdate={isUpdate}
             setIsUpdate={setIsUpdate}
             update={update}
+            batchs={batchs}
           />
         )}
       </MDBContainer>

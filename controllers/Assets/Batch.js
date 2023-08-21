@@ -9,15 +9,35 @@ const getCompanies = async (pk) =>
 
 exports.browse = (req, res) => {
   Entity.find()
-    .byBranch(req.query.branchId)
+    .byBranch(req.query.key)
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 
 exports.enrollment = (req, res) => {
   Entity.find({ status: "active" })
-    .byBranch(req.query.branch)
     .populate("schoolId")
+    .then(async (items) => {
+      let enrollments = items.filter((item) => !item.deletedAt);
+      for (const index in enrollments) {
+        let enrollment = enrollments[index];
+
+        const companies = await getCompanies(enrollment.schoolId?.companyId);
+        enrollments[index] = {
+          ...enrollment._doc,
+          companies,
+        };
+      }
+
+      res.json(enrollments);
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+exports.dashboard = (req, res) => {
+  // para sa dashboard kung ilan na yung naka enroll
+  Entity.find({ status: "active" })
+    .populate("schoolId")
+    .byBranch(req.query.branch)
     .then(async (items) => {
       let enrollments = items.filter((item) => !item.deletedAt);
       for (const index in enrollments) {

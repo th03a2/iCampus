@@ -20,11 +20,12 @@ exports.find = (req, res) =>
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));
 
-exports.save = (req, res) =>
+exports.save = (req, res) => {
+  console.log(req.body);
   Entity.create(req.body)
     .then((item) => res.json(item))
     .catch((error) => res.status(400).json({ error: error.message }));
-
+};
 // entity/update?id
 exports.update = (req, res) =>
   Entity.findByIdAndUpdate(req.query.id, req.body, {

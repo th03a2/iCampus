@@ -5,7 +5,7 @@ import Pager from "../../../../components/pager";
 import BreadCrumb from "../../../../components/breadcrumb";
 import { BROWSE } from "../../../../redux/slices/query";
 import { TBLBatchApproval } from "../../../../templates";
-// import Modal from "./modal";
+import Modal from "../../patron/batch/modal";
 const path = [
   {
     path: "Batch",
@@ -26,7 +26,7 @@ export default function Batch() {
       dispatch(
         BROWSE({
           entity: "assets/batch",
-          data: onDuty._id,
+          data: { key: onDuty._id },
           token,
         })
       );
@@ -69,15 +69,15 @@ export default function Batch() {
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
         <TBLBatchApproval batch={batch} page={page} />
-        {/* {visibility && (
+        {visibility && (
           <Modal
             setVisibility={setVisibility}
             visibility={visibility}
-            update={update}
-            isUpdate={isUpdate}
-            setIsUpdate={setIsUpdate}
+            // update={update}
+            // isUpdate={isUpdate}
+            // setIsUpdate={setIsUpdate}
           />
-        )} */}
+        )}
       </MDBContainer>
     </>
   );

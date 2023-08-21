@@ -167,5 +167,86 @@ const sections = [
     created_at: "2019-07-25 09:51:07",
     updated_at: "2019-07-25 09:51:07",
   },
+
+  {
+    // _id:: 3,
+
+    batchId: "64c2a2b55d8087987ab0eb39",
+    specialization_id: 1,
+    adviser: "636d37e0187c30ab0f611cf3", //user id
+    name: "VENUS",
+    major: "JHS",
+    specification: "SPS",
+    levelId: 11,
+    accumulate: 48,
+    trackStrand: "BS I.T",
+    user_id: 1,
+    created_at: "2019-07-25 09:51:07",
+    updated_at: "2019-07-25 09:51:07",
+  },
+  {
+    // _id:: 3,
+
+    batchId: "64c2a2b55d8087987ab0eb39",
+    specialization_id: 1,
+    adviser: "636d37e0187c30ab0f611cf3", //user id
+    name: "VENUS",
+    major: "JHS",
+    specification: "SPS",
+    levelId: 12,
+    accumulate: 48,
+    trackStrand: "BS I.T",
+    user_id: 1,
+    created_at: "2019-07-25 09:51:07",
+    updated_at: "2019-07-25 09:51:07",
+  },
+  {
+    // _id:: 3,
+
+    batchId: "64c2a2b55d8087987ab0eb39",
+    specialization_id: 1,
+    adviser: "636d37e0187c30ab0f611cf3", //user id
+    name: "VENUS",
+    major: "JHS",
+    specification: "SPS",
+    levelId: 13,
+    accumulate: 48,
+    trackStrand: "BS I.T",
+    user_id: 1,
+    created_at: "2019-07-25 09:51:07",
+    updated_at: "2019-07-25 09:51:07",
+  },
+  {
+    // _id:: 3,
+
+    batchId: "64c2a2b55d8087987ab0eb39",
+    specialization_id: 1,
+    adviser: "636d37e0187c30ab0f611cf3", //user id
+    name: "VENUS",
+    major: "JHS",
+    specification: "SPS",
+    levelId: 14,
+    accumulate: 48,
+    trackStrand: "BS I.T",
+    user_id: 1,
+    created_at: "2019-07-25 09:51:07",
+    updated_at: "2019-07-25 09:51:07",
+  },
+  {
+    // _id:: 3,
+
+    batchId: "64c2a2b55d8087987ab0eb39",
+    specialization_id: 1,
+    adviser: "636d37e0187c30ab0f611cf3", //user id
+    name: "VENUS",
+    major: "JHS",
+    specification: "SPS",
+    levelId: 15,
+    accumulate: 48,
+    trackStrand: "BS I.T",
+    user_id: 1,
+    created_at: "2019-07-25 09:51:07",
+    updated_at: "2019-07-25 09:51:07",
+  },
 ];
 module.exports = sections;

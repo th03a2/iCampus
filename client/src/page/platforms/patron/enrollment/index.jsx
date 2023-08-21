@@ -29,7 +29,7 @@ export default function Enrollment() {
         token,
       })
     );
-  }, [dispatch, token, onDuty._id]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     var container = [];

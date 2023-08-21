@@ -130,21 +130,21 @@ export default [
     icon: "restroom",
     path: "employ",
   },
-  {
-    name: "Employees",
-    icon: "restroom",
-    path: "employees",
-    children: [
-      {
-        name: "Pending",
-        icon: "thumbs-down",
-        path: "pending",
-      },
-      {
-        name: "Approved",
-        icon: "thumbs-up",
-        path: "approved",
-      },
-    ],
-  },
+  // {
+  //   name: "Employees",
+  //   icon: "restroom",
+  //   path: "employees",
+  //   children: [
+  //     {
+  //       name: "Pending",
+  //       icon: "thumbs-down",
+  //       path: "pending",
+  //     },
+  //     {
+  //       name: "Approved",
+  //       icon: "thumbs-up",
+  //       path: "approved",
+  //     },
+  //   ],
+  // },
 ];

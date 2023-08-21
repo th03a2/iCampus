@@ -23,14 +23,16 @@ export default function Pending() {
     [totalPages, setTotalPages] = useState(1),
     dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        entity: "assets/enrollment",
-        data: { status: "pending", branchId: onDuty._id },
-        token,
-      })
-    );
-  }, [dispatch, token]);
+    if (onDuty._id) {
+      dispatch(
+        BROWSE({
+          entity: "assets/enrollment",
+          data: { status: "pending", branchId: onDuty._id },
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
     setEnrollees(catalogs);

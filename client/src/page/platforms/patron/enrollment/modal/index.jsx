@@ -277,7 +277,7 @@ export default function Modal({
           dispatch(
             UPLOAD({
               data: {
-                path: `enrollment/batch/${onDuty._id}/${auth.email}`,
+                path: `enrollment/batch/${batchId}/${auth.email}`,
                 base64: value,
                 name: `${key}.png`,
               },

@@ -5,7 +5,6 @@ import {
   MDBCardBody,
   MDBRow,
   MDBCol,
-  MDBTypography,
   MDBCardTitle,
   MDBIcon,
 } from "mdb-react-ui-kit";
@@ -35,7 +34,7 @@ export default function Unset() {
     dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth._id) {
+    if (onDuty._id) {
       dispatch(
         BROWSE({
           entity: "assets/enrollment",
@@ -47,7 +46,7 @@ export default function Unset() {
   }, [auth._id, token, dispatch, onDuty._id]);
 
   useEffect(() => {
-    if (auth._id) {
+    if (onDuty._id) {
       dispatch(
         SCHOOL({
           branch: onDuty._id,
@@ -55,14 +54,22 @@ export default function Unset() {
         })
       );
     }
-  }, [auth._id, token, dispatch]);
+  }, [auth._id, token, onDuty._id, dispatch]);
 
   useEffect(() => {
-    setBatchs(schools);
+    if (onDuty._id) {
+      setBatchs(schools);
+    } else {
+      setBatchs([]);
+    }
   }, [schools]);
 
   useEffect(() => {
-    setPopulation(catalogs);
+    if (onDuty._id) {
+      setPopulation(catalogs);
+    } else {
+      setPopulation([]);
+    }
   }, [catalogs]);
 
   useEffect(() => {
@@ -161,19 +168,15 @@ export default function Unset() {
         </MDBRow>
         <MDBRow className="mt-4 d-flex justify-content-center">
           {Object.entries(students).map(([key, value]) => {
-            console.log(value);
-            const female = value.filter(
-              (data) =>
-                data.student.isMale === false && data.status === "approved"
-            );
-            const male = value.filter(
-              (data) =>
-                data.student.isMale === true &&
-                data.student.status === "approved"
-            );
             const pending = value.filter((data) => data.status === "pending");
             const deny = value.filter((data) => data.status === "deny");
             const approved = value.filter((data) => data.status === "approved");
+            const male = approved.filter(
+              (data) => data.student.isMale === true
+            );
+            const female = approved.filter(
+              (data) => data.student.isMale === false
+            );
             return (
               <MDBCol md={3}>
                 <MDBCard className="mt-2">

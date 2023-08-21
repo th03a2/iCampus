@@ -233,7 +233,7 @@ export default function Credentials({
                   <option value={""}>Click me</option>
                   {Object.entries(information.attachments).map(
                     ([key, value]) => {
-                      const imageUrl = `${ENDPOINT}/public/enrollment/batch/${onDuty._id}/${information.student?.email}/${key}.png`;
+                      const imageUrl = `${ENDPOINT}/public/enrollment/batch/${information.batch._id}/${information.student?.email}/${key}.png`;
                       return (
                         <option
                           value={value}

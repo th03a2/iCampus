@@ -237,6 +237,10 @@ const levels = [
         specifications: "HUMS",
         subject: [4, 6, 7, 8],
       },
+      {
+        specifications: "SPS",
+        subject: [4, 6, 7, 8],
+      },
     ],
   },
 ];

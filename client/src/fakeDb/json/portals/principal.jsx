@@ -132,13 +132,35 @@ export default [
     ],
   },
   {
+    name: "Sections",
+    icon: "chalkboard-teacher",
+    path: "sections",
+  },
+  {
     name: "Scheduler",
     icon: "calendar",
     path: "schedulers",
   },
   {
     name: "Batch",
-    icon: "calendar",
+    icon: "restroom",
     path: "batch",
+  },
+  {
+    name: "Employees",
+    icon: "restroom",
+    path: "employees",
+    children: [
+      {
+        name: "Pending",
+        icon: "thumbs-down",
+        path: "pending",
+      },
+      {
+        name: "Approved",
+        icon: "thumbs-up",
+        path: "approved",
+      },
+    ],
   },
 ];

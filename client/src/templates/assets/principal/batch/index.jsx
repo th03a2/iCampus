@@ -95,15 +95,19 @@ export function TBLBatchApproval({ batch, page }) {
                   {/* <MDBBtn color="danger" onClick={() => handleDelete(data._id)}>
                     <MDBIcon fas icon="trash" />
                   </MDBBtn> */}
-                  <MDBBtn
-                    color="danger"
-                    onClick={() => handleDecision(data._id, "done")}
-                  >
-                    done
-                  </MDBBtn>
-                  <MDBBtn onClick={() => handleDecision(data._id, "active")}>
-                    Active
-                  </MDBBtn>
+                  {data.status === "active" && (
+                    <MDBBtn
+                      color="danger"
+                      onClick={() => handleDecision(data._id, "done")}
+                    >
+                      done
+                    </MDBBtn>
+                  )}
+                  {data.status === "pending" && (
+                    <MDBBtn onClick={() => handleDecision(data._id, "active")}>
+                      Active
+                    </MDBBtn>
+                  )}
                 </MDBBtnGroup>
               </td>
             </tr>

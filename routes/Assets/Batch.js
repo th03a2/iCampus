@@ -5,6 +5,7 @@ const router = require("express").Router(),
     update,
     save,
     enrollment,
+    dashboard,
   } = require("../../controllers/Assets/Batch"),
   { protect } = require("../../middleware");
 
@@ -13,6 +14,7 @@ router
   .get("/enrollment", enrollment)
   .delete("/destroy", protect, destroy)
   .put("/update", protect, update)
-  .post("/save", protect, save);
+  .post("/save", protect, save)
+  .get("/dashboard", protect, dashboard);
 
 module.exports = router;

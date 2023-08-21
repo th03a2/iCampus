@@ -79,7 +79,7 @@ export const SCHOOL = createAsyncThunk(
   async (item, thunkAPI) => {
     try {
       return await browse(
-        `${entity}/enrollment`,
+        `${entity}/dashboard`,
         { key: item.key, branch: item.branch },
         item.token
       );

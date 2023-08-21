@@ -16,6 +16,9 @@ import Process from "./po/process";
 import Sourcing from "./settings/sourcing";
 import DTR from "./dtr";
 import Batch from "./batch";
+import PendingEmployee from "./employees/pending";
+import ApprovedEmployee from "./employees/approved";
+import Sections from "./sections";
 
 const routes = {
   name: "principal", // Administrator Officer
@@ -111,6 +114,23 @@ const routes = {
     {
       path: "batch",
       element: <Batch />,
+    },
+    {
+      path: "employees",
+      grandsons: [
+        {
+          path: "pending",
+          element: <PendingEmployee />,
+        },
+        {
+          path: "approved",
+          element: <ApprovedEmployee />,
+        },
+      ],
+    },
+    {
+      path: "sections",
+      element: <Sections />,
     },
   ],
 };
