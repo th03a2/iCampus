@@ -181,6 +181,14 @@ export default function GuardianModal({
     }
   }, [address]);
 
+  const addressFormatter = (address) => {
+    if (typeof address === "object") {
+      const { province, city, barangay, street } = address;
+
+      return `${barangay},${street},${city},${province}`;
+    }
+  };
+
   const handleNotHere = () => {
     Swal.fire({
       title:
@@ -221,13 +229,13 @@ export default function GuardianModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={guardian.fullName?.fname.toUpperCase()}
+                        value={guardian.fullName?.fname}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
                             fullName: {
                               ...guardian.fullName,
-                              fname: e.target.value,
+                              fname: e.target.value.toUpperCase(),
                             },
                           })
                         }
@@ -240,13 +248,13 @@ export default function GuardianModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={guardian.fullName?.mname.toUpperCase()}
+                        value={guardian.fullName?.mname}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
                             fullName: {
                               ...guardian.fullName,
-                              mname: e.target.value,
+                              mname: e.target.value.toUpperCase(),
                             },
                           })
                         }
@@ -259,13 +267,13 @@ export default function GuardianModal({
                         type="text"
                         className="form-control"
                         required
-                        value={guardian.fullName.lname.toUpperCase()}
+                        value={guardian.fullName.lname}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
                             fullName: {
                               ...guardian.fullName,
-                              lname: e.target.value,
+                              lname: e.target.value.toUpperCase(),
                             },
                           })
                         }
@@ -486,7 +494,9 @@ export default function GuardianModal({
                             <th scope="col">Name</th>
                             <th scope="col">Gender</th>
                             <th scope="col">Age</th>
-                            <th scope="col">Date of Birth</th>
+                            <th scope="col" className="text-center">
+                              Address
+                            </th>
                             <th>Action</th>
                           </tr>
                         </MDBTableHead>
@@ -511,7 +521,7 @@ export default function GuardianModal({
                                   )}
                                 </td>
                                 <td>{getAge(data.dob)}</td>
-                                <td>{data?.dob}</td>
+                                <td>{addressFormatter(data.address)}</td>
                                 <td>
                                   <MDBBtn
                                     type="button"

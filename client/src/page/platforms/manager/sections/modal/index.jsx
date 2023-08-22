@@ -7,9 +7,7 @@ import {
   MDBModalHeader,
   MDBModalTitle,
   MDBModalBody,
-  MDBInput,
   MDBIcon,
-  MDBContainer,
   MDBRow,
   MDBCol,
   MDBInputGroup,
@@ -19,6 +17,8 @@ import { useSelector, useDispatch } from "react-redux";
 // import { Statement } from "../../../../../../fakeDb";
 import levels from "../../../../../fakeDb/json/levels";
 import { SAVE, UPDATE } from "../../../../../redux/slices/query";
+import AdviserModal from "../adviser";
+import { nameFormatter } from "../../../../../components/utilities";
 
 export default function Modal({
   visibility,
@@ -28,8 +28,11 @@ export default function Modal({
   isUpdate,
   batchs,
 }) {
-  const { theme, token, auth, onDuty } = useSelector(({ auth }) => auth);
+  const { theme, token, auth } = useSelector(({ auth }) => auth);
   const [strands, setStrands] = useState([]);
+  const [look, setLook] = useState(false);
+  const [isDone, setIsDone] = useState(false); //para malaman kung nakapag pick naba siya ng adviser
+  const [fullName, setFullname] = useState({ fname: "", mname: "", lname: "" });
   const [form, setForm] = useState({
     name: "",
     accumulate: "",
@@ -66,7 +69,6 @@ export default function Modal({
           entity: "assets/Sections",
           data: form,
           // user: auth._id,
-
           token,
         })
       );
@@ -82,6 +84,23 @@ export default function Modal({
       accumulate: "",
     });
   };
+
+  useEffect(() => {
+    if (form.levelId) {
+      const filterSections = levels.find(
+        (level) => level.id === Number(form.levelId)
+      );
+      const exist = !!Object.entries(filterSections).find(
+        ([key]) => key === "subjects"
+      );
+      if (!exist) {
+        const newArray = [...filterSections.strand];
+        setStrands(newArray);
+      } else {
+        setStrands([]);
+      }
+    }
+  }, [form.levelId]);
 
   return (
     <MDBModal show={visibility} setShow={setVisibility} staticBackdrop>
@@ -133,10 +152,8 @@ export default function Modal({
                     <input
                       type="text"
                       className="form-control"
-                      value={form.adiviser}
-                      onChange={(e) =>
-                        setForm({ ...form, adiviser: e.target.value })
-                      }
+                      value={isDone ? nameFormatter(fullName) : ""}
+                      onClick={() => setLook(true)}
                     />
                   </MDBInputGroup>
                 </MDBCol>
@@ -171,21 +188,9 @@ export default function Modal({
                     <select
                       className="form-control"
                       value={form.levelId}
-                      onChange={(e) => {
-                        const selectedValue = e.target.value;
-                        // setBatchId(
-                        //   // para makuha kung anong batchId ba yung napili
-                        //   e.target.options[e.target.selectedIndex].getAttribute(
-                        //     "data-id"
-                        //   )
-                        // );
-                        // setBranchId(
-                        //   e.target.options[e.target.selectedIndex].getAttribute(
-                        //     "data-branchId"
-                        //   )
-                        // );
-                        setForm({ ...form, levelId: selectedValue });
-                      }}
+                      onChange={(e) =>
+                        setForm({ ...form, levelId: e.target.value })
+                      }
                     >
                       <option value={""} />
                       {levels.map((level) => (
@@ -194,18 +199,26 @@ export default function Modal({
                     </select>
                   </MDBInputGroup>
                 </MDBCol>
-                <MDBCol md={6}>
-                  <MDBInputGroup textBefore="Strand">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={form.adiviser}
-                      onChange={(e) =>
-                        setForm({ ...form, adiviser: e.target.value })
-                      }
-                    />
-                  </MDBInputGroup>
-                </MDBCol>
+                {strands.length > 0 && (
+                  <MDBCol md={6}>
+                    <MDBInputGroup textBefore="Strand">
+                      <select
+                        className="form-control"
+                        value={form.specifications}
+                        onChange={(e) =>
+                          setForm({ ...form, specifications: e.target.value })
+                        }
+                      >
+                        <option value="" />
+                        {strands.map((data) => (
+                          <option value={data.sps}>
+                            {data.specifications}
+                          </option>
+                        ))}
+                      </select>
+                    </MDBInputGroup>
+                  </MDBCol>
+                )}
               </MDBRow>
             </MDBModalBody>
             <MDBModalFooter>
@@ -214,6 +227,17 @@ export default function Modal({
           </form>
         </MDBModalContent>
       </MDBModalDialog>
+      {look && (
+        <AdviserModal
+          look={look}
+          setLook={setLook}
+          setFullname={setFullname}
+          fullName={fullName}
+          form={form}
+          setForm={setForm}
+          setIsDone={setIsDone}
+        />
+      )}
     </MDBModal>
   );
 }

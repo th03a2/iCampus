@@ -95,7 +95,7 @@ export default function Sections() {
                     color = "orange";
                     break;
                   default:
-                    color = "green";
+                    color = "yellow";
                     break;
                 }
                 return (

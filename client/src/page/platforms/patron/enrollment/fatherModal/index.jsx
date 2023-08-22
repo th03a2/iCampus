@@ -206,6 +206,14 @@ export default function FatherModal({
       }
     });
   };
+
+  const addressFormatter = (address) => {
+    if (typeof address === "object") {
+      const { province, city, barangay, street } = address;
+
+      return `${barangay},${street},${city},${province}`;
+    }
+  };
   return (
     <>
       <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
@@ -227,7 +235,7 @@ export default function FatherModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={parents.father.fullName?.fname.toUpperCase()}
+                        value={parents.father.fullName?.fname}
                         onChange={(e) =>
                           setParents({
                             ...parents,
@@ -235,7 +243,7 @@ export default function FatherModal({
                               ...parents.father,
                               fullName: {
                                 ...parents.father.fullName,
-                                fname: e.target.value,
+                                fname: e.target.value.toUpperCase(),
                               },
                             },
                           })
@@ -249,7 +257,7 @@ export default function FatherModal({
                       <input
                         type="text"
                         className="form-control"
-                        value={parents.father.fullName?.mname.toUpperCase()}
+                        value={parents.father.fullName?.mname}
                         onChange={(e) =>
                           setParents({
                             ...parents,
@@ -257,7 +265,7 @@ export default function FatherModal({
                               ...parents.father,
                               fullName: {
                                 ...parents.father.fullName,
-                                mname: e.target.value,
+                                mname: e.target.value.toUpperCase(),
                               },
                             },
                           })
@@ -271,7 +279,7 @@ export default function FatherModal({
                         type="text"
                         className="form-control"
                         required
-                        value={parents.father.fullName.lname.toUpperCase()}
+                        value={parents.father.fullName.lname}
                         onChange={(e) =>
                           setParents({
                             ...parents,
@@ -279,7 +287,7 @@ export default function FatherModal({
                               ...parents.father,
                               fullName: {
                                 ...parents.father.fullName,
-                                lname: e.target.value,
+                                lname: e.target.value.toUpperCase(),
                               },
                             },
                           })
@@ -471,7 +479,9 @@ export default function FatherModal({
                             <th scope="col">Name</th>
                             <th scope="col">Gender</th>
                             <th scope="col">Age</th>
-                            <th scope="col">Date of Birth</th>
+                            <th scope="col" className="text-center">
+                              Address
+                            </th>
                             <th>Action</th>
                           </tr>
                         </MDBTableHead>
@@ -496,7 +506,7 @@ export default function FatherModal({
                                   )}
                                 </td>
                                 <td>{getAge(data.dob)}</td>
-                                <td>{data?.dob}</td>
+                                <td>{addressFormatter(data.address)}</td>
                                 <td>
                                   <MDBBtn
                                     type="button"

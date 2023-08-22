@@ -133,6 +133,14 @@ export default function SiblingsModal({
       }
     });
   };
+
+  const addressFormatter = (address) => {
+    if (typeof address === "object") {
+      const { province, city, barangay, street } = address;
+
+      return `${barangay},${street},${city},${province}`;
+    }
+  };
   return (
     <>
       <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
@@ -273,7 +281,9 @@ export default function SiblingsModal({
                             <th>#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Gender</th>
-                            <th scope="col">Date of Birth</th>
+                            <th scope="col" className="text-center">
+                              Address
+                            </th>
                             <th>Action</th>
                           </tr>
                         </MDBTableHead>
@@ -302,7 +312,7 @@ export default function SiblingsModal({
                                     />
                                   )}
                                 </td>
-                                <td>{data?.dob}</td>
+                                <td>{addressFormatter(data.address)}</td>
                                 <td>
                                   <MDBBtn
                                     type="button"
