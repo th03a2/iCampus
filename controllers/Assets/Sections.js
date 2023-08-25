@@ -21,7 +21,6 @@ exports.find = (req, res) =>
     .catch((error) => res.status(400).json({ error: error.message }));
 
 exports.save = (req, res) => {
-  console.log(req.body);
   Entity.create(req.body)
     .then((item) => res.json(item))
     .catch((error) => res.status(400).json({ error: error.message }));

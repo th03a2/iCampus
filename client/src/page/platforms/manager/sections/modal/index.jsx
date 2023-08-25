@@ -37,7 +37,7 @@ export default function Modal({
     name: "",
     accumulate: "",
     levelId: "",
-    specifications: "",
+    specification: "",
     batchId: "",
     adiviser: "",
   });
@@ -57,7 +57,6 @@ export default function Modal({
           entity: "assets/Sections",
           data: {
             ...form,
-            user: auth._id,
           },
           id: form._id,
           token,
@@ -102,6 +101,10 @@ export default function Modal({
     }
   }, [form.levelId]);
 
+  const handleAdviserName = () => {
+    if (isDone) return fullName;
+    if (isUpdate) return form.adviser?.fullName;
+  };
   return (
     <MDBModal show={visibility} setShow={setVisibility} staticBackdrop>
       <MDBModalDialog size="lg">
@@ -152,7 +155,11 @@ export default function Modal({
                     <input
                       type="text"
                       className="form-control"
-                      value={isDone ? nameFormatter(fullName) : ""}
+                      value={
+                        !isDone && !isUpdate
+                          ? ""
+                          : nameFormatter(handleAdviserName())
+                      }
                       onClick={() => setLook(true)}
                     />
                   </MDBInputGroup>
@@ -204,9 +211,9 @@ export default function Modal({
                     <MDBInputGroup textBefore="Strand">
                       <select
                         className="form-control"
-                        value={form.specifications}
+                        value={form.specification}
                         onChange={(e) =>
-                          setForm({ ...form, specifications: e.target.value })
+                          setForm({ ...form, specification: e.target.value })
                         }
                       >
                         <option value="" />
