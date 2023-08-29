@@ -11,7 +11,7 @@ import { nameFormatter } from "../../utilities";
 import Modal from "./viewMessage";
 const socket = io("http://localhost:5000");
 const Cart = () => {
-  const { theme, auth, token, onDuty } = useSelector(({ auth }) => auth);
+  const { theme, auth } = useSelector(({ auth }) => auth);
   const [visibility, setVisibility] = useState(false);
   const [messages, setMessages] = useState([]);
   const [schoolMessage, setSchoolMessage] = useState({});
@@ -40,10 +40,6 @@ const Cart = () => {
       const index = newArray.findIndex((message) => message.id === data.id);
       if (index > -1) {
         newArray[index].isSeen = true;
-        const _messages = localStorage.getItem("messages");
-        const fakeDb = JSON.parse(_messages) || [];
-        const existing = fakeDb.findIndex((data) => data.id === auth._id);
-
         fakeDb[existing].message = newArray;
         socket.emit("enrollment_desicion", fakeDb[existing]);
         localStorage.setItem("messages", JSON.stringify(fakeDb));
