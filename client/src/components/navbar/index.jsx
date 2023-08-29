@@ -28,6 +28,7 @@ const TopNavigation = ({ toggle }) => {
   const { theme, onDuty, branches, auth } = useSelector(({ auth }) => auth),
     { cart } = useSelector(({ query }) => query),
     [visibility, setVisibility] = useState(false),
+    [messages, setMessages] = useState(""),
     [hasPendingPurchase, setHasPendingPurchase] = useState(false),
     [quantity, setQuantity] = useState(null),
     [role, setRole] = useState({});
@@ -35,8 +36,15 @@ const TopNavigation = ({ toggle }) => {
 
   useEffect(() => {
     socket.on("sendToEnrollees", (data) => {
-      if (data.id === auth._id) {
+      if (Object.keys(data).length > 0 && data.id === auth._id) {
+        const notSeenMessage = data?.message?.filter(
+          (data) => data.isSeen === false
+        );
+
         setHasPendingPurchase(true);
+        setMessages(notSeenMessage?.length);
+      } else {
+        setHasPendingPurchase(false);
       }
     });
   }, [auth._id]);
@@ -114,8 +122,10 @@ const TopNavigation = ({ toggle }) => {
                   onClick={() => navigate(`/snapshot/cart`)}
                   className="btn btn-sm "
                 >
-                  <MDBIcon fas icon="bell" />
-                  <span className="cart-quantity">{quantity}</span>
+                  <MDBIcon fas icon="envelope" />
+                  <span className="cart-quantity">
+                    {messages === 0 ? "" : messages}
+                  </span>
                 </MDBBtn>
               )}
               <NavSettings />

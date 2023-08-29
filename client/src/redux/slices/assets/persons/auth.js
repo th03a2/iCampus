@@ -363,6 +363,16 @@ export const authSlice = createSlice({
         state.token = token;
         state.isLoading = false;
         state.isSuccess = true;
+
+        const messages = localStorage.getItem("messages");
+        const fakeDb = JSON.parse(messages) || [];
+
+        const existing = fakeDb.findIndex((data) => data.id === auth._id);
+
+        socket.emit(
+          "enrollment_desicion",
+          existing > 0 ? fakeDb[existing] : {}
+        );
       })
       .addCase(LOGIN.rejected, (state, action) => {
         state.isLoading = false;
@@ -428,6 +438,15 @@ export const authSlice = createSlice({
         state.token = token;
         state.isLoading = false;
         state.isSuccess = true;
+
+        const messages = localStorage.getItem("messages");
+        const fakeDb = JSON.parse(messages) || [];
+        const existing = fakeDb?.findIndex((data) => data.id === auth._id);
+
+        socket.emit(
+          "enrollment_desicion",
+          existing > -1 ? fakeDb[existing] : {}
+        );
       })
       .addCase(REFRESH.rejected, (state, action) => {
         state.isLoading = false;

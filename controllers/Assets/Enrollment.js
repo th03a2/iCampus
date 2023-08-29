@@ -147,6 +147,7 @@ const getParents = async (fk) =>
 
 const getBraches = async (fk) =>
   Branches.find({ _id: fk })
+    .populate("companyId")
     .then((datas) => datas[0])
     .catch((error) => console.log(error));
 

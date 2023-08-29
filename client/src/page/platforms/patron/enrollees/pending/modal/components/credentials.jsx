@@ -17,6 +17,7 @@ import {
   UPDATE,
 } from "../../../../../../../redux/slices/assets/enrollment";
 import Swal from "sweetalert2";
+import levels from "../../../../../../../fakeDb/json/levels";
 import { useDispatch, useSelector } from "react-redux";
 const socket = io("http://localhost:5000");
 export default function Credentials({
@@ -54,45 +55,63 @@ export default function Credentials({
 
     setLink(tabs);
   };
+  console.log(information);
 
   const setLocalStorage = (status, section, issues) => {
+    const findSection = levels.find(
+      (level) => level.id === information.levelId
+    );
+
+    var enrolleeMessage = {
+      id: information.student._id,
+      message: [
+        {
+          id: 1,
+          email: information.branch?.contacts?.email,
+          isSeen: false,
+          status,
+          school: information.branch?.companyId?.name,
+          section: section
+            ? ` ${findSection.description} - ${section.name}`
+            : "",
+          date: new Date().toLocaleDateString(),
+          issues,
+        },
+      ],
+    };
+
     const fakeDb = JSON.parse(localStorage.getItem("messages")) || [];
     const existing = fakeDb
       ? fakeDb.findIndex((data) => data.id === information.student._id)
       : -1;
-    if (existing > -1) {
-      const { message } = fakeDb[existing];
-      const newArray = [...message];
 
+    if (existing > -1) {
+      const message = [...fakeDb[existing].message];
+      const newArray = [...message];
+      const length = newArray.length - 1;
+      const id = newArray[length].id + 1; // para makuha yung id ng pinaka last na data sa may array para
+      //ma decrement sa susunod na lalagyan ng id
       newArray.push({
+        id,
+        isSeen: false,
+        email: information.branch?.contacts?.email,
+        school: information.branch?.companyId?.name,
         status,
-        section: section.name ? section.name : "",
+        section: section ? ` ${findSection.description}- ${section.name}` : "",
         date: new Date().toLocaleDateString(),
         issues,
       });
 
       fakeDb[existing].message = newArray;
     } else {
-      const enrolleeMessage = {
-        id: information.student._id,
-        message: [
-          {
-            status,
-            section: section ? section.name : "",
-            date: new Date().toLocaleDateString(),
-            issues,
-          },
-        ],
-      };
-
       fakeDb.push(enrolleeMessage);
     }
-    localStorage.setItem("messages", JSON.stringify(fakeDb));
 
     socket.emit(
       "enrollment_desicion",
-      existing > 0 ? fakeDb[existing].message : fakeDb.message
+      existing > -1 ? fakeDb[existing] : enrolleeMessage
     );
+    localStorage.setItem("messages", JSON.stringify(fakeDb));
   };
 
   const handleApproved = () => {
@@ -131,7 +150,6 @@ export default function Credentials({
               data: {
                 status: "approved",
                 assessedBy: auth._id,
-
                 section: { id: result.value, newSection },
               },
               token,
