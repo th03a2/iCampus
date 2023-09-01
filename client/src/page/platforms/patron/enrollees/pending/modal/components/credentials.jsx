@@ -55,9 +55,23 @@ export default function Credentials({
 
     setLink(tabs);
   };
-  console.log(information);
+
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  const handleDateAndTime = () => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    // Clear the interval when the component unmounts
+    return () => {
+      clearInterval(interval);
+    };
+  };
 
   const setLocalStorage = (status, section, issues) => {
+    handleDateAndTime();
+
     const findSection = levels.find(
       (level) => level.id === information.levelId
     );
@@ -74,7 +88,7 @@ export default function Credentials({
           section: section
             ? ` ${findSection.description} - ${section.name}`
             : "",
-          date: new Date().toLocaleDateString(),
+          date: currentDateTime.toLocaleString(),
           issues,
         },
       ],
@@ -98,7 +112,7 @@ export default function Credentials({
         school: information.branch?.companyId?.name,
         status,
         section: section ? ` ${findSection.description}- ${section.name}` : "",
-        date: new Date().toLocaleDateString(),
+        date: currentDateTime.toLocaleString(),
         issues,
       });
 
