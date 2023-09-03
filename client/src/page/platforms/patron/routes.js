@@ -24,6 +24,7 @@ import Approved from "./enrollees/approved";
 import Employ from "./employ";
 import PendingEmployee from "./employees/pending";
 import ApprovedEmployee from "./employees/approved";
+import Resection from "./enrollees/resection";
 
 const routes = {
   name: "patron",
@@ -83,6 +84,10 @@ const routes = {
         {
           path: "approved",
           element: <Approved />,
+        },
+        {
+          path: "resections",
+          element: <Resection />,
         },
       ],
     },

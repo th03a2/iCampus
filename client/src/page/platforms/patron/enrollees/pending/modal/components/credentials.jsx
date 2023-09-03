@@ -139,7 +139,7 @@ export default function Credentials({
         return acc;
       }, {}),
       inputPlaceholder: "Choose an option",
-      showDenyButton: true,
+      showDenyButton: status === "onprogress" ? false : true,
       showCancelButton: true,
       confirmButtonText: "Save Section",
       denyButtonText: `Resection Later`,
@@ -172,7 +172,11 @@ export default function Credentials({
         );
         const section = options.find((data) => data._id === result.value);
 
-        setLocalStorage("approved", section, "");
+        setLocalStorage(
+          status === "onprogress" ? "allReadySection" : "approved",
+          section,
+          ""
+        );
 
         // You can perform any action you want based on the selected option here
       } else if (result.isDenied) {
@@ -333,14 +337,16 @@ export default function Credentials({
               <MDBBtn type="button" onClick={handleApproved} color="primary">
                 Approved
               </MDBBtn>
-              <MDBBtn
-                type="button"
-                color="danger"
-                onClick={handleDeny}
-                className="mx-2"
-              >
-                Deny
-              </MDBBtn>
+              {status !== "onprogress" && (
+                <MDBBtn
+                  type="button"
+                  color="danger"
+                  onClick={handleDeny}
+                  className="mx-2"
+                >
+                  Deny
+                </MDBBtn>
+              )}
             </div>
           )}
         </div>

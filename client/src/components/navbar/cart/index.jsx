@@ -61,11 +61,32 @@ const Cart = () => {
         );
 
       case "onprogress":
-        return `Dear ${nameFormatter(
-          auth.fullName
-        )}, we are pleased to inform you that your enrollment..`;
+        return (
+          <strong>{`Dear ${nameFormatter(
+            auth.fullName
+          )}, we are pleased to inform you that your enrollment..`}</strong>
+        );
+
+      case "allReadySection":
+        return (
+          <strong>{`Dear ${nameFormatter(
+            auth.fullName
+          )}, Congratulations! You have been admitted to General Tinio ...`}</strong>
+        );
+
       default:
-        return <strong>{data.issues.title}</strong>;
+        if (data?.issues?.title?.length > 70) {
+          var messages = " ";
+          const array = data.issues.title.split(" ");
+          for (const index in array) {
+            if (index <= 11) {
+              messages += " " + array[index];
+            }
+          }
+          return <strong>{messages}..</strong>;
+        } else {
+          return <strong>{data.issues.title}.</strong>;
+        }
     }
   };
 
@@ -91,13 +112,13 @@ const Cart = () => {
   const handleTimeAgo = ({ minutes, hours, days, week }) => {
     // mins,hours,days,week
     if (hours === 0) {
-      return " " + minutes + " m";
+      return " " + minutes + "m";
     } else if (days !== 0 && hours !== 0) {
-      return " " + days + " d";
+      return " " + days + "d";
     } else if (week !== 0 && days !== 0) {
-      return " " + week + " w";
+      return " " + week + "w";
     } else {
-      return " " + hours + " h";
+      return " " + hours + "h";
     }
   };
   return (
@@ -131,7 +152,9 @@ const Cart = () => {
                       <h5>
                         <strong>{data.email}</strong>
                       </h5>
+
                       <strong>{handleMessages(data)}</strong>
+
                       {handleTimeAgo(date)}
                     </td>
                   ) : (

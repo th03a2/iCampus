@@ -36,6 +36,13 @@ export default function Modal({ setVisibiliy, visibility, schoolMessage }) {
       case "deny":
         return schoolMessage.issues?.title;
 
+      case "allReadySection":
+        return `Dear  ${nameFormatter(
+          auth.fullName
+        )} Congratulations! You have been admitted to General Tinio National High School, and your sections have placed you in ${
+          schoolMessage.section
+        }.`;
+
       default:
         return `Dear ${nameFormatter(
           auth.fullName
@@ -50,7 +57,6 @@ export default function Modal({ setVisibiliy, visibility, schoolMessage }) {
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>
-                {/* <div className="d-flex justify-content-between"> */}
                 <h4 className="text-start">{schoolMessage.email}</h4>
                 <h5 className="text-end">
                   {new Date(schoolMessage.date).toLocaleString(
@@ -58,7 +64,6 @@ export default function Modal({ setVisibiliy, visibility, schoolMessage }) {
                     options
                   )}
                 </h5>
-                {/* </div> */}
               </MDBModalTitle>
               <MDBBtn
                 className="btn-close"

@@ -259,7 +259,7 @@ exports.enrolleeDesicion = async (req, res) => {
       { status: status, assessedBy, issues: status === "deny" ? issues : [] }
     );
 
-    if (status === "approved" || status === "onprogress") {
+    if (status === "approved") {
       await Sections.findOneAndUpdate(
         { _id: section.id },
         { studenArr: section.newSection }

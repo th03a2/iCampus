@@ -123,6 +123,11 @@ export default [
         icon: "thumbs-up",
         path: "approved",
       },
+      {
+        name: "Re-section",
+        icon: "thumbs-up",
+        path: "resections",
+      },
     ],
   },
   {
@@ -130,21 +135,4 @@ export default [
     icon: "restroom",
     path: "employ",
   },
-  // {
-  //   name: "Employees",
-  //   icon: "restroom",
-  //   path: "employees",
-  //   children: [
-  //     {
-  //       name: "Pending",
-  //       icon: "thumbs-down",
-  //       path: "pending",
-  //     },
-  //     {
-  //       name: "Approved",
-  //       icon: "thumbs-up",
-  //       path: "approved",
-  //     },
-  //   ],
-  // },
 ];
