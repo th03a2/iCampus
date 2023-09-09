@@ -57,83 +57,12 @@ export default function UnsetApply() {
     }
   };
 
-  const [value, setValue] = useState("");
-  const [operators, setOperators] = useState("");
-  const [num1, setNum1] = useState("");
-  const [num2, setNum2] = useState("");
-
-  const handleNumbers = (num) => {
-    if (operators) {
-      setNum2((prev) => prev + num);
-      setValue((prev) => prev + num);
-    } else {
-      setNum1((prev) => prev + num);
-      setValue((prev) => prev + num);
-    }
-  };
-
-  const handleOperators = (operator) => {
-    if (operators) {
-      const index = value.indexOf(operators);
-      const newValue = value.slice(0, index) + operator;
-      setValue(newValue);
-      setOperators(operator);
-    } else {
-      setOperators(operator);
-      setValue((prev) => prev + operator);
-    }
-  };
-
-  const handleDecision = () => {
-    var total = 0;
-    switch (operators) {
-      case "+":
-        total = Number(num1) + Number(num2);
-        break;
-      case "-":
-        total = Number(num1) - Number(num2);
-        break;
-      case "*":
-        total = Number(num1) * Number(num2);
-        break;
-
-      default:
-        total = Number(num1) / Number(num2);
-        break;
-    }
-    setValue((prev) => prev + "=" + total);
-  };
-
-  const handleBackSpace = () => {
-    const newValue = value.slice(0, -1);
-    setValue(newValue);
-
-    if (operators) {
-      const newNum2 = num2.slice(0, -1);
-      setNum2(newNum2);
-      console.log(newNum2);
-    } else {
-      const newNum1 = num1.slice(0, -1);
-      setNum1(newNum1);
-    }
-    if (num2.length === 0) {
-      setOperators("");
-    }
-  };
-
-  const handleClear = () => {
-    setValue("");
-    setOperators("");
-    setNum1("");
-    setNum2("");
-  };
-
   return (
     <>
-      {/* <BreadCrumb title="Applied Companies" paths={path} /> */}
+      <BreadCrumb title="Applied Companies" paths={path} />
       {/* <MDBContainer className="py-5 mt-4"> */}
       <MDBContainer className="d-flex justify-content-center">
-        {/* <MDBRow className="mb-3">
+        <MDBRow className="mb-3">
           <MDBCol md={6}>
             <MDBInput
               onChange={(e) => handleSearch(e.target.value)}
@@ -144,79 +73,8 @@ export default function UnsetApply() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <CompanyTables history={history} page={page} /> */}
+        <CompanyTables history={history} page={page} />
 
-        <div>
-          <MDBRow>
-            <MDBCol md={12}>
-              <MDBInput value={value} type="text" readOnly />
-            </MDBCol>
-          </MDBRow>
-          <MDBRow className="mt-2">
-            <MDBCol md={3}>
-              <MDBBtn onClick={handleBackSpace}>X</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={handleClear}>c</MDBBtn>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow className="mt-2">
-            <MDBCol md={"3"}>
-              <MDBBtn onClick={() => handleNumbers("7")}>7</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("8")}>8</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("9")}>9</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleOperators("*")}>x</MDBBtn>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow className="mt-2">
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("4")}>4</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("5")}>5</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("6")}>6</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleOperators("-")}>-</MDBBtn>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow className="mt-2">
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("1")}>1</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("2")}>2</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("3")}>3</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleOperators("+")}>+</MDBBtn>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow className="mt-2">
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleOperators("+")}>+</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers("0")}>0</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={() => handleNumbers(".")}>.</MDBBtn>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBBtn onClick={handleDecision}>=</MDBBtn>
-            </MDBCol>
-          </MDBRow>
-        </div>
         {/* Modal must be here */}
       </MDBContainer>
     </>

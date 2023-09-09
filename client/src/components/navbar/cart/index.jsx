@@ -115,7 +115,7 @@ const Cart = () => {
       return " " + minutes + "m";
     } else if (days !== 0 && hours !== 0) {
       return " " + days + "d";
-    } else if (week !== 0 && days !== 0) {
+    } else if (week !== 0) {
       return " " + week + "w";
     } else {
       return " " + hours + "h";

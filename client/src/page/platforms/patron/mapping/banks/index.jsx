@@ -5,6 +5,8 @@ import Pager from "../../../../../components/pager";
 import BreadCrumb from "../../../../../components/breadcrumb";
 import { BROWSE } from "../../../../../redux/slices/query";
 import { TBLbanks } from "../../../../../templates";
+import Modal from "./modal";
+import { nameFormatter } from "../../../../../components/utilities";
 
 const path = [
   {
@@ -32,7 +34,16 @@ export default function Books() {
   }, [dispatch, token]);
 
   useEffect(() => {
-    setBanks(catalogs);
+    const _banks = catalogs?.reduce((accumalator, currentValue) => {
+      const creator = nameFormatter(currentValue.user.fullName);
+      if (!accumalator[creator]) {
+        accumalator[creator] = [currentValue];
+      } else {
+        accumalator[creator].push(currentValue);
+      }
+      return accumalator;
+    }, {});
+    setBanks(_banks);
   }, [catalogs]);
 
   useEffect(() => {
@@ -68,6 +79,9 @@ export default function Books() {
         </MDBRow>
         <TBLbanks banks={banks} page={page} />
       </MDBContainer>
+      {visibility && (
+        <Modal visibility={visibility} setVisibility={setVisibility} />
+      )}
     </>
   );
 }

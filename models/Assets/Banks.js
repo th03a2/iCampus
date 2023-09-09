@@ -8,8 +8,7 @@ const modelSchema = new mongoose.Schema(
       // required: true,
     },
     subjectId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Subjects",
+      type: Number,
       // required: true,
     },
     user: {
@@ -57,6 +56,8 @@ const modelSchema = new mongoose.Schema(
         type: String,
       },
     },
+    specification: { type: String },
+    levelId: { type: Number },
     correctAnswer: { type: String },
     deletedAt: { type: String },
   },
