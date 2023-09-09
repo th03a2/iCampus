@@ -81,7 +81,8 @@ export default function Modal({ visibility, setVisibility }) {
           levelId,
           question,
           user: auth._id,
-          mcAnswers: choices,
+          cluster,
+          mcAnswers: cluster === "multiple choice" ? choices : "",
           correctAnswer,
           subjectId,
         };
@@ -230,7 +231,11 @@ export default function Modal({ visibility, setVisibility }) {
                     <MDBRow>
                       <MDBCol md={6}>
                         <MDBInputGroup textBefore="Correct Answer">
-                          <input className="form-control" />
+                          <input
+                            className="form-control"
+                            value={correctAnswer}
+                            onChange={(e) => setCorrectAnswer(e.target.value)}
+                          />
                         </MDBInputGroup>
                       </MDBCol>
                     </MDBRow>

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Swal from "sweetalert2";
-
+import { DESTROY } from "../../../../../redux/slices/assets/banks";
 import {
   MDBBtn,
   MDBModal,
@@ -14,37 +14,72 @@ import {
   MDBTableHead,
   MDBTableBody,
   MDBIcon,
+  MDBBtnGroup,
 } from "mdb-react-ui-kit";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Modal({ look, setLook, quizs }) {
+  const { token } = useSelector(({ auth }) => auth);
+  const dispatch = useDispatch();
   const handleView = (data) => {
-    const { mcAnswers, question, correctAnswer } = data; // Corrected the variable name to 'correctAnswer'
-    const answerText = data && correctAnswer ? correctAnswer : "no-answer";
+    if (data.cluster === "multiple choice") {
+      const { mcAnswers, question, correctAnswer } = data;
+      const answerText = data && correctAnswer ? correctAnswer : "no-answer";
 
-    const choices = Object.entries(mcAnswers)
-      .filter(([key, value]) => value !== "")
-      .map(([key, value]) => value && value);
+      const choices = Object.entries(mcAnswers)
+        .filter(([key, value]) => value !== "")
+        .map(([key, value]) => value && value);
 
-    if (choices) {
+      if (choices) {
+        Swal.fire({
+          title: "Question",
+          html: `
+            <div class="mb-3"><strong>${question}</strong></div>
+            ${choices
+              .map(
+                (choice, index) => `
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="answer"  id="choice-${index}" value="${index}" ${
+                  choice === answerText ? "checked" : "" // Set 'checked' if choice matches the correct answer
+                } disabled>
+                    <label class="form-check-label" for="choice-${index}">
+                      ${String.fromCharCode(65 + index)}. ${choice}
+                    </label>
+                  </div>
+                `
+              )
+              .join("")}
+          `,
+          customClass: {
+            container: "swal-container",
+            title: "swal-title",
+            confirmButton: "swal-confirm-button",
+          },
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      }
+    } else if (data.cluster === "identification") {
       Swal.fire({
         title: "Question",
         html: `
-        <div class="mb-3">${question}</div>
-        ${choices
-          .map(
-            (choice, index) => `
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="answer"  id="choice-${index}" value="${index}" ${
-              choice === answerText ? "checked" : "" // Set 'checked' if choice matches the correct answer
-            } disabled>
-                <label class="form-check-label" for="choice-${index}">
-                  ${String.fromCharCode(65 + index)}. ${choice}
-                </label>
-              </div>
-            `
-          )
-          .join("")}
-      `,
+          <div class="mb-3"><strong>${data.question}</strong></div>
+          <div>Correct Answer<input type="text" readonly="readonly" class="form-control"value="${data.correctAnswer}"/></div>
+        `,
+        customClass: {
+          container: "swal-container",
+          title: "swal-title",
+          confirmButton: "swal-confirm-button",
+        },
+        icon: "info",
+        confirmButtonText: "OK",
+      });
+    } else if (data.cluster === "essay") {
+      Swal.fire({
+        title: "Question",
+        html: `
+          <div class="mb-3"><strong>${data.question}</strong></div>
+        `,
         customClass: {
           container: "swal-container",
           title: "swal-title",
@@ -70,6 +105,22 @@ export default function Modal({ look, setLook, quizs }) {
       return question + ".";
     }
   };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(DESTROY({ id, token }));
+      }
+    });
+  };
   return (
     <>
       <MDBModal show={look} setShow={setLook} tabIndex="-1">
@@ -89,6 +140,7 @@ export default function Modal({ look, setLook, quizs }) {
                   <tr>
                     <th>#</th>
                     <th>Question</th>
+                    <th>Cluster</th>
                     <th>Action</th>
                   </tr>
                 </MDBTableHead>
@@ -98,13 +150,23 @@ export default function Modal({ look, setLook, quizs }) {
                       <tr key={index}>
                         <td>{1 + index}</td>
                         <td>{handleQuestion(quiz.question)}</td>
+                        <td>{quiz.cluster}</td>
                         <td>
-                          <MDBBtn
-                            type="button"
-                            onClick={() => handleView(quiz)}
-                          >
-                            <MDBIcon fas icon="eye" />
-                          </MDBBtn>
+                          <MDBBtnGroup>
+                            <MDBBtn
+                              type="button"
+                              onClick={() => handleView(quiz)}
+                            >
+                              <MDBIcon fas icon="eye" />
+                            </MDBBtn>
+                            <MDBBtn
+                              type="button"
+                              color="danger"
+                              onClick={() => handleDelete(quiz._id)}
+                            >
+                              <MDBIcon fas icon="trash" />
+                            </MDBBtn>
+                          </MDBBtnGroup>
                         </td>
                       </tr>
                     ))}
