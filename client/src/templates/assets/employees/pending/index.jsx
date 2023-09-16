@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBTable,
   MDBTableHead,
   MDBTableBody,
   MDBBtn,
-  MDBIcon,
   MDBBtnGroup,
+  MDBContainer,
+  MDBIcon,
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,8 +15,12 @@ import {
 } from "../../../../components/utilities";
 import Swal from "sweetalert2";
 import { UPDATE } from "../../../../redux/slices/assets/employees";
+import { Policy } from "../../../../fakeDb";
+import ApplicationModal from "../modal";
 export function TBLpendingEmployees({ employees, page, status }) {
   const { theme, maxPage, token } = useSelector(({ auth }) => auth);
+  const [visibility, setVisibility] = useState(false);
+  const [data, setData] = useState({});
   const dispatch = useDispatch();
 
   const handleDecision = (id, status, position) => {
@@ -74,94 +79,92 @@ export function TBLpendingEmployees({ employees, page, status }) {
     }
   };
 
-  const addressFormatter = (address) => {
-    if (typeof address === "object") {
-      const { province, city, barangay, street } = address;
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  };
 
-      return `${barangay},${street},${city},${province}`;
+  const handleDesignation = (designation) => {
+    const foundDesignation = Policy.collection.find(
+      (collection) =>
+        collection.hasOwnProperty("positions") &&
+        collection.positions.find(({ id }) => id === designation)
+    );
+    if (foundDesignation) {
+      const _designation = foundDesignation.positions.find(
+        ({ id }) => id === designation
+      );
+      return _designation?.display_name;
     }
   };
 
+  const handleView = (data) => {
+    setVisibility(true);
+    setData(data);
+  };
   return (
-    <MDBTable align="middle" hover responsive color={theme.color}>
-      <caption>List of employees</caption>
-      <caption className="caption-top">
-        Total of <b>{employees?.length}</b> employee(s)
-      </caption>
-      <MDBTableHead>
-        <tr>
-          <th>#</th>
-          <th scope="col">Name </th>
-          <th>Address</th>
-          <th scope="col">Gender </th>
-          <th scope="col">School type </th>
-          <th scope="col">Position </th>
-          {status === "approved" && <th scope="col">Designation </th>}
-          {status !== "approved" && (
+    <MDBContainer>
+      {" "}
+      <MDBTable align="middle" hover responsive color={theme.color}>
+        <caption>List of employees</caption>
+        <caption className="caption-top">
+          Total of <b>{employees?.length}</b> employee(s)
+        </caption>
+        <MDBTableHead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Branch</th>
+            <th scope="col">Designation </th>
+            <th scope="col">Date Submitted </th>
             <th scope="col" className="text-center">
               Action
             </th>
-          )}
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        {employees?.length > 0 ? (
-          paginationHandler(employees, page, maxPage).map((employee, index) => (
-            <tr key={`temperature-${index}`}>
-              <td>{1 + index}</td>
-              <td>{nameFormatter(employee.user?.fullName)}</td>
-              <td>{addressFormatter(employee.user?.address)}</td>
-              <td>
-                {employee.user?.isMale ? (
-                  <MDBIcon fas icon="male" color="warning" size="2x" />
-                ) : (
-                  <MDBIcon fas icon="female" color="warning" size="2x" />
-                )}
-              </td>
-              <td>{employee.branchId?.name}</td>
-              <td>{employee.position}</td>
-              {status === "approved" && <td>{employee?.designation}</td>}
-
-              {status !== "approved" && (
-                <td className="d-flex justify-content-center">
-                  <MDBBtnGroup>
-                    {/* <MDBBtn size="sm" onClick={() => handleInformation(employee)}>
-                    <MDBIcon far icon="eye" />
-                  </MDBBtn> */}
-                    <MDBBtn
-                      type="button"
-                      size="sm"
-                      color="danger"
-                      onClick={() =>
-                        handleDecision(employee._id, "deny", employee.postion)
-                      }
-                    >
-                      Deny
-                    </MDBBtn>
-                    <MDBBtn
-                      type="button"
-                      size="sm"
-                      onClick={() =>
-                        handleDecision(
-                          employee._id,
-                          "approved",
-                          employee.position
-                        )
-                      }
-                    >
-                      Approved
-                    </MDBBtn>
-                  </MDBBtnGroup>
-                </td>
-              )}
-            </tr>
-          ))
-        ) : (
-          <tr className="text-center">
-            <td colSpan={3}>No Enrollees.</td>
           </tr>
-        )}
-      </MDBTableBody>
-    </MDBTable>
+        </MDBTableHead>
+        <MDBTableBody>
+          {employees?.length > 0 ? (
+            paginationHandler(employees, page, maxPage).map(
+              (employee, index) => (
+                <tr key={`temperature-${index}`}>
+                  <td>{1 + index}</td>
+                  <td>{nameFormatter(employee.user?.fullName)}</td>
+                  <td>{employee.branch.name}</td>
+                  <td>{handleDesignation(employee.designation)}</td>
+                  <td>{formatDate(employee.createdAt)}</td>
+                  {status === "approved" && <td>{employee?.designation}</td>}
+
+                  <td className="d-flex justify-content-center">
+                    <MDBBtnGroup>
+                      <MDBBtn
+                        type="button"
+                        onClick={() => handleView(employee)}
+                      >
+                        <MDBIcon fas icon="eye" />
+                      </MDBBtn>
+                    </MDBBtnGroup>
+                  </td>
+                </tr>
+              )
+            )
+          ) : (
+            <tr className="text-center">
+              <td colSpan={3}>No Enrollees.</td>
+            </tr>
+          )}
+        </MDBTableBody>
+      </MDBTable>
+      {visibility && (
+        <ApplicationModal
+          visibility={visibility}
+          setVisibility={setVisibility}
+          data={data}
+        />
+      )}
+    </MDBContainer>
   );
 }

@@ -333,6 +333,7 @@ export const authSlice = createSlice({
               platform,
               company,
               status,
+              specifications,
             }) => {
               return {
                 _id,
@@ -345,6 +346,7 @@ export const authSlice = createSlice({
                   _lastVisited.id === _id ? _lastVisited.platform : platform,
                 company,
                 status,
+                specifications,
               };
             }
           );
@@ -394,6 +396,7 @@ export const authSlice = createSlice({
             company,
             status,
             category,
+            specifications,
           }) => {
             let _access = access
               .filter((data) => _id === data.branchId)
@@ -407,6 +410,7 @@ export const authSlice = createSlice({
               name,
               company,
               status,
+              specifications,
             };
           }
         );

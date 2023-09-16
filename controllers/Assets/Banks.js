@@ -3,8 +3,8 @@ const Entity = require("../../models/Assets/Banks");
 
 exports.browse = (req, res) => {
   Entity.find()
+    .byBranch(req.query.key)
     .populate("subjectId")
-
     .populate("user")
     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
     .catch((error) => res.status(400).json({ error: error.message }));

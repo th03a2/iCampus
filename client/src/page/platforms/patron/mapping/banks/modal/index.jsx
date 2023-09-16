@@ -28,6 +28,8 @@ export default function Modal({ visibility, setVisibility }) {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [subjectId, setSubjectId] = useState("");
   const [cluster, setCluster] = useState("");
+  const [gradeLevels, setGradeLevels] = useState([]);
+  const [suggestSubject, setSuggestSubject] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,20 +45,51 @@ export default function Modal({ visibility, setVisibility }) {
           const result = findSubject?.subject?.map((data) =>
             subjects.find(({ id }) => id === data)
           );
-          setTopics(result || []);
+
+          const filterResult = result.filter(
+            ({ id }) => id !== onDuty.specifications // para hindi masama kung anong section siya
+          );
+          setTopics(filterResult || []);
         } else {
           setTopics([]);
         }
       } else {
         const findSubject = findLevel.subjects.map((data) =>
-          subjects.find(({ id }) => id === data)
+          subjects.find(({ id }) => id === data && id !== onDuty.specifications)
         );
-        setTopics(findSubject || []);
+
+        const filterSubject = findSubject.filter(
+          ({ id }) => id !== onDuty.specifications // para hindi masama kung anong section siya
+        );
+        setTopics(filterSubject || []);
         setStrands([]);
         setSpecification("");
       }
     }
   }, [levelId, specification]);
+
+  useEffect(() => {
+    const findSuggestSubject = subjects.find(
+      (subject) => subject.id === onDuty.specifications
+    );
+    if (findSuggestSubject) {
+      setSuggestSubject(findSuggestSubject.name);
+      setSubjectId(onDuty.specifications);
+    } else {
+      setSuggestSubject("");
+    }
+  }, [visibility]);
+
+  useEffect(() => {
+    if (onDuty.specifications) {
+      const findLevel = levels.filter(
+        (level) => level.category === onDuty.category
+      );
+      if (findLevel.length > 0) {
+        setGradeLevels(findLevel);
+      }
+    }
+  }, [visibility]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -123,9 +156,72 @@ export default function Modal({ visibility, setVisibility }) {
                       className="form-control"
                       type="text"
                       onChange={(e) => setQuestion(e.target.value)}
+                      required
                     />
                   </MDBCol>
                 </MDBRow>
+                <h5 className="text-center mt-2">Where do you assign it?</h5>
+                <MDBRow className="mt-2">
+                  <MDBCol md="6">
+                    <MDBInputGroup textBefore="Grade Level">
+                      <select
+                        className="form-control"
+                        value={levelId}
+                        onChange={(e) => setLevelId(e.target.value)}
+                        required
+                      >
+                        <option value={""}></option>
+                        {gradeLevels.map((level, index) => (
+                          <option value={level.id} key={index}>
+                            {level.description}
+                          </option>
+                        ))}
+                      </select>
+                    </MDBInputGroup>
+                  </MDBCol>
+                  {strands.length > 0 ? (
+                    <MDBCol md="6">
+                      <MDBInputGroup textBefore="Strand">
+                        <select
+                          className="form-control"
+                          value={specification}
+                          onChange={(e) => setSpecification(e.target.value)}
+                          required
+                        >
+                          <option value={""}></option>
+                          {strands.map((strand, index) => (
+                            <option value={strand.specifications} key={index}>
+                              {strand.specifications}
+                            </option>
+                          ))}
+                        </select>
+                      </MDBInputGroup>
+                    </MDBCol>
+                  ) : (
+                    ""
+                  )}
+                </MDBRow>
+                {suggestSubject.length > 0 && (
+                  <MDBRow className="mt-3">
+                    <MDBCol md="6">
+                      <MDBInputGroup textBefore="Subjects">
+                        <select
+                          className="form-control"
+                          value={subjectId}
+                          onChange={(e) => setSubjectId(e.target.value)}
+                          required
+                        >
+                          <option value={onDuty?.specifications}>
+                            {suggestSubject}
+                          </option>
+                          {topics.map((topic) => (
+                            <option value={topic.id}>{topic.name}</option>
+                          ))}
+                        </select>
+                      </MDBInputGroup>
+                    </MDBCol>
+                  </MDBRow>
+                )}
                 <MDBRow className="d-flex justify-content-center my-3">
                   <MDBCol md={6}>
                     <MDBInputGroup textBefore="Cluster">
@@ -133,6 +229,7 @@ export default function Modal({ visibility, setVisibility }) {
                         className="form-control"
                         value={cluster}
                         onChange={(e) => setCluster(e.target.value)}
+                        required
                       >
                         <option value={""} />
                         <option value={"multiple choice"}>
@@ -143,7 +240,7 @@ export default function Modal({ visibility, setVisibility }) {
                       </select>
                     </MDBInputGroup>
                   </MDBCol>
-                </MDBRow>
+                </MDBRow>{" "}
                 {cluster === "multiple choice" && (
                   <>
                     {" "}
@@ -213,6 +310,7 @@ export default function Modal({ visibility, setVisibility }) {
                             className="form-control"
                             value={correctAnswer}
                             onChange={(e) => setCorrectAnswer(e.target.value)}
+                            required
                           >
                             <option value={""}></option>
                             {Object.entries(choices).map(([key, value]) => {
@@ -235,68 +333,12 @@ export default function Modal({ visibility, setVisibility }) {
                             className="form-control"
                             value={correctAnswer}
                             onChange={(e) => setCorrectAnswer(e.target.value)}
+                            required
                           />
                         </MDBInputGroup>
                       </MDBCol>
                     </MDBRow>
                   </>
-                )}
-                <h5 className="text-center mt-2">Where do you assign it?</h5>
-                <MDBRow className="mt-2">
-                  <MDBCol md="6">
-                    <MDBInputGroup textBefore="Grade Level">
-                      <select
-                        className="form-control"
-                        value={levelId}
-                        onChange={(e) => setLevelId(e.target.value)}
-                      >
-                        <option value={""}></option>
-                        {levels.map((level, index) => (
-                          <option value={level.id} key={index}>
-                            {level.description}
-                          </option>
-                        ))}
-                      </select>
-                    </MDBInputGroup>
-                  </MDBCol>
-                  {strands.length > 0 ? (
-                    <MDBCol md="6">
-                      <MDBInputGroup textBefore="Strand">
-                        <select
-                          className="form-control"
-                          value={specification}
-                          onChange={(e) => setSpecification(e.target.value)}
-                        >
-                          <option value={""}></option>
-                          {strands.map((strand, index) => (
-                            <option value={strand.specifications} key={index}>
-                              {strand.specifications}
-                            </option>
-                          ))}
-                        </select>
-                      </MDBInputGroup>
-                    </MDBCol>
-                  ) : (
-                    ""
-                  )}
-                </MDBRow>
-                {topics.length > 0 && (
-                  <MDBRow className="mt-3">
-                    <MDBCol md="4">
-                      <MDBInputGroup textBefore="Subjects">
-                        <select
-                          className="form-control"
-                          value={subjectId}
-                          onChange={(e) => setSubjectId(e.target.value)}
-                        >
-                          <option value={""}></option>
-                          {topics.map((topic) => (
-                            <option value={topic.id}>{topic.name}</option>
-                          ))}
-                        </select>
-                      </MDBInputGroup>
-                    </MDBCol>
-                  </MDBRow>
                 )}
               </MDBModalBody>
               <MDBModalFooter>

@@ -27,7 +27,7 @@ export default function PendingEmployee() {
     if (onDuty._id) {
       dispatch(
         BROWSE({
-          data: { status: "pending", branchId: onDuty._id },
+          data: { status: "petition", branch: onDuty._id },
           token,
         })
       );

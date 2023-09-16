@@ -394,5 +394,15 @@
         "display_name": "Chief Auxillary"
       }
     ]
+  },
+  {
+    "department": "faculty",
+    "positions": [
+      {
+        "id": 101,
+        "name": "teacher",
+        "display_name": "Teacher"
+      }
+    ]
   }
 ]

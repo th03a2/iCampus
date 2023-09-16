@@ -102,5 +102,11 @@
     "title": "Faculty Portal",
     "description": "a customer, especially a regular one.",
     "icon": "user-injured"
+  },
+  {
+    "code": "teacher",
+    "title": "Teacher Portal",
+    "description": "a customer, especially a regular one.",
+    "icon": "user-injured"
   }
 ]

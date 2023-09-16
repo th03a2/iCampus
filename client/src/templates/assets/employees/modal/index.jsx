@@ -11,29 +11,27 @@ import {
   MDBTextArea,
   MDBRow,
   MDBCol,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import { UPLOAD } from "../../../../../../redux/slices/assets/persons/auth.js";
+import { UPLOAD } from "../../../../redux/slices/assets/persons/auth.js";
+import { Policy } from "../../../../fakeDb";
 import { toast } from "react-toastify";
 import {
-  SAVE,
+  UPDATE,
   APPLICATION,
-} from "../../../../../../redux/slices/assets/persons/personnels";
-import { Policy } from "../../../../../../fakeDb";
-import {
-  ENDPOINT,
-  PresetUser,
-} from "../../../../../../components/utilities.js";
+} from "../../../../redux/slices/assets/persons/personnels";
+import { ENDPOINT, PresetUser } from "../../../../components/utilities.js";
+import subjects from "../../../../fakeDb/json/subjects.js";
+import Swal from "sweetalert2";
 export default function ApplicationModal({
   visibility,
   setVisibility,
   company,
+  data,
 }) {
   const { theme, auth, token } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ personnels }) => personnels),
     [application, setApplication] = useState({}),
-    [department, setDepartment] = useState(),
-    [positions, setPositions] = useState([{ id: 1, display_name: "teacher" }]),
     dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,16 +61,6 @@ export default function ApplicationModal({
     }
   };
 
-  const handleDepartment = (e) => {
-    const { value } = e.target;
-    setDepartment(value);
-    const _postions = Policy.positions(value).positions;
-    // setPositions(Policy.positions(value))
-    setPositions(_postions);
-
-    //.positions
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setApplication({
@@ -99,23 +87,80 @@ export default function ApplicationModal({
   };
 
   const handleSubmit = () => {
-    dispatch(
-      SAVE({
-        form: {
-          user: auth._id,
-          status: "petition",
-          branch: application.branchId,
-          hasPds: application.pds ? true : false,
-          hasResume: application.resume ? true : false,
-          hasLetter: application.letter ? true : false,
-          designation: Number(application.designation),
-          hos: 8,
-          message: application.message,
-        },
-        token,
-      })
+    Swal.fire({
+      title: "Please select the designated subject?",
+      input: "select", // Use input option to create a dropdown
+      inputOptions: subjects.reduce((acc, option) => {
+        acc[option.id] = `${option.name}`;
+        return acc;
+      }, {}),
+      inputPlaceholder: "Choose an option",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+
+      inputValidator: (value) => {
+        if (!value) {
+          return "Please select an option";
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(
+          UPDATE({
+            data: { status: "active", specifications: result.value },
+            id: data._id,
+            token,
+          })
+        );
+      }
+    });
+  };
+
+  const handleDesignation = (designation) => {
+    const foundDesignation = Policy.collection.find(
+      (collection) =>
+        collection.hasOwnProperty("positions") &&
+        collection.positions.find(({ id }) => id === designation)
     );
-    setVisibility(!visibility);
+    if (foundDesignation) {
+      const _designation = foundDesignation.positions.find(
+        ({ id }) => id === designation
+      );
+      return _designation?.display_name;
+    }
+  };
+
+  const handleDepartment = (designation) => {
+    const foundDesignation = Policy.collection.find(
+      (collection) =>
+        collection.hasOwnProperty("positions") &&
+        collection.positions.find(({ id }) => id === designation)
+    );
+    if (foundDesignation) {
+      return foundDesignation.department;
+    }
+  };
+
+  const handleDeny = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't to deny this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, deny it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(
+          UPDATE({
+            data: { status: "deny" },
+            id: data._id,
+            token,
+          })
+        );
+      }
+    });
   };
 
   const handleReadDataSheet = () => {
@@ -142,85 +187,38 @@ export default function ApplicationModal({
       <MDBModalDialog size="fullscreen">
         <MDBModalContent className={`${theme.bg} ${theme.text}`}>
           <MDBModalHeader>
-            <MDBModalTitle>
-              {company.name}'s Application Requirements
-            </MDBModalTitle>
+            <MDBModalTitle>Application Requirements</MDBModalTitle>
             <MDBBtn className="btn-close" color="none" onClick={handleToggle} />
           </MDBModalHeader>
           <form onSubmit={handleApplication}>
             <MDBModalBody className="text-start">
               <MDBRow>
                 <MDBCol md={4}>
-                  <select
-                    required
-                    className="form-control mb-3"
-                    value={application?.branchId}
-                    name="branchId"
-                    onChange={handleChange}
-                  >
-                    <option value="" selected>
-                      Select a branch
-                    </option>
-                    {company.branches?.map((branch) => {
-                      const disabler = catalogs.find(
-                        (catalog) => catalog.branch?._id === branch._id
-                      );
-                      return (
-                        <option
-                          value={branch?._id}
-                          key={branch?._id}
-                          disabled={disabler}
-                          style={{
-                            backgroundColor: disabler ? "yellow" : "white",
-                          }}
-                        >
-                          {branch?.name}
-                          {disabler ? "Application on process" : ""}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <MDBInputGroup textBefore="Branch">
+                    <input
+                      className="form-control"
+                      value={data.branch.name}
+                      readOnly
+                    />
+                  </MDBInputGroup>
                 </MDBCol>
                 <MDBCol md={4}>
-                  <select
-                    required
-                    className="form-control mb-3"
-                    value={department}
-                    name="department"
-                    onChange={handleDepartment}
-                  >
-                    <option value="" selected>
-                      Select a department
-                    </option>
-                    {Object.entries(Policy.departments())?.map(
-                      ([index, collections]) => (
-                        <option value={collections.department} key={index}>
-                          {collections.department.toLocaleUpperCase()}
-                        </option>
-                      )
-                    )}
-                  </select>
+                  <MDBInputGroup textBefore="Department">
+                    <input
+                      className="form-control"
+                      value={handleDepartment(data.designation)}
+                      readOnly
+                    />
+                  </MDBInputGroup>
                 </MDBCol>
                 <MDBCol md={4}>
-                  <select
-                    required
-                    className="form-control mb-3"
-                    value={application?.designation}
-                    name="designation"
-                    onChange={handleChange}
-                  >
-                    <option value="" selected>
-                      Select a Designation / Positions
-                    </option>
-                    {Object.entries(positions)?.map(([i, collections]) => (
-                      <option
-                        value={collections.id}
-                        key={`position-${collections.id}-${i}`}
-                      >
-                        {collections.display_name}
-                      </option>
-                    ))}
-                  </select>
+                  <MDBInputGroup textBefore="Designation">
+                    <input
+                      className="form-control"
+                      value={handleDesignation(data.designation)}
+                      readOnly
+                    />
+                  </MDBInputGroup>
                 </MDBCol>
               </MDBRow>
               <MDBRow>
@@ -282,19 +280,20 @@ export default function ApplicationModal({
                 <MDBCol md="12" className="mt-4">
                   <MDBTextArea
                     label="Message"
-                    value={application?.message}
+                    value={data?.message}
                     name="message"
                     onChange={handleChange}
+                    readOnly
                   />
                 </MDBCol>
               </MDBRow>
             </MDBModalBody>
             <MDBModalFooter>
-              <MDBBtn type="button" color="secondary" onClick={handleToggle}>
-                Close
+              <MDBBtn type="button" color="danger" onClick={handleDeny}>
+                Deny
               </MDBBtn>
               <MDBBtn type="submit" color="success" onClick={handleSubmit}>
-                Submit application
+                Approved
               </MDBBtn>
             </MDBModalFooter>
           </form>

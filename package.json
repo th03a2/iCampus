@@ -14,22 +14,23 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "concurrently": "^8.2.0",
+    "concurrently": "^8.2.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "handlebars": "^4.7.7",
+    "handlebars": "^4.7.8",
     "http": "^0.0.1-security",
     "interweave": "^13.1.0",
     "jsonwebtoken": "^8.5.1",
     "mammoth": "^1.6.0",
-    "mongoose": "^6.3.5",
-    "nodemailer": "^6.7.7",
+    "mongoose": "^6.12.0",
+    "nodemailer": "^6.9.5",
     "nodemon": "^2.0.22",
-    "react-easy-crop": "^4.7.4",
+    "react-doc-viewer": "^0.1.5",
+    "react-easy-crop": "^4.7.5",
     "react-script": "^2.0.5",
     "react-scripts": "^5.0.1",
     "react-step-wizard": "^5.3.11",
-    "socket.io": "^4.5.1"
+    "socket.io": "^4.7.2"
   }
 }

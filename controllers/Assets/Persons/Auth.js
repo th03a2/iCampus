@@ -108,6 +108,7 @@ const getAffiliated = async (fk) =>
         category: a.branch?.category,
         status: a.status,
         company: a.branch?.name,
+        specifications: a.specifications,
       }));
       // var container = [];
       // for (var index in affiliates) {

@@ -267,7 +267,7 @@ export default function GuardianModal({
                         type="text"
                         className="form-control"
                         required
-                        value={guardian.fullName.lname}
+                        value={guardian.fullName?.lname}
                         onChange={(e) =>
                           setGuardian({
                             ...guardian,
@@ -381,7 +381,7 @@ export default function GuardianModal({
                       <select
                         name="address"
                         data-subname="region"
-                        value={guardian.address.region}
+                        value={guardian.address?.region}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
                         required
@@ -400,7 +400,7 @@ export default function GuardianModal({
                   <MDBCol md={4} size={6} className="mb-1 mb-md-3">
                     <MDBInputGroup textBefore="Province">
                       <select
-                        value={guardian.address.province}
+                        value={guardian.address?.province}
                         data-subname="province"
                         name="address"
                         className={`form-control ${theme.bg} ${theme.text}`}
@@ -421,7 +421,7 @@ export default function GuardianModal({
                       <select
                         name="address"
                         data-subname="city"
-                        value={guardian.address.city}
+                        value={guardian.address?.city}
                         className={`form-control ${theme.bg} ${theme.text}`}
                         onChange={handleAddress}
                         required

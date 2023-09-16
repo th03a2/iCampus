@@ -7,6 +7,10 @@ const modelSchema = new mongoose.Schema(
       ref: "Branches",
       // required: true,
     },
+    testId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tests",
+    },
     subjectId: {
       type: Number,
       // required: true,
@@ -66,8 +70,8 @@ const modelSchema = new mongoose.Schema(
   }
 );
 
-modelSchema.query.byCompanyId = function (companyId) {
-  return this.where({ companyId });
+modelSchema.query.byBranch = function (branchId) {
+  return this.where({ branchId });
 };
 modelSchema.query.byCompanies = function (companies) {
   return this.where({ companyId: { $in: companies } });

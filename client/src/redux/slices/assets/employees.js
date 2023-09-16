@@ -10,13 +10,13 @@ const initialState = {
     isError: false,
     message: "",
   },
-  entity = "assets/employees";
+  entity = "assets/persons/personnels";
 
 export const BROWSE = createAsyncThunk(
   `${entity}/browse`,
   async ({ data, token }, thunkAPI) => {
     try {
-      return await browse("assets/employees/browse", data, token);
+      return await browse(`${entity}/getPersonnels`, data, token);
     } catch (error) {
       const message =
         (error.response &&

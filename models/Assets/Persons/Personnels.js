@@ -69,6 +69,10 @@ const modelSchema = new mongoose.Schema(
       },
       default: "pending",
     },
+    specifications: {
+      type: Number,
+    },
+
     deletedAt: {
       type: String,
     },

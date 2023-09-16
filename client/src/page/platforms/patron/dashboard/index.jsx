@@ -44,7 +44,7 @@ export default function Unset() {
       );
     }
   }, [auth._id, token, dispatch, onDuty._id]);
-
+  console.log(onDuty);
   useEffect(() => {
     if (onDuty._id) {
       dispatch(

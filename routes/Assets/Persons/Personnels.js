@@ -7,10 +7,12 @@ const router = require("express").Router(),
     find,
     update,
     save,
+    getPersonnels,
   } = require("../../../controllers/Assets/Persons/Personnels"),
   { protect } = require("../../../middleware");
 
 router
+  .get("/getPersonnels", getPersonnels)
   .get("/browse", browse)
   .get("/application", application)
   .get("/employees", employees)
