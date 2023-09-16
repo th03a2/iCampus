@@ -62,6 +62,7 @@ const modelSchema = new mongoose.Schema(
     },
     specification: { type: String },
     levelId: { type: Number },
+    enumerationAns: { type: Array }, //enumaration answer
     correctAnswer: { type: String },
     deletedAt: { type: String },
   },

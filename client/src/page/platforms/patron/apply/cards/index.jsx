@@ -27,7 +27,7 @@ export default function CompanyCards({ companies, page }) {
       </MDBTypography>
 
       <MDBRow>
-        {!!companies.length ? (
+        {companies.length > 0 ? (
           paginationHandler(companies, page, maxPage).map((company) => (
             <CompanyCard key={company._id} company={company} />
           ))

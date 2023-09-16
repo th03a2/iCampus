@@ -88,6 +88,44 @@ export default function Modal({ look, setLook, quizs }) {
         icon: "info",
         confirmButtonText: "OK",
       });
+    } else if (data.cluster === "enumeration") {
+      console.log("true");
+      const tableHTML = `
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.enumerationAns
+              .map(
+                (item, index) => `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${item.value}</td>
+              </tr>
+            `
+              )
+              .join("")}
+          </tbody>
+        </table>
+     `;
+      Swal.fire({
+        title: "Question",
+        html: `
+          <div class="mb-3"><strong>${data.question}</strong></div>
+          <div>${tableHTML}</div>
+        `,
+        customClass: {
+          container: "swal-container",
+          title: "swal-title",
+          confirmButton: "swal-confirm-button",
+        },
+        icon: "info",
+        confirmButtonText: "OK",
+      });
     }
   };
 

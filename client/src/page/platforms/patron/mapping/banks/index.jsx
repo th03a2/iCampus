@@ -75,13 +75,13 @@ export default function Books() {
   }, [catalogs]);
 
   useEffect(() => {
-    if (levelId) {
+    if (levelId && !topicId) {
       const filterLevels = catalogs.filter(
         (catalog) => catalog.levelId === Number(levelId)
       );
       setBanks(filterLevels || []);
     }
-  }, [levelId]);
+  }, [levelId, topicId]);
 
   useEffect(() => {
     if (levelId) {
@@ -104,7 +104,7 @@ export default function Books() {
   }, [levelId]);
 
   useEffect(() => {
-    if ((levelId, topicId)) {
+    if (levelId && topicId) {
       const filterSubjectAndLevels = catalogs.filter(
         (catalog) =>
           catalog.levelId === Number(levelId) &&
@@ -144,6 +144,12 @@ export default function Books() {
       );
 
       setBanks(newArray || []);
+    }
+  }, [levelId, topicId, authorId]);
+
+  useEffect(() => {
+    if (!levelId && !topicId && !authorId) {
+      setBanks(catalogs);
     }
   }, [levelId, topicId, authorId]);
 

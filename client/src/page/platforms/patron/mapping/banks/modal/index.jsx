@@ -96,8 +96,32 @@ export default function Modal({ visibility, setVisibility }) {
     setChoices({ ...choices, [name]: value });
   };
 
+  const [enumerationAnswer, setEnumerationAnswer] = useState([
+    { id: 1, value: "" },
+  ]);
+
+  const handleAddInput = () => {
+    const newInputGroups = [...enumerationAnswer];
+    const newId = enumerationAnswer[enumerationAnswer.length - 1].id + 1;
+    newInputGroups.push({ id: newId, value: "" });
+    setEnumerationAnswer(newInputGroups);
+  };
+
+  const handleInputChange = (id, newValue) => {
+    const updatedInputGroups = enumerationAnswer.map((group) => {
+      if (group.id === id) {
+        return { ...group, value: newValue };
+      }
+      return group;
+    });
+    setEnumerationAnswer(updatedInputGroups);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const filteredAnswers = enumerationAnswer.filter(
+      (answer) => answer.value !== ""
+    );
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -116,6 +140,7 @@ export default function Modal({ visibility, setVisibility }) {
           user: auth._id,
           cluster,
           mcAnswers: cluster === "multiple choice" ? choices : "",
+          enumerationAns: enumerationAnswer.length > 0 ? filteredAnswers : [],
           correctAnswer,
           subjectId,
         };
@@ -131,14 +156,12 @@ export default function Modal({ visibility, setVisibility }) {
       }
     });
   };
-
   return (
     <>
       <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
         <MDBModalDialog size="lg">
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Question</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -148,21 +171,7 @@ export default function Modal({ visibility, setVisibility }) {
             <form onSubmit={handleSubmit}>
               <MDBModalBody>
                 <MDBRow>
-                  <MDBCol>
-                    <h2 className="text-center">
-                      <strong>Question</strong>
-                    </h2>
-                    <textarea
-                      className="form-control"
-                      type="text"
-                      onChange={(e) => setQuestion(e.target.value)}
-                      required
-                    />
-                  </MDBCol>
-                </MDBRow>
-                <h5 className="text-center mt-2">Where do you assign it?</h5>
-                <MDBRow className="mt-2">
-                  <MDBCol md="6">
+                  <MDBCol md={6}>
                     <MDBInputGroup textBefore="Grade Level">
                       <select
                         className="form-control"
@@ -179,6 +188,25 @@ export default function Modal({ visibility, setVisibility }) {
                       </select>
                     </MDBInputGroup>
                   </MDBCol>
+                  <MDBCol md="6">
+                    <MDBInputGroup textBefore="Subjects">
+                      <select
+                        className="form-control"
+                        value={subjectId}
+                        onChange={(e) => setSubjectId(e.target.value)}
+                        required
+                      >
+                        <option value={onDuty?.specifications}>
+                          {suggestSubject}
+                        </option>
+                        {topics.map((topic) => (
+                          <option value={topic.id}>{topic.name}</option>
+                        ))}
+                      </select>
+                    </MDBInputGroup>
+                  </MDBCol>
+                </MDBRow>
+                <MDBRow className="mt-2">
                   {strands.length > 0 ? (
                     <MDBCol md="6">
                       <MDBInputGroup textBefore="Strand">
@@ -200,29 +228,6 @@ export default function Modal({ visibility, setVisibility }) {
                   ) : (
                     ""
                   )}
-                </MDBRow>
-                {suggestSubject.length > 0 && (
-                  <MDBRow className="mt-3">
-                    <MDBCol md="6">
-                      <MDBInputGroup textBefore="Subjects">
-                        <select
-                          className="form-control"
-                          value={subjectId}
-                          onChange={(e) => setSubjectId(e.target.value)}
-                          required
-                        >
-                          <option value={onDuty?.specifications}>
-                            {suggestSubject}
-                          </option>
-                          {topics.map((topic) => (
-                            <option value={topic.id}>{topic.name}</option>
-                          ))}
-                        </select>
-                      </MDBInputGroup>
-                    </MDBCol>
-                  </MDBRow>
-                )}
-                <MDBRow className="d-flex justify-content-center my-3">
                   <MDBCol md={6}>
                     <MDBInputGroup textBefore="Cluster">
                       <select
@@ -237,8 +242,22 @@ export default function Modal({ visibility, setVisibility }) {
                         </option>
                         <option value={"identification"}>Identification</option>
                         <option value={"essay"}> Essay</option>
+                        <option value={"enumeration"}> Enumeration</option>
                       </select>
                     </MDBInputGroup>
+                  </MDBCol>
+                </MDBRow>
+                <MDBRow className="my-3">
+                  <MDBCol>
+                    <h5 className="text-center">
+                      <strong>Question</strong>
+                    </h5>
+                    <textarea
+                      className="form-control"
+                      type="text"
+                      onChange={(e) => setQuestion(e.target.value)}
+                      required
+                    />
                   </MDBCol>
                 </MDBRow>{" "}
                 {cluster === "multiple choice" && (
@@ -339,6 +358,28 @@ export default function Modal({ visibility, setVisibility }) {
                       </MDBCol>
                     </MDBRow>
                   </>
+                )}
+                {cluster === "enumeration" && (
+                  <MDBRow>
+                    <MDBCol md={12}>
+                      <div>
+                        {enumerationAnswer.map((group, index) => (
+                          <div key={group.id} className="input-group mt-2">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder={"Add Correct Answer"}
+                              value={group.value}
+                              onChange={(e) =>
+                                handleInputChange(group.id, e.target.value)
+                              }
+                              onClick={handleAddInput}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </MDBCol>
+                  </MDBRow>
                 )}
               </MDBModalBody>
               <MDBModalFooter>

@@ -33,7 +33,7 @@ export default function ApplicationModal({
     { catalogs } = useSelector(({ personnels }) => personnels),
     [application, setApplication] = useState({}),
     [department, setDepartment] = useState(),
-    [positions, setPositions] = useState([{ id: 1, display_name: "teacher" }]),
+    [positions, setPositions] = useState(""),
     dispatch = useDispatch();
 
   useEffect(() => {
@@ -82,12 +82,13 @@ export default function ApplicationModal({
   };
 
   const handleFile = (e, name) => {
+    console.log(company.name);
     const reader = new FileReader();
     reader.onload = (e) => {
       dispatch(
         UPLOAD({
           data: {
-            path: `public/patron/${auth.email}/${company.name}/Applications`,
+            path: `patron/${auth.email}/${company.name}/Applications`,
             base64: reader.result.split(",")[1],
             name,
           },
@@ -115,14 +116,15 @@ export default function ApplicationModal({
         token,
       })
     );
-    setVisibility(!visibility);
+    // setVisibility(!visibility);
   };
 
+  console.log(company.name);
   const handleReadDataSheet = () => {
     return (
       <>
         <iframe
-          src={`${ENDPOINT}/public/patron/${auth.email}/Smart Care/General Tinio Branch/Applications/dataSheet.png`}
+          src={`${ENDPOINT}/public/patron/${auth.email}/${company.name}/Applications/dataSheet.png`}
           alt={auth.email}
           className="mx-auto rounded img-max img-fluid mb-1"
           onError={(e) => (e.target.src = PresetUser)}
@@ -252,7 +254,7 @@ export default function ApplicationModal({
                     type="file"
                     id="upload-resume"
                     className="d-none"
-                    onChange={(e) => handleFile(e, "Resume.png")}
+                    onChange={(e) => handleFile(e, "Resume.pdf")}
                     accept=".png"
                   />
                 </MDBCol>

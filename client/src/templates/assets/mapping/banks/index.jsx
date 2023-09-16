@@ -6,80 +6,18 @@ import {
   MDBBtn,
   MDBIcon,
   MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBRow,
-  MDBCol,
+  MDBBtnGroup,
 } from "mdb-react-ui-kit";
-import { useSelector } from "react-redux";
-
-// import {
-//   paginationHandler,
-//   nameFormatter,
-// } from "../../../../components/utilities";
+import { useDispatch, useSelector } from "react-redux";
+import { DESTROY } from "../../../../redux/slices/assets/banks";
 import Modal from "./viewGradeAssignQuiz";
 import { paginationHandler } from "../../../../components/utilities";
-import levels from "../../../../fakeDb/json/levels";
-import subjects from "../../../../fakeDb/json/subjects";
 import Swal from "sweetalert2";
 export function TBLbanks({ banks, page }) {
-  const { theme, maxPage } = useSelector(({ auth }) => auth);
+  const { theme, maxPage, auth, token } = useSelector(({ auth }) => auth);
   const [visibility, setVisibility] = useState(false);
-  const [levelAssignQuiz, setLevelAssignQuiz] = useState([]);
-
-  // const handleCard = (data) => {
-  //   if (data.cluster === "multiple choice") {
-  //     const { mcAnswers, question, correctAnswer } = data;
-  //     const answerText = data && correctAnswer ? correctAnswer : "no-answer";
-  //     console.log(answerText);
-
-  //     const choices = Object.entries(mcAnswers)
-  //       .filter(([key, values]) => values !== "")
-  //       .map(([key, value], index) => (
-  //         <div className="form-check mb-2" key={index}>
-  //           <input
-  //             className="form-check-input"
-  //             type="radio"
-  //             name="answer"
-  //             id={`choice-${index}`}
-  //             value={index}
-  //             disabled
-  //             checked={value === answerText} // Check against the value, not 'choice'
-  //           />
-  //           <label className="form-check-label" htmlFor={`choice-${index}`}>
-  //             {String.fromCharCode(65 + index)}. {value}
-  //           </label>
-  //         </div>
-  //       ));
-  //     return (
-  //       <MDBCol md={3} className="mt-2">
-  //         <MDBCard style={{ height: "250px" }}>
-  //           <MDBCardBody>
-  //             <MDBCardTitle>Question</MDBCardTitle>
-  //             <div className="mb-3">
-  //               <strong>{question}</strong>
-  //             </div>
-  //             {choices}
-  //           </MDBCardBody>
-  //         </MDBCard>
-  //       </MDBCol>
-  //     );
-  //   } else if (data.cluster === "essay") {
-  //     return (
-  //       <MDBCol md={3} className="mt-2">
-  //         <MDBCard style={{ height: "250px" }}>
-  //           <MDBCardBody>
-  //             <MDBCardTitle>Question</MDBCardTitle>
-  //             <div className="mb-3">
-  //               <strong>{data.question}</strong>
-  //             </div>
-  //           </MDBCardBody>
-  //         </MDBCard>
-  //       </MDBCol>
-  //     );
-  //   }
-  // };
+  const [levelAssignQuiz, setLevelAssignQuiz] = useState([]),
+    dispatch = useDispatch();
 
   const handleQuestion = (question) => {
     if (question.length > 40) {
@@ -96,16 +34,6 @@ export function TBLbanks({ banks, page }) {
     }
   };
 
-  const gradeLevelFormatter = (levelId) => {
-    const findLevel = levels.find((level) => level.id === levelId);
-    return findLevel.description;
-  };
-
-  const subjectFormatter = (subjectId) => {
-    const findSubject = subjects.find((subject) => subject.id === subjectId);
-    return findSubject?.name;
-  };
-
   const handleView = (data) => {
     if (data.cluster === "multiple choice") {
       const { mcAnswers, question, correctAnswer } = data;
@@ -117,7 +45,7 @@ export function TBLbanks({ banks, page }) {
 
       if (choices) {
         Swal.fire({
-          title: "Question",
+          title: "",
           html: `
             <div class="mb-3"><strong>${question}</strong></div>
             ${choices
@@ -140,28 +68,28 @@ export function TBLbanks({ banks, page }) {
             title: "swal-title",
             confirmButton: "swal-confirm-button",
           },
-          icon: "info",
+          icon: "question",
           confirmButtonText: "OK",
         });
       }
     } else if (data.cluster === "identification") {
       Swal.fire({
-        title: "Question",
+        title: "",
         html: `
           <div class="mb-3"><strong>${data.question}</strong></div>
-          <div>Correct Answer<input type="text" readonly="readonly" class="form-control"value="${data.correctAnswer}"/></div>
+          <div>Correct Answer<input type="text" readonly="readonly" class="form-control bg-transparent"value="${data.correctAnswer}"/></div>
         `,
         customClass: {
           container: "swal-container",
           title: "swal-title",
           confirmButton: "swal-confirm-button",
         },
-        icon: "info",
+        icon: "question",
         confirmButtonText: "OK",
       });
     } else if (data.cluster === "essay") {
       Swal.fire({
-        title: "Question",
+        title: "",
         html: `
           <div class="mb-3"><strong>${data.question}</strong></div>
         `,
@@ -170,8 +98,75 @@ export function TBLbanks({ banks, page }) {
           title: "swal-title",
           confirmButton: "swal-confirm-button",
         },
-        icon: "info",
+        icon: "question",
         confirmButtonText: "OK",
+      });
+    } else if (data.cluster === "enumeration") {
+      const tableHTML = `
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>#</th>
+            <th>Correct Answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.enumerationAns
+            .map(
+              (item, index) => `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td class="text-nowrap">${item.value}</td>
+                </tr>
+              `
+            )
+            .join("")}
+        </tbody>
+      </table>
+    `;
+
+      Swal.fire({
+        title: "",
+        html: `
+        <div class="mb-3"><strong>${data.question}</strong></div>
+        <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+          ${tableHTML}
+        </div>
+      `,
+        customClass: {
+          container: "swal-container",
+          title: "swal-title",
+          confirmButton: "btn btn-primary",
+          popup: "swal-lg",
+        },
+        icon: "question",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  const handleDelete = (data) => {
+    if (auth._id === data.user._id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(DESTROY({ id: data._id, token }));
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Failed!",
+        text: "You are not the author of  this question!",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
       });
     }
   };
@@ -198,8 +193,6 @@ export function TBLbanks({ banks, page }) {
             <th>#</th>
             <th scope="col">Question </th>
             <th scope="col">Cluster </th>
-            <th scope="col">Grade Level </th>
-            <th scope="col">Subject </th>
             <th scope="col">Action </th>
           </tr>
         </MDBTableHead>
@@ -210,12 +203,18 @@ export function TBLbanks({ banks, page }) {
                 <td>{1 + index}</td>
                 <td>{handleQuestion(bank.question)}</td>
                 <td>{bank.cluster}</td>
-                <td>{gradeLevelFormatter(bank.levelId)}</td>
-                <td>{subjectFormatter(bank.subjectId)}</td>
                 <td>
-                  <MDBBtn onClick={() => handleView(bank)}>
-                    <MDBIcon fas icon="eye" />
-                  </MDBBtn>
+                  <MDBBtnGroup>
+                    <MDBBtn color="warning" onClick={() => handleView(bank)}>
+                      <MDBIcon fas icon="eye" />
+                    </MDBBtn>
+                    <MDBBtn color="primary" onClick={() => handleDelete(bank)}>
+                      <MDBIcon fas icon="pencil-alt" />
+                    </MDBBtn>
+                    <MDBBtn color="danger" onClick={() => handleDelete(bank)}>
+                      <MDBIcon fas icon="trash" />
+                    </MDBBtn>
+                  </MDBBtnGroup>
                 </td>
               </tr>
             ))
