@@ -1,0 +1,15 @@
+-check if you can view all question made by other authors
+-if not, remove the author filter
+
+-in create
+-add title in modal
+-change close button to bg color
+-change data of form to state, so you can reuse the add for create
+-strand show when in jhs, only hide in elementary branch
+
+-multiple choice
+-change multiple choice into list, when I click add button, add an input, when I click minus, delete the input (make sure minimum of 4, maximum of 10)
+-when picking correct answer, list all the existing inputs to button and select the corresponding button for correct answer
+
+-enumeration
+-parse all inputs into uppercase

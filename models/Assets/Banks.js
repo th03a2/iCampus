@@ -39,18 +39,7 @@ const modelSchema = new mongoose.Schema(
     },
     question: { type: String },
     mcAnswers: {
-      a: {
-        type: String,
-      },
-      b: {
-        type: String,
-      },
-      c: {
-        type: String,
-      },
-      d: {
-        type: String,
-      },
+      type: Array,
     },
     boolAnswer: {
       true: {

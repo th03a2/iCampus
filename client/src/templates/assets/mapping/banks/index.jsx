@@ -39,9 +39,7 @@ export function TBLbanks({ banks, page }) {
       const { mcAnswers, question, correctAnswer } = data;
       const answerText = data && correctAnswer ? correctAnswer : "no-answer";
 
-      const choices = Object.entries(mcAnswers)
-        .filter(([key, value]) => value !== "")
-        .map(([key, value]) => value && value);
+      const choices = mcAnswers.map((data) => data.value);
 
       if (choices) {
         Swal.fire({
@@ -208,30 +206,38 @@ export function TBLbanks({ banks, page }) {
                     <MDBBtn color="warning" onClick={() => handleView(bank)}>
                       <MDBIcon fas icon="eye" />
                     </MDBBtn>
-                    <MDBBtn color="primary" onClick={() => handleDelete(bank)}>
-                      <MDBIcon fas icon="pencil-alt" />
-                    </MDBBtn>
-                    <MDBBtn color="danger" onClick={() => handleDelete(bank)}>
-                      <MDBIcon fas icon="trash" />
-                    </MDBBtn>
+                    {auth._id === bank.user._id && (
+                      <>
+                        <MDBBtn
+                          color="primary"
+                          onClick={() => handleDelete(bank)}
+                        >
+                          <MDBIcon fas icon="pencil-alt" />
+                        </MDBBtn>
+                        <MDBBtn
+                          color="danger"
+                          onClick={() => handleDelete(bank)}
+                        >
+                          <MDBIcon fas icon="trash" />
+                        </MDBBtn>
+                      </>
+                    )}
                   </MDBBtnGroup>
                 </td>
               </tr>
             ))
           ) : (
             <tr className="text-center">
-              <td colSpan={3}>No Questioneir</td>
+              <td colSpan={3}>No Questionnaire</td>
             </tr>
           )}
         </MDBTableBody>
       </MDBTable>
-      {visibility && (
-        <Modal
-          visibility={visibility}
-          setVisibility={setVisibility}
-          levelAssignQuiz={levelAssignQuiz}
-        />
-      )}
+      <Modal
+        visibility={visibility}
+        setVisibility={setVisibility}
+        levelAssignQuiz={levelAssignQuiz}
+      />
     </MDBContainer>
   );
 }
