@@ -13,6 +13,7 @@ import {
   MDBInputGroup,
   MDBIcon,
   MDBBtnGroup,
+  MDBInput,
 } from "mdb-react-ui-kit";
 import levels from "../../../../../../fakeDb/json/levels";
 import subjects from "../../../../../../fakeDb/json/subjects";
@@ -37,6 +38,18 @@ export default function Modal({ visibility, setVisibility }) {
   ]);
   const [multipleChoice, setMultipleChoice] = useState([{ id: 1, value: "" }]);
   const [mcAnswer, setMcAnswer] = useState({});
+
+  const [questionMatch, setQuestionMatch] = useState([
+    { id: 1, value: "", correctAnswer: "" },
+    { id: 1, value: "", correctAnswer: "" },
+    { id: 1, value: "", correctAnswer: "" },
+  ]);
+
+  const [cAnswerMAtch, setCanswerMatch] = useState([
+    { id: 1, value: "" }, // question sa matching type
+  ]);
+
+  const [confused, setConfused] = useState([{ id: 1, value: "" }]); //panglito sa matching type
 
   useEffect(() => {
     if (levelId) {
@@ -130,7 +143,6 @@ export default function Modal({ visibility, setVisibility }) {
     });
     setMultipleChoice(updatedInputGroups);
   };
-  console.log(mcAnswer);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -187,7 +199,7 @@ export default function Modal({ visibility, setVisibility }) {
   return (
     <>
       <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
-        <MDBModalDialog size="lg">
+        <MDBModalDialog size="xl">
           <MDBModalContent>
             <MDBModalHeader>
               <MDBBtn
@@ -268,6 +280,7 @@ export default function Modal({ visibility, setVisibility }) {
                         <option value={"identification"}>Identification</option>
                         <option value={"essay"}> Essay</option>
                         <option value={"enumeration"}> Enumeration</option>
+                        <option value={"matching"}> Matching type</option>
                       </select>
                     </MDBInputGroup>
                   </MDBCol>
@@ -275,11 +288,14 @@ export default function Modal({ visibility, setVisibility }) {
                 <MDBRow className="my-3">
                   <MDBCol>
                     <h5 className="text-center">
-                      <strong>Question</strong>
+                      <strong>
+                        {cluster === "matching" ? "Instruction" : "Question"}
+                      </strong>
                     </h5>
                     <textarea
                       className="form-control"
                       type="text"
+                      value={question.toUpperCase()}
                       onChange={(e) => setQuestion(e.target.value)}
                       required
                     />
@@ -301,7 +317,7 @@ export default function Modal({ visibility, setVisibility }) {
                                 type="text"
                                 className="form-control"
                                 placeholder={"Enter you want to choice"}
-                                value={group.value}
+                                value={group.value.toUpperCase()}
                                 onChange={(e) =>
                                   handleInputChoiceChange(
                                     group.id,
@@ -310,14 +326,7 @@ export default function Modal({ visibility, setVisibility }) {
                                 }
                                 required
                               />
-                              {multipleChoice.length < 10 && (
-                                <MDBBtn
-                                  onClick={handleAddInputChoice}
-                                  type="button"
-                                >
-                                  <MDBIcon fas icon="plus" />
-                                </MDBBtn>
-                              )}
+
                               {multipleChoice.length > 4 && (
                                 <MDBBtn
                                   onClick={() => handleRemoveChoiceInput(index)}
@@ -325,6 +334,14 @@ export default function Modal({ visibility, setVisibility }) {
                                   type="button"
                                 >
                                   <MDBIcon fas icon="minus" />
+                                </MDBBtn>
+                              )}
+                              {multipleChoice.length < 10 && (
+                                <MDBBtn
+                                  onClick={handleAddInputChoice}
+                                  type="button"
+                                >
+                                  <MDBIcon fas icon="plus" />
                                 </MDBBtn>
                               )}
                             </div>
@@ -367,7 +384,7 @@ export default function Modal({ visibility, setVisibility }) {
                         <MDBInputGroup textBefore="Correct Answer">
                           <input
                             className="form-control"
-                            value={correctAnswer}
+                            value={correctAnswer.toUpperCase()}
                             onChange={(e) => setCorrectAnswer(e.target.value)}
                             required
                           />
@@ -386,16 +403,13 @@ export default function Modal({ visibility, setVisibility }) {
                               type="text"
                               className="form-control"
                               placeholder={"Add Correct Answer"}
-                              value={group.value}
+                              value={group.value.toUpperCase()}
                               required
                               onChange={(e) =>
                                 handleInputChange(group.id, e.target.value)
                               }
                             />
 
-                            <MDBBtn onClick={handleAddInput} type="button">
-                              <MDBIcon fas icon="plus" />
-                            </MDBBtn>
                             {enumerationAnswer.length > 2 && (
                               <MDBBtn
                                 onClick={() => handleRemoveInput(index)}
@@ -405,11 +419,59 @@ export default function Modal({ visibility, setVisibility }) {
                                 <MDBIcon fas icon="minus" />
                               </MDBBtn>
                             )}
+                            <MDBBtn onClick={handleAddInput} type="button">
+                              <MDBIcon fas icon="plus" />
+                            </MDBBtn>
                           </div>
                         ))}
                       </div>
                     </MDBCol>
                   </MDBRow>
+                )}
+                {cluster === "matching" && (
+                  <>
+                    <MDBRow className="text-center my-2">
+                      <MDBCol md="4">Question</MDBCol>
+                      <MDBCol md="4">Answer</MDBCol>
+                      <MDBCol md="4">
+                        <MDBBtn type="button" color="success" size="sm">
+                          Click me to add confused!
+                        </MDBBtn>
+                      </MDBCol>
+                    </MDBRow>
+                    {questionMatch.map((data) => (
+                      <MDBRow className="mt-2">
+                        <MDBCol md={4}>
+                          <input className="form-control" />
+                        </MDBCol>
+                        <MDBCol md={4}>
+                          <div className="d-flex">
+                            <input className="form-control flex-grow-1" />
+                            <MDBBtn size="sm" className="ml-2" color="danger">
+                              <MDBIcon fas icon="minus" />
+                            </MDBBtn>
+                            <MDBBtn size="sm" className="ml-2">
+                              <MDBIcon fas icon="plus" />
+                            </MDBBtn>
+                          </div>
+                        </MDBCol>
+                      </MDBRow>
+                    ))}
+
+                    <MDBRow className="d-flex justify-content-end ">
+                      <MDBCol md={4} className="d-flex justify-content-end">
+                        <div className="d-flex">
+                          <input className="form-control flex-grow-1" />
+                          <MDBBtn size="sm" className="ml-2" color="danger">
+                            <MDBIcon fas icon="minus" />
+                          </MDBBtn>
+                          <MDBBtn size="sm" className="ml-2">
+                            <MDBIcon fas icon="plus" />
+                          </MDBBtn>
+                        </div>
+                      </MDBCol>
+                    </MDBRow>
+                  </>
                 )}
               </MDBModalBody>
               <MDBModalFooter>
