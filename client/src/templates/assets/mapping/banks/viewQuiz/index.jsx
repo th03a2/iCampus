@@ -89,7 +89,6 @@ export default function Modal({ look, setLook, quizs }) {
         confirmButtonText: "OK",
       });
     } else if (data.cluster === "enumeration") {
-      console.log("true");
       const tableHTML = `
         <table class="table">
           <thead>

@@ -87,7 +87,7 @@ export const UPDATE = createAsyncThunk(
   `${entity}/update`,
   async (item, thunkAPI) => {
     try {
-      return await update(entity, item.data, item.id, item.token, false);
+      return await update(entity, item.data, item.id, item.token, true);
     } catch (error) {
       const message =
         (error.response &&

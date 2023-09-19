@@ -13,9 +13,14 @@ import { DESTROY } from "../../../../redux/slices/assets/banks";
 import Modal from "./viewGradeAssignQuiz";
 import { paginationHandler } from "../../../../components/utilities";
 import Swal from "sweetalert2";
-export function TBLbanks({ banks, page }) {
+export function TBLbanks({
+  banks,
+  page,
+  setVisibility,
+  setIsUpdate,
+  setUpdateBank,
+}) {
   const { theme, maxPage, auth, token } = useSelector(({ auth }) => auth);
-  const [visibility, setVisibility] = useState(false);
   const [levelAssignQuiz, setLevelAssignQuiz] = useState([]),
     dispatch = useDispatch();
 
@@ -168,6 +173,12 @@ export function TBLbanks({ banks, page }) {
       });
     }
   };
+
+  const handleUpdate = (bank) => {
+    setVisibility(true);
+    setIsUpdate(true);
+    setUpdateBank(bank);
+  };
   return (
     <MDBContainer>
       {/* <MDBRow>
@@ -210,7 +221,7 @@ export function TBLbanks({ banks, page }) {
                       <>
                         <MDBBtn
                           color="primary"
-                          onClick={() => handleDelete(bank)}
+                          onClick={() => handleUpdate(bank)}
                         >
                           <MDBIcon fas icon="pencil-alt" />
                         </MDBBtn>
@@ -233,11 +244,7 @@ export function TBLbanks({ banks, page }) {
           )}
         </MDBTableBody>
       </MDBTable>
-      <Modal
-        visibility={visibility}
-        setVisibility={setVisibility}
-        levelAssignQuiz={levelAssignQuiz}
-      />
+      <Modal levelAssignQuiz={levelAssignQuiz} />
     </MDBContainer>
   );
 }

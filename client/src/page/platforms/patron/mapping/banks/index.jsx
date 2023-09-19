@@ -30,6 +30,8 @@ export default function Books() {
     [authors, setAuthors] = useState({}),
     [authorId, setAuthorId] = useState(""),
     [newBanks, setNewBanks] = useState([]),
+    [isUpdate, setIsUpdate] = useState(false),
+    [updateBank, setUpdateBank] = useState({}),
     dispatch = useDispatch();
 
   useEffect(() => {
@@ -219,10 +221,23 @@ export default function Books() {
           </MDBCol>
           <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
-        <TBLbanks banks={banks} page={page} />
+        <TBLbanks
+          banks={banks}
+          page={page}
+          visibility={visibility}
+          setVisibility={setVisibility}
+          setIsUpdate={setIsUpdate}
+          setUpdateBank={setUpdateBank}
+        />
       </MDBContainer>
       {visibility && (
-        <Modal visibility={visibility} setVisibility={setVisibility} />
+        <Modal
+          visibility={visibility}
+          setVisibility={setVisibility}
+          isUpdate={isUpdate}
+          setIsUpdate={setIsUpdate}
+          updateBank={updateBank}
+        />
       )}
     </>
   );

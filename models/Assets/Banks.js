@@ -53,6 +53,9 @@ const modelSchema = new mongoose.Schema(
     levelId: { type: Number },
     enumerationAns: { type: Array }, //enumaration answer
     correctAnswer: { type: String },
+    matchingQuestions: { type: Array },
+    matchingAnswers: { type: Array },
+    confusedAnswers: { type: Array },
     deletedAt: { type: String },
   },
   {
