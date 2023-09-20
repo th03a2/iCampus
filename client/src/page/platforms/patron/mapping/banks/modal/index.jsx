@@ -42,16 +42,24 @@ export default function Modal({
   const dispatch = useDispatch();
   const [enumerationAnswer, setEnumerationAnswer] = useState([
     { id: 1, value: "" },
+    { id: 2, value: "" },
   ]);
-  const [multipleChoice, setMultipleChoice] = useState([{ id: 1, value: "" }]);
+  const [multipleChoice, setMultipleChoice] = useState([
+    { id: 1, value: "" },
+    { id: 2, value: "" },
+    { id: 3, value: "" },
+    { id: 4, value: "" },
+  ]);
   const [mcAnswer, setMcAnswer] = useState({});
 
   const [questionMatch, setQuestionMatch] = useState([
     { id: 1, value: "", correctAnswer: "" },
+    { id: 2, value: "", correctAnswer: "" },
   ]);
 
   const [answerMatch, setAnswerMatch] = useState([
-    { id: 1, value: "" }, // question sa matching type
+    { id: 1, value: "" },
+    { id: 2, value: "" }, // question sa matching type
   ]);
 
   const [confused, setConfused] = useState([]); //panglito sa correct answer sa matching type
@@ -369,7 +377,11 @@ export default function Modal({
               ></MDBBtn>
             </MDBModalHeader>
             <form onSubmit={handleSubmit}>
-              <MDBModalBody>
+              <MDBModalBody
+                style={{
+                  height: "520px",
+                }}
+              >
                 <Header
                   gradeLevels={gradeLevels}
                   onDuty={onDuty}

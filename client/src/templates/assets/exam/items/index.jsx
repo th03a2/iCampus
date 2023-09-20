@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   MDBTable,
   MDBTableHead,
@@ -9,18 +9,10 @@ import {
   MDBBtnGroup,
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import { DESTROY } from "../../../../redux/slices/assets/banks";
-import { paginationHandler } from "../../../../components/utilities";
+import { paginationHandler, socket } from "../../../../components/utilities";
 import Swal from "sweetalert2";
-export function TBLbanks({
-  banks,
-  page,
-  setVisibility,
-  setIsUpdate,
-  setUpdateBank,
-}) {
-  const { theme, maxPage, auth, token } = useSelector(({ auth }) => auth),
-    dispatch = useDispatch();
+export function TBLexams({ banks, page, items }) {
+  const { theme, maxPage } = useSelector(({ auth }) => auth);
 
   const handleQuestion = (question) => {
     if (question.length > 40) {
@@ -191,44 +183,19 @@ export function TBLbanks({
     }
   };
 
-  const handleDelete = (data) => {
-    if (auth._id === data.user._id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(DESTROY({ id: data._id, token }));
-        }
-      });
-    } else {
-      Swal.fire({
-        title: "Failed!",
-        text: "You are not the author of  this question!",
-        icon: "warning",
-        showCancelButton: false,
-        confirmButtonColor: "#3085d6",
-      });
-    }
+  const handlePick = (question) => {
+    const data = question;
+    socket.emit("receive_quiz", data);
   };
 
-  const handleUpdate = (bank) => {
-    setVisibility(true);
-    setIsUpdate(true);
-    setUpdateBank(bank);
-  };
   return (
-    <MDBContainer>
+    <MDBContainer
+      style={{ maxHeight: "500px", overflowY: "auto", height: "500px" }}
+    >
+      <h4 className="text-center mt-3">
+        <strong>Items</strong>
+      </h4>
       <MDBTable align="middle" hover responsive color={theme.color}>
-        <caption>List of banks</caption>
-        <caption className="caption-top">
-          Total of <b>{banks?.length}</b> bank(s)
-        </caption>
         <MDBTableHead>
           <tr>
             <th>#</th>
@@ -246,32 +213,27 @@ export function TBLbanks({
                 <td>{bank.cluster}</td>
                 <td>
                   <MDBBtnGroup>
-                    <MDBBtn color="warning" onClick={() => handleView(bank)}>
+                    <MDBBtn
+                      color="warning"
+                      onClick={() => handleView(bank)}
+                      size="sm"
+                    >
                       <MDBIcon fas icon="eye" />
                     </MDBBtn>
-                    {auth._id === bank.user._id && (
-                      <>
-                        <MDBBtn
-                          color="primary"
-                          onClick={() => handleUpdate(bank)}
-                        >
-                          <MDBIcon fas icon="pencil-alt" />
-                        </MDBBtn>
-                        <MDBBtn
-                          color="danger"
-                          onClick={() => handleDelete(bank)}
-                        >
-                          <MDBIcon fas icon="trash" />
-                        </MDBBtn>
-                      </>
-                    )}
+                    <MDBBtn
+                      color="primary"
+                      onClick={() => handlePick(bank)}
+                      size="sm"
+                    >
+                      {/* <MDBIcon fas icon="eye" /> */}Pick
+                    </MDBBtn>
                   </MDBBtnGroup>
                 </td>
               </tr>
             ))
           ) : (
             <tr className="text-center">
-              <td colSpan={3}>No Questionnaire</td>
+              <td colSpan={3}>No Items</td>
             </tr>
           )}
         </MDBTableBody>

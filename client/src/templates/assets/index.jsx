@@ -23,3 +23,5 @@ export { ModalSearchUsers } from "./users/looks";
 export { TBLschedulers } from "./schedulers";
 export { TBLpendingEmployees } from "./employees/pending";
 export { TBLBatchApproval } from "./principal/batch";
+export { TBLexams } from "./exam/items";
+export { TBLpick } from "./exam/pick";

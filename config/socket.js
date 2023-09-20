@@ -19,6 +19,10 @@ const socket = (io) => {
     socket.on("enrollment_desicion", (data) => {
       socket.broadcast.emit("sendToEnrollees", data);
     });
+
+    socket.on("receive_quiz", (data) => {
+      socket.broadcast.emit("send_quiz", data);
+    });
   });
 };
 

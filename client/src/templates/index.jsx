@@ -22,6 +22,8 @@ export {
   TBLpending,
   TBLpendingEmployees,
   TBLBatchApproval,
+  TBLexams,
+  TBLpick,
 } from "./assets";
 
 export { TBLmenu } from "./assets/menus";

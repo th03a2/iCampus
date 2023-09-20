@@ -104,6 +104,11 @@ export default [
     path: "batch",
   },
   {
+    name: "Exam",
+    icon: "book",
+    path: "exam",
+  },
+  {
     name: "Enrollment",
     icon: "restroom",
     path: "enrollment",

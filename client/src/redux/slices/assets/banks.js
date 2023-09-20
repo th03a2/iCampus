@@ -13,9 +13,9 @@ const initialState = {
 
 export const BROWSE = createAsyncThunk(
   `${entity}/browse`,
-  async ({ token }, thunkAPI) => {
+  async ({ token, data }, thunkAPI) => {
     try {
-      return await browse("assets/Sections/browse", "", token);
+      return await browse(`${entity}/browse`, data, token);
     } catch (error) {
       const message =
         (error.response &&

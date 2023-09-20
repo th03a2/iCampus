@@ -25,6 +25,7 @@ import Employ from "./employ";
 import PendingEmployee from "./employees/pending";
 import ApprovedEmployee from "./employees/approved";
 import Resection from "./enrollees/resection";
+import Exam from "./exam";
 
 const routes = {
   name: "patron",
@@ -143,6 +144,10 @@ const routes = {
     {
       path: "employ",
       element: <Employ />,
+    },
+    {
+      path: "exam",
+      element: <Exam />,
     },
     {
       path: "employees",

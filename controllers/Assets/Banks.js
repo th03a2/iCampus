@@ -10,6 +10,15 @@ exports.browse = (req, res) => {
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 
+// exports.getBanks = (req, res) => {
+//   Entity.find()
+//     .byBranch(req.query.key)
+//     .populate("subjectId")
+//     .populate("user")
+//     .then((items) => res.json(items.filter((item) => !item.deletedAt)))
+//     .catch((error) => res.status(400).json({ error: error.message }));
+// };
+
 exports.list = (req, res) => {
   Entity.find()
     .byBranchId(req.query.branchId)
