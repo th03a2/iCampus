@@ -34,12 +34,11 @@ export default function Exam() {
     [levelId, setLevelId] = useState(""),
     [topicId, setTopicId] = useState(""),
     [topics, setTopics] = useState({}),
-    [authors, setAuthors] = useState({}),
-    [newBanks, setNewBanks] = useState([]),
     [isUpdate, setIsUpdate] = useState(false),
     [updateBank, setUpdateBank] = useState({}),
     [items, setItems] = useState([]),
-    [count, setCount] = useState(1),
+    [category, setCategory] = useState(""),
+    [groups, setGroups] = useState({}),
     dispatch = useDispatch();
 
   useEffect(() => {
@@ -117,11 +116,10 @@ export default function Exam() {
           catalog.subjectId === Number(topicId)
       );
 
-      const filterAuthors = filterSubjectAndLevels.reduce(
+      const filterCategory = filterSubjectAndLevels.reduce(
         (accumulator, value) => {
-          const author = nameFormatter(value.user?.fullName);
-          const id = value.user?._id;
-          const key = author + "-" + id;
+          const key = value.category;
+
           if (!accumulator[key]) {
             accumulator[key] = [value];
           } else {
@@ -131,8 +129,9 @@ export default function Exam() {
         },
         {}
       );
+
       setBanks(filterSubjectAndLevels);
-      setAuthors(filterAuthors || {});
+      setGroups(filterCategory);
     }
   }, [topicId, levelId]);
 
@@ -143,91 +142,82 @@ export default function Exam() {
   }, [levelId, topicId]);
 
   useEffect(() => {
-    setItems(items);
-  }, [items]);
-
-  const handleGet = (e) => {
-    e.preventDefault();
-    var container = [];
-
-    for (let index = 0; index < count; index++) {
-      const element = banks[index];
-      container.push(element);
+    if (category) {
+      const newArray = groups[category];
+      setBanks(newArray);
     }
-    setNewBanks(container);
-  };
+  }, [category]);
 
   return (
     <>
       <BreadCrumb
-        title="Exams"
+        title="Questionneir"
         button={true}
         handler={setVisibility}
         visibility={visibility}
         paths={path}
       />
       <MDBContainer className="py-5 mt-5" style={{ height: "400px" }}>
-        <form onSubmit={handleGet}>
-          <MDBRow className="mb-3">
-            <MDBCol md={3}>
-              <MDBInputGroup textBefore="Grade Level">
-                <select
-                  className="form-control"
-                  value={levelId}
-                  onChange={(e) => setLevelId(e.target.value)}
-                  required
-                >
-                  <option value={""}></option>
-                  {gradeLevels &&
-                    Object.entries(gradeLevels).map(([key, value]) => {
-                      const array = key.split("-");
-                      return <option value={array[1]}>{array[0]}</option>;
-                    })}
-                </select>
-              </MDBInputGroup>
-            </MDBCol>
-            <MDBCol md={3}>
-              <MDBInputGroup textBefore="Subject">
-                <select
-                  className="form-control"
-                  value={topicId}
-                  onChange={(e) => setTopicId(e.target.value)}
-                  required
-                >
-                  <option value={""}></option>
-                  {levelId &&
-                    Object.entries(topics).map(([key, value]) => {
-                      const array = key.split("-");
-                      return <option value={array[1]}>{array[0]}</option>;
-                    })}
-                </select>
-              </MDBInputGroup>
-            </MDBCol>
-            <MDBCol md={4}>
-              <MDBInputGroup textBefore="How many items you want to get">
-                <input
-                  type="number"
-                  className="form-control"
-                  required
-                  value={count}
-                  max={banks.length}
-                  min={1}
-                  //   min={"1"}
-                  onChange={(e) => setCount(Number(e.target.value))}
-                />
-              </MDBInputGroup>
-            </MDBCol>
-            <MDBCol>
-              <MDBBtn type="submit">Get</MDBBtn>
-            </MDBCol>
-            {/* <Pager setPage={setPage} total={totalPages} page={page} /> */}
-          </MDBRow>
-        </form>
+        <MDBRow className="mb-3 d-flex justify-content-center">
+          <MDBCol md={3}>
+            <MDBInputGroup textBefore="Grade Level">
+              <select
+                className="form-control"
+                value={levelId}
+                onChange={(e) => setLevelId(e.target.value)}
+                required
+              >
+                <option value={""}></option>
+                {gradeLevels &&
+                  Object.entries(gradeLevels).map(([key, value]) => {
+                    const array = key.split("-");
+                    return <option value={array[1]}>{array[0]}</option>;
+                  })}
+              </select>
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={3}>
+            <MDBInputGroup textBefore="Subject">
+              <select
+                className="form-control"
+                value={topicId}
+                onChange={(e) => setTopicId(e.target.value)}
+                required
+              >
+                <option value={""}></option>
+                {levelId &&
+                  Object.entries(topics).map(([key, value]) => {
+                    const array = key.split("-");
+                    return <option value={array[1]}>{array[0]}</option>;
+                  })}
+              </select>
+            </MDBInputGroup>
+          </MDBCol>
+          <MDBCol md={3}>
+            <MDBInputGroup textBefore="Category">
+              <select
+                className="form-control"
+                required
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value=""></option>
+                {Object.entries(groups).map(([key], index) => (
+                  <option key={index} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+              {/* <input type="text" /> */}
+            </MDBInputGroup>
+          </MDBCol>
+          {/* <Pager setPage={setPage} total={totalPages} page={page} /> */}
+        </MDBRow>
         <MDBRow>
-          <MDBCol md={6}>
+          <MDBCol md={12}>
             <MDBCard>
               <TBLexams
-                banks={newBanks}
+                banks={banks.length > 0 ? banks : catalogs}
                 items={items}
                 page={page}
                 visibility={visibility}
@@ -237,7 +227,7 @@ export default function Exam() {
               />
             </MDBCard>
           </MDBCol>
-          <MDBCol md={6}>
+          {/* <MDBCol md={6}>
             <MDBCard>
               <TBLpick
                 items={items}
@@ -248,7 +238,7 @@ export default function Exam() {
                 setUpdateBank={setUpdateBank}
               />
             </MDBCard>
-          </MDBCol>
+          </MDBCol> */}
         </MDBRow>
       </MDBContainer>
       {/* {visibility && (

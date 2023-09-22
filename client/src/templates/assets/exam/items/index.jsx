@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   MDBTable,
   MDBTableHead,
@@ -7,15 +7,65 @@ import {
   MDBIcon,
   MDBContainer,
   MDBBtnGroup,
+  MDBInputGroup,
+  MDBRow,
+  MDBCol,
+  MDBCheckbox,
 } from "mdb-react-ui-kit";
-import { useDispatch, useSelector } from "react-redux";
-import { paginationHandler, socket } from "../../../../components/utilities";
+import { useSelector } from "react-redux";
+import { paginationHandler } from "../../../../components/utilities";
 import Swal from "sweetalert2";
-export function TBLexams({ banks, page, items }) {
+export function TBLexams({ banks, page }) {
   const { theme, maxPage } = useSelector(({ auth }) => auth);
+  const [getItems, setGetItems] = useState(0);
+  const [questionneirs, setQuestionneirs] = useState([]);
+  const [pick, setPick] = useState([]);
+  const [points, setPoints] = useState(1);
 
+  useEffect(() => {
+    setQuestionneirs(banks);
+  }, [banks]);
+
+  useEffect(() => {
+    if (getItems && getItems <= questionneirs.length) {
+      const questionneirReturnToOld = questionneirs.map((data) => {
+        // para kung may isPick na siya na attribute tatanggalin yun
+        if (data.hasOwnProperty("isPick")) {
+          const { isPick, ...withoutPick } = data;
+          return withoutPick;
+        } else {
+          return data;
+        }
+      });
+
+      const randomQuestions = questionneirReturnToOld
+        .slice()
+        .sort(() => Math.random() - 0.5)
+        .slice(0, getItems);
+
+      const newArray = questionneirReturnToOld.map((question) => {
+        const index = randomQuestions.findIndex(
+          (data) => data._id === question._id
+        );
+        if (index > -1) {
+          return {
+            ...question,
+            isPick: true,
+            points,
+          };
+        } else {
+          return question;
+        }
+      });
+      setQuestionneirs(newArray);
+      setPick(randomQuestions);
+    } else {
+      setQuestionneirs(banks);
+      setPick([]);
+    }
+  }, [getItems]);
   const handleQuestion = (question) => {
-    if (question.length > 40) {
+    if (question?.length > 40) {
       const messages = question.split(" ");
       var updateMessages = " ";
       for (const index in messages) {
@@ -184,17 +234,77 @@ export function TBLexams({ banks, page, items }) {
   };
 
   const handlePick = (question) => {
-    const data = question;
-    socket.emit("receive_quiz", data);
+    if (points) {
+      const indexQuestioner = questionneirs.findIndex(
+        ({ _id }) => _id === question._id
+      );
+      const index = pick.findIndex(({ _id }) => _id === question._id);
+      if (index > -1) {
+        const newArray = [...pick];
+        const newQuestionneir = [...questionneirs];
+        newArray.splice(index, 1);
+        newQuestionneir[indexQuestioner] = {
+          ...newQuestionneir[indexQuestioner],
+          isPick: false,
+        };
+        setQuestionneirs(newQuestionneir);
+        setPick(newArray);
+      } else {
+        const newQuestionneir = [...questionneirs];
+        const newArray = [...pick];
+        newArray.push(question);
+        newQuestionneir[indexQuestioner] = {
+          ...newQuestionneir[indexQuestioner],
+          isPick: true,
+        };
+        setQuestionneirs(newQuestionneir);
+        setPick(newArray);
+      }
+    } else {
+      alert("wala");
+    }
   };
 
   return (
     <MDBContainer
       style={{ maxHeight: "500px", overflowY: "auto", height: "500px" }}
     >
-      <h4 className="text-center mt-3">
-        <strong>Items</strong>
-      </h4>
+      <MDBRow className="my-2">
+        <MDBCol md={4}>
+          <MDBInputGroup textBefore="how many items you want  to get">
+            <input
+              className="form-control"
+              type="number"
+              max={questionneirs.length}
+              min={0}
+              value={getItems > questionneirs.length ? 0 : getItems}
+              onChange={(e) => setGetItems(Number(e.target.value))}
+            />
+          </MDBInputGroup>
+        </MDBCol>
+        <MDBCol md={4}>
+          <MDBInputGroup textBefore="how many points per answer">
+            <input
+              className="form-control"
+              type="number"
+              min={0}
+              value={points}
+              onChange={(e) => setPoints(Number(e.target.value))}
+            />
+          </MDBInputGroup>
+        </MDBCol>
+        <MDBCol md={4} className="text-center">
+          <h5>
+            Quizzes:
+            <strong>
+              {" " +
+                pick.length +
+                "/" +
+                ` ${getItems > questionneirs.length ? "0" : getItems}`}
+            </strong>
+          </h5>
+        </MDBCol>
+      </MDBRow>
       <MDBTable align="middle" hover responsive color={theme.color}>
         <MDBTableHead>
           <tr>
@@ -205,32 +315,34 @@ export function TBLexams({ banks, page, items }) {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          {banks?.length > 0 ? (
-            paginationHandler(banks, page, maxPage).map((bank, index) => (
-              <tr key={`bank-${index}`}>
-                <td>{1 + index}</td>
-                <td>{handleQuestion(bank.question)}</td>
-                <td>{bank.cluster}</td>
-                <td>
-                  <MDBBtnGroup>
-                    <MDBBtn
-                      color="warning"
-                      onClick={() => handleView(bank)}
-                      size="sm"
-                    >
-                      <MDBIcon fas icon="eye" />
-                    </MDBBtn>
-                    <MDBBtn
-                      color="primary"
-                      onClick={() => handlePick(bank)}
-                      size="sm"
-                    >
-                      {/* <MDBIcon fas icon="eye" /> */}Pick
-                    </MDBBtn>
-                  </MDBBtnGroup>
-                </td>
-              </tr>
-            ))
+          {questionneirs?.length > 0 ? (
+            paginationHandler(questionneirs, page, maxPage).map(
+              (questionneir, index) => (
+                <tr key={`bank-${index}`}>
+                  <tr className="text-center">
+                    <MDBCheckbox
+                      onClick={() => handlePick(questionneir)}
+                      checked={questionneir.isPick ? true : false}
+                      color="danger"
+                    />
+                  </tr>
+                  <td>{handleQuestion(questionneir.question)}</td>
+                  <td>{questionneir.cluster}</td>
+                  <td>
+                    <MDBBtnGroup>
+                      <MDBBtn
+                        color="warning"
+                        onClick={() => handleView(questionneir)}
+                        size="sm"
+                        type="button"
+                      >
+                        <MDBIcon fas icon="eye" />
+                      </MDBBtn>
+                    </MDBBtnGroup>
+                  </td>
+                </tr>
+              )
+            )
           ) : (
             <tr className="text-center">
               <td colSpan={3}>No Items</td>

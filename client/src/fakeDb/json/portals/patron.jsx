@@ -104,7 +104,7 @@ export default [
     path: "batch",
   },
   {
-    name: "Exam",
+    name: "Questionneir",
     icon: "book",
     path: "exam",
   },
