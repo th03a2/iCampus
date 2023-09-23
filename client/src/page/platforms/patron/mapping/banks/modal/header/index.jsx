@@ -16,6 +16,8 @@ export default function ({
   cluster,
   setCluster,
   suggestSubject,
+  category,
+  setCategory,
 }) {
   return (
     <>
@@ -85,6 +87,22 @@ export default function ({
               <option value={"essay"}> Essay</option>
               <option value={"enumeration"}> Enumeration</option>
               <option value={"matching"}> Matching type</option>
+            </select>
+          </MDBInputGroup>
+        </MDBCol>
+      </MDBRow>
+      <MDBRow className="mt-2">
+        <MDBCol md={6}>
+          <MDBInputGroup textBefore="Category">
+            <select
+              className="form-control"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value={""}></option>
+              <option value={"easy"}>Easy</option>
+              <option value={"medium"}>Medium</option>
+              <option value={"hard"}>Hard</option>
             </select>
           </MDBInputGroup>
         </MDBCol>

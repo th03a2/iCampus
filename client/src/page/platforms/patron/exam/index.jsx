@@ -67,7 +67,7 @@ export default function Exam() {
         levels.find(({ id }) => id === level.levelId)
       );
       const newArray = filterLevel.reduce((accumulator, value) => {
-        const key = value.description + "-" + value.id;
+        const key = value?.description + "-" + value?.id;
         if (!accumulator[key]) {
           accumulator[key] = [value];
         } else {
@@ -148,6 +148,16 @@ export default function Exam() {
     }
   }, [category]);
 
+  useEffect(() => {
+    if (banks.length > 0) {
+      let totalPages = Math.floor(banks.length / maxPage);
+      if (banks.length % maxPage > 0) totalPages += 1;
+      setTotalPages(totalPages);
+
+      page > totalPages && setPage(totalPages);
+    }
+  }, [banks, page, maxPage]);
+
   return (
     <>
       <BreadCrumb
@@ -211,7 +221,7 @@ export default function Exam() {
               {/* <input type="text" /> */}
             </MDBInputGroup>
           </MDBCol>
-          {/* <Pager setPage={setPage} total={totalPages} page={page} /> */}
+          <Pager setPage={setPage} total={totalPages} page={page} />
         </MDBRow>
         <MDBRow>
           <MDBCol md={12}>
@@ -227,18 +237,6 @@ export default function Exam() {
               />
             </MDBCard>
           </MDBCol>
-          {/* <MDBCol md={6}>
-            <MDBCard>
-              <TBLpick
-                items={items}
-                page={page}
-                visibility={visibility}
-                setVisibility={setVisibility}
-                setIsUpdate={setIsUpdate}
-                setUpdateBank={setUpdateBank}
-              />
-            </MDBCard>
-          </MDBCol> */}
         </MDBRow>
       </MDBContainer>
       {/* {visibility && (

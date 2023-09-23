@@ -11,17 +11,20 @@ import {
   MDBRow,
   MDBCol,
   MDBCheckbox,
+  MDBBadge,
 } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import { paginationHandler } from "../../../../components/utilities";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import Modal from "../modal";
 export function TBLexams({ banks, page }) {
   const { theme, maxPage } = useSelector(({ auth }) => auth);
   const [getItems, setGetItems] = useState(0);
   const [questionneirs, setQuestionneirs] = useState([]);
-  const [pick, setPick] = useState([]);
-  const [points, setPoints] = useState(1);
-
+  const [selectingQuestions, setSelectingQuestions] = useState([]);
+  const [points, setPoints] = useState(0);
+  const [visibility, setVisibility] = useState(false);
   useEffect(() => {
     setQuestionneirs(banks);
   }, [banks]);
@@ -57,13 +60,28 @@ export function TBLexams({ banks, page }) {
           return question;
         }
       });
-      setQuestionneirs(newArray);
-      setPick(randomQuestions);
+
+      const sortQuestionneir = newArray.sort((a, b) => {
+        if (a.isPick === b.isPick) {
+          return 0;
+        }
+        if (a.isPick) {
+          return -1;
+        }
+        return 1;
+      });
+
+      const findSelectQuestions = sortQuestionneir.filter(
+        (questionneir) => questionneir.isPick === true
+      );
+      setQuestionneirs(sortQuestionneir);
+      setSelectingQuestions(findSelectQuestions);
     } else {
       setQuestionneirs(banks);
-      setPick([]);
+      setSelectingQuestions([]);
     }
   }, [getItems]);
+
   const handleQuestion = (question) => {
     if (question?.length > 40) {
       const messages = question.split(" ");
@@ -78,6 +96,18 @@ export function TBLexams({ banks, page }) {
       return question;
     }
   };
+
+  useEffect(() => {
+    if (points) {
+      const selectingQuestionsWithPoints = selectingQuestions.map(
+        (question) => {
+          return { ...question, points };
+        }
+      );
+
+      setSelectingQuestions(selectingQuestionsWithPoints);
+    }
+  }, [points]);
 
   const handleView = (data) => {
     if (data.cluster === "multiple choice") {
@@ -196,7 +226,7 @@ export function TBLexams({ banks, page }) {
           </tr>
         </thead>
         <tbody>
-          ${data.matchingQuestions
+          ${data?.matchingQuestions
             .map(
               (item, index) => `
                 <tr>
@@ -234,42 +264,59 @@ export function TBLexams({ banks, page }) {
   };
 
   const handlePick = (question) => {
-    if (points) {
-      const indexQuestioner = questionneirs.findIndex(
-        ({ _id }) => _id === question._id
-      );
-      const index = pick.findIndex(({ _id }) => _id === question._id);
-      if (index > -1) {
-        const newArray = [...pick];
-        const newQuestionneir = [...questionneirs];
-        newArray.splice(index, 1);
-        newQuestionneir[indexQuestioner] = {
-          ...newQuestionneir[indexQuestioner],
-          isPick: false,
-        };
-        setQuestionneirs(newQuestionneir);
-        setPick(newArray);
-      } else {
-        const newQuestionneir = [...questionneirs];
-        const newArray = [...pick];
-        newArray.push(question);
-        newQuestionneir[indexQuestioner] = {
-          ...newQuestionneir[indexQuestioner],
-          isPick: true,
-        };
-        setQuestionneirs(newQuestionneir);
-        setPick(newArray);
-      }
+    const indexQuestioner = questionneirs.findIndex(
+      ({ _id }) => _id === question._id
+    );
+    const index = selectingQuestions.findIndex(
+      ({ _id }) => _id === question._id
+    );
+    if (index > -1) {
+      const newArray = [...selectingQuestions];
+      const newQuestionneir = [...questionneirs];
+      newArray.splice(index, 1);
+      newQuestionneir[indexQuestioner] = {
+        ...newQuestionneir[indexQuestioner],
+        isPick: false,
+      };
+      setQuestionneirs(newQuestionneir);
+      setSelectingQuestions(newArray);
     } else {
-      alert("wala");
+      const newQuestionneir = [...questionneirs];
+      const newArray = [...selectingQuestions];
+      newArray.push(question);
+      newQuestionneir[indexQuestioner] = {
+        ...newQuestionneir[indexQuestioner],
+        isPick: true,
+        points,
+      };
+      setQuestionneirs(newQuestionneir);
+      setSelectingQuestions(newArray);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (selectingQuestions.length === getItems) {
+      setVisibility(true);
+    }
+    if (selectingQuestions.length < getItems) {
+      toast.warning(
+        `Your questions are not enough, please add ${
+          getItems - selectingQuestions.length
+        }  more`
+      );
+    }
+    if (selectingQuestions.length > getItems) {
+      toast.warning(
+        `You have too many questions, please reduce your chosen questions by ${
+          selectingQuestions.length - getItems
+        } more`
+      );
     }
   };
 
   return (
-    <MDBContainer
-      style={{ maxHeight: "500px", overflowY: "auto", height: "500px" }}
-    >
-      <MDBRow className="my-2">
+    <MDBContainer>
+      <MDBRow className="mt-3">
         <MDBCol md={4}>
           <MDBInputGroup textBefore="how many items you want  to get">
             <input
@@ -295,17 +342,33 @@ export function TBLexams({ banks, page }) {
         </MDBCol>
         <MDBCol md={4} className="text-center">
           <h5>
-            Quizzes:
-            <strong>
+            <strong>Items:</strong>
+            <MDBBadge
+              color={
+                getItems < selectingQuestions.length ? "danger" : "primary"
+              }
+            >
               {" " +
-                pick.length +
-                "/" +
+                selectingQuestions.length +
+                " /" +
                 ` ${getItems > questionneirs.length ? "0" : getItems}`}
-            </strong>
+            </MDBBadge>
           </h5>
         </MDBCol>
       </MDBRow>
       <MDBTable align="middle" hover responsive color={theme.color}>
+        <caption className="text-end">
+          <MDBBtn
+            type="button"
+            disabled={selectingQuestions.length === 0 ? true : false}
+            onClick={handleSubmit}
+          >
+            Submit
+          </MDBBtn>
+        </caption>
+        <caption className="caption-top">
+          Total of <b>{questionneirs?.length}</b> questionneir(s)
+        </caption>
         <MDBTableHead>
           <tr>
             <th>#</th>
@@ -323,7 +386,6 @@ export function TBLexams({ banks, page }) {
                     <MDBCheckbox
                       onClick={() => handlePick(questionneir)}
                       checked={questionneir.isPick ? true : false}
-                      color="danger"
                     />
                   </tr>
                   <td>{handleQuestion(questionneir.question)}</td>
@@ -350,6 +412,15 @@ export function TBLexams({ banks, page }) {
           )}
         </MDBTableBody>
       </MDBTable>
+      {visibility && (
+        <Modal
+          visibility={visibility}
+          setVisibility={setVisibility}
+          selectingQuestions={selectingQuestions}
+          handleView={handleView}
+          handleQuestion={handleQuestion}
+        />
+      )}
     </MDBContainer>
   );
 }

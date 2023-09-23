@@ -39,6 +39,7 @@ export default function Modal({
   const [cluster, setCluster] = useState("");
   const [gradeLevels, setGradeLevels] = useState([]);
   const [suggestSubject, setSuggestSubject] = useState("");
+  const [category, setCategory] = useState("");
   const dispatch = useDispatch();
   const [enumerationAnswer, setEnumerationAnswer] = useState([
     { id: 1, value: "" },
@@ -304,6 +305,7 @@ export default function Modal({
             question,
             user: auth._id,
             cluster,
+            category,
             mcAnswers: cluster === "multiple choice" ? multipleChoice : "",
             enumerationAns:
               enumerationAnswer.length > 0 ? enumerationAnswer : [],
@@ -330,6 +332,7 @@ export default function Modal({
                 levelId,
                 question,
                 user: auth._id,
+                category,
                 cluster,
                 mcAnswers: cluster === "multiple choice" ? multipleChoice : "",
                 enumerationAns:
@@ -398,6 +401,8 @@ export default function Modal({
                   cluster={cluster}
                   setCluster={setCluster}
                   suggestSubject={suggestSubject}
+                  category={category}
+                  setCategory={setCategory}
                 />
                 {cluster === "multiple choice" && (
                   <>
