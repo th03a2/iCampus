@@ -25,6 +25,7 @@ export function TBLexams({ banks, page }) {
   const [selectingQuestions, setSelectingQuestions] = useState([]);
   const [points, setPoints] = useState(0);
   const [visibility, setVisibility] = useState(false);
+
   useEffect(() => {
     setQuestionneirs(banks);
   }, [banks]);
