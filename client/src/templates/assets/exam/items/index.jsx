@@ -315,6 +315,14 @@ export function TBLexams({ banks, page }) {
     }
   };
 
+  const handleChecked = (isCheck) => {
+    if (isCheck) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <MDBContainer>
       <MDBRow className="mt-3">
@@ -387,6 +395,7 @@ export function TBLexams({ banks, page }) {
                     <MDBCheckbox
                       onClick={() => handlePick(questionneir)}
                       checked={questionneir.isPick ? true : false}
+                      onChange={() => handleChecked(questionneir.isPick)}
                     />
                   </tr>
                   <td>{handleQuestion(questionneir.question)}</td>

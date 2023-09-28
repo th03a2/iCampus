@@ -14,6 +14,7 @@ const Articles = require("./Articles");
 const Batch = require("./Batch");
 const Enrollment = require("./Enrollment");
 const Employees = require("./Employees.js");
+const Exams = require("./Exams");
 const assets = {
   root: "assets",
   branches: [
@@ -81,6 +82,10 @@ const assets = {
     {
       root: "employees",
       routes: Employees,
+    },
+    {
+      root: "exams",
+      routes: Exams,
     },
   ],
 };

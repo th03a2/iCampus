@@ -31,6 +31,7 @@ import schedulers from "./slices/assets/schedulers";
 import levels from "./slices/assets/levels";
 import employees from "./slices/assets/employees";
 import banks from "./slices/assets/banks";
+import exams from "./slices/assets/exams";
 export const store = configureStore({
   reducer: {
     areas,
@@ -65,5 +66,6 @@ export const store = configureStore({
     schedulers,
     employees,
     banks,
+    exams,
   },
 });

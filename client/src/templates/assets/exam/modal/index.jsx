@@ -20,7 +20,8 @@ import {
 } from "mdb-react-ui-kit";
 import levels from "../../../../fakeDb/json/levels";
 import topic from "../../../../fakeDb/json/subjects";
-import { useSelector } from "react-redux";
+import { SAVE } from "../../../../redux/slices/assets/exams";
+import { useDispatch, useSelector } from "react-redux";
 export default function Modal({
   visibility,
   setVisibility,
@@ -28,6 +29,7 @@ export default function Modal({
   handleView,
   handleQuestion,
 }) {
+  const { auth, token } = useSelector(({ auth }) => auth);
   const [questionneirs, setQuestionneirs] = useState([]);
   const { onDuty } = useSelector(({ auth }) => auth);
   const [gradeLevels, setGradeLevels] = useState([]);
@@ -35,8 +37,15 @@ export default function Modal({
   const [strands, setStrands] = useState([]);
   const [strandId, setStrandId] = useState("");
   const [subjects, setSubjects] = useState("");
-  const [points, setPoints] = useState(0);
-  const [chooseLevel, setChooseLevel] = useState({});
+  const [title, setTitle] = useState("");
+  const [subjectId, setSubjectId] = useState(1);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const dispatch = useDispatch();
+
+  const points = 1;
 
   useEffect(() => {
     if (onDuty._id) {
@@ -52,7 +61,6 @@ export default function Modal({
       const findStrand = levels.find((level) => level.id === Number(levelId));
       if (findStrand.hasOwnProperty("strand")) {
         setStrands(findStrand.strand);
-        setChooseLevel(findStrand);
       } else {
         const findSubject = findStrand.subject.map((id) =>
           topic.find((topic) => topic.id === id)
@@ -90,15 +98,40 @@ export default function Modal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(questionneirs);
+    const exam = {
+      branchId: onDuty._id,
+      levelId,
+      specification: strandId ? strandId : "",
+      subjectId,
+      title,
+      startDate,
+      startTime,
+      startDate,
+      endTime,
+      user: auth._id,
+    };
+    const questions = questionneirs.map((questionneir) => {
+      return {
+        bankId: questionneir._id,
+        points: questionneir.points === 0 ? points : questionneir.points,
+        examId: "",
+      };
+    });
+
+    dispatch(
+      SAVE({
+        form: { exam, questions },
+        token,
+      })
+    );
   };
   return (
     <>
-      <MDBModal show={visibility} setShow={setVisibility} tabIndex="-1">
+      <MDBModal show={visibility} setShow={setVisibility}>
         <MDBModalDialog size="xl">
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Assign your create questions</MDBModalTitle>
+              <MDBModalTitle>Assign your questions</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -109,16 +142,17 @@ export default function Modal({
               <MDBModalBody>
                 <MDBRow className="my-3">
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="Grade Level">
+                    <MDBInputGroup className="mb-3" textBefore="Grade Level">
                       <select
-                        className="form-control"
+                        className="form-select"
                         value={levelId}
                         onChange={(e) => setLevelId(e.target.value)}
+                        required
                       >
                         <option value={""}></option>
                         {gradeLevels.length > 0 &&
-                          gradeLevels.map((level) => (
-                            <option value={level.id}>
+                          gradeLevels.map((level, index) => (
+                            <option value={level.id} key={index}>
                               {level.description}
                             </option>
                           ))}
@@ -126,16 +160,17 @@ export default function Modal({
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="Strand">
+                    <MDBInputGroup className="mb-3" textBefore="Strand">
                       <select
-                        className="form-control"
+                        className="form-select"
                         value={strandId}
                         onChange={(e) => setStrandId(e.target.value)}
+                        required
                       >
                         <option value={""}></option>
                         {strands.length > 0 &&
-                          strands.map((strand) => (
-                            <option value={strand.specifications}>
+                          strands.map((strand, index) => (
+                            <option value={strand.specifications} key={index}>
                               {strand.specifications}
                             </option>
                           ))}
@@ -143,40 +178,72 @@ export default function Modal({
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="Subject">
-                      <select className="form-control">
+                    <MDBInputGroup className="mb-3" textBefore="Subject">
+                      <select
+                        className="form-select"
+                        value={subjectId}
+                        onChange={(e) => setSubjectId(Number(e.target.value))}
+                        required
+                      >
                         <option value={""}></option>
                         {subjects.length > 0 &&
-                          subjects.map((subject) => (
-                            <option value={subject.id}>{subject.name}</option>
+                          subjects.map((subject, index) => (
+                            <option value={subject.id} key={index}>
+                              {subject.name}
+                            </option>
                           ))}
                       </select>
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="Title">
-                      <input className="form-control" />
+                    <MDBInputGroup className="mb-3" textBefore="Title">
+                      <input
+                        className="form-control"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                      />
                     </MDBInputGroup>
                   </MDBCol>
                 </MDBRow>
                 <MDBRow className="mt-2">
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="Start Date">
-                      <MDBInput type="date" />
+                    <MDBInputGroup className="mb-3" textBefore="Start Date">
+                      <MDBInput
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="Start Time">
+                    <MDBInputGroup
+                      className="mb-3"
+                      textBefore="Start Time"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                    >
                       <MDBInput type="time" />
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="End Date">
+                    <MDBInputGroup
+                      className="mb-3"
+                      textBefore="End Date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                    >
                       <MDBInput type="date" />
                     </MDBInputGroup>
                   </MDBCol>
                   <MDBCol md={3}>
-                    <MDBInputGroup textBefore="End Time">
+                    <MDBInputGroup
+                      className="mb-3"
+                      textBefore="End Time"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                    >
                       <MDBInput type="time" />
                     </MDBInputGroup>
                   </MDBCol>
@@ -184,14 +251,20 @@ export default function Modal({
                 <MDBRow className="my-4">
                   <MDBCol md={6}>
                     <h5 className="text-start">
-                      <strong>Check your create questions</strong>
+                      <strong>Check your questions</strong>
                     </h5>
                   </MDBCol>
                   <MDBCol md={6} className="text-end">
                     <h5>
-                      <strong> Total of </strong>
-                      <MDBBadge>
-                        {questionneirs.length + " / " + questionneirs.length}
+                      <strong> Total </strong>
+                      <MDBBadge
+                        pill
+                        style={{
+                          fontSize: "1.20rem",
+                          padding: "0.2rem 0.5rem",
+                        }}
+                      >
+                        {questionneirs.length}
                       </MDBBadge>
                     </h5>
                   </MDBCol>
@@ -208,19 +281,19 @@ export default function Modal({
                     </MDBTableHead>
                     <MDBTableBody>
                       {questionneirs.map((select, index) => (
-                        <tr>
+                        <tr key={index}>
                           <td>{handleQuestion(select.question)}</td>
                           <td>{select.cluster}</td>
                           <td style={{ width: "120px" }}>
                             <input
-                              value={points || select.points}
+                              value={select.points || points}
                               onChange={(e) =>
                                 handleChangePoints(
                                   index,
                                   Number(e.target.value)
                                 )
                               }
-                              className="border-0 border-bottom form-control"
+                              className="form-control border-0 border-bottom"
                             />
                           </td>
                           <td>
@@ -230,7 +303,7 @@ export default function Modal({
                               onClick={() => handleView(select)}
                               color="warning"
                             >
-                              <MDBIcon fas icon="eye" />
+                              <i className="fas fa-eye"></i>
                             </MDBBtn>
                           </td>
                         </tr>
@@ -247,7 +320,9 @@ export default function Modal({
                 >
                   Close
                 </MDBBtn>
-                <MDBBtn type="submit">Start</MDBBtn>
+                <MDBBtn type="submit" color="primary">
+                  Start
+                </MDBBtn>
               </MDBModalFooter>
             </form>
           </MDBModalContent>

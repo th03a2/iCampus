@@ -5,15 +5,12 @@ import {
   MDBRow,
   MDBCol,
   MDBInputGroup,
-  MDBBtn,
   MDBCard,
 } from "mdb-react-ui-kit";
 import Pager from "../../../../components/pager";
 import BreadCrumb from "../../../../components/breadcrumb";
-import { BROWSE } from "../../../../redux/slices/query";
-import { TBLexams, TBLpick } from "../../../../templates";
-// import Modal from "./modal";
-import { nameFormatter } from "../../../../components/utilities";
+import { BROWSE } from "../../../../redux/slices/assets/banks";
+import { TBLexams } from "../../../../templates";
 import levels from "../../../../fakeDb/json/levels";
 import subjects from "../../../../fakeDb/json/subjects";
 
@@ -25,7 +22,7 @@ const path = [
 
 export default function Exam() {
   const { token, maxPage, onDuty } = useSelector(({ auth }) => auth),
-    { catalogs } = useSelector(({ query }) => query),
+    { catalogs } = useSelector(({ banks }) => banks),
     [visibility, setVisibility] = useState(false),
     [banks, setBanks] = useState([]),
     [page, setPage] = useState(1),
@@ -34,22 +31,21 @@ export default function Exam() {
     [levelId, setLevelId] = useState(""),
     [topicId, setTopicId] = useState(""),
     [topics, setTopics] = useState({}),
-    [isUpdate, setIsUpdate] = useState(false),
-    [updateBank, setUpdateBank] = useState({}),
     [items, setItems] = useState([]),
     [category, setCategory] = useState(""),
     [groups, setGroups] = useState({}),
     dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      BROWSE({
-        entity: "assets/banks",
-        data: onDuty._id,
-        token,
-      })
-    );
-  }, [dispatch, token]);
+    if (onDuty._id) {
+      dispatch(
+        BROWSE({
+          data: onDuty._id,
+          token,
+        })
+      );
+    }
+  }, [dispatch, token, onDuty._id]);
 
   useEffect(() => {
     if (banks.length > 0) {
@@ -60,6 +56,10 @@ export default function Exam() {
       page > totalPages && setPage(totalPages);
     }
   }, [banks, page, maxPage]);
+
+  useEffect(() => {
+    setBanks(catalogs);
+  }, [catalogs]);
 
   useEffect(() => {
     if (catalogs.length > 0) {
@@ -157,7 +157,6 @@ export default function Exam() {
       page > totalPages && setPage(totalPages);
     }
   }, [banks, page, maxPage]);
-
   return (
     <>
       <BreadCrumb
@@ -232,8 +231,6 @@ export default function Exam() {
                 page={page}
                 visibility={visibility}
                 setVisibility={setVisibility}
-                setIsUpdate={setIsUpdate}
-                setUpdateBank={setUpdateBank}
               />
             </MDBCard>
           </MDBCol>
